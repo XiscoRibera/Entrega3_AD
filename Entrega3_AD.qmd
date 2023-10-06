@@ -1,0 +1,16 @@
+---
+title: "Entrega 3 Análisis de Datos"
+format: html
+editor: visual
+author: Irene LiFeng Julià Pérez y Xisco Ribera Ramis
+---
+
+
+Cargamos la tabla de datos
+
+```{r}
+datos = read.csv("heart_attack_prediction_dataset.csv", header = T)
+
+str(datos)
+```
+
