@@ -29,6 +29,18 @@ datos = datos %>%
   mutate(Sex = Sex %>% as.factor)
 
 datos = datos %>% 
+  mutate(Diet = Diet %>% as.factor)
+
+datos = datos %>% 
+  mutate(Country = Country %>% as.factor)
+
+datos = datos %>% 
+  mutate(Continent = Continent %>% as.factor)
+
+datos = datos %>% 
+  mutate(Hemisphere = Hemisphere %>% as.factor)
+
+datos = datos %>% 
   mutate(Diabetes = if_else(Diabetes == 0, "No", "Si") %>% as.factor)
 
 datos = datos %>% 
