@@ -5,6 +5,12 @@ editor: visual
 author: Irene LiFeng Julià Pérez y Xisco Ribera Ramis
 ---
 
+Cargamos la librería
+
+```{r}
+library(tidyverse)
+```
+
 
 Cargamos la tabla de datos
 
@@ -13,4 +19,3 @@ datos = read.csv("heart_attack_prediction_dataset.csv", header = T)
 
 str(datos)
 ```
-
