@@ -7,15 +7,52 @@ author: Irene LiFeng Julià Pérez y Xisco Ribera Ramis
 
 Cargamos la librería
 
-```{r}
+```{r, warning=FALSE, message=FALSE}
 library(tidyverse)
 ```
 
 
 Cargamos la tabla de datos
 
-```{r}
+```{r, warning=FALSE}
 datos = read.csv("heart_attack_prediction_dataset.csv", header = T)
+datos = datos %>% as.tibble
+str(datos)
+```
+Vamos a modificar el data set para que sea más cómodo a la hora de trabajar con él:
+
+```{r}
+datos = datos %>% 
+  mutate(Patient.ID = c(1:8763))
+
+datos = datos %>% 
+  mutate(Sex = Sex %>% as.factor)
+
+datos = datos %>% 
+  mutate(Diabetes = if_else(Diabetes == 0, "No", "Si") %>% as.factor)
+
+datos = datos %>% 
+  mutate(Family.History = if_else(Family.History == 0, "No", "Si") %>% as.factor)
+
+datos = datos %>% 
+  mutate(Smoking = if_else(Smoking == 0, "No", "Si") %>% as.factor)
+
+datos = datos %>% 
+  mutate(Obesity = if_else(Obesity == 0, "No", "Si") %>% as.factor)
+
+datos = datos %>% 
+  mutate(Alcohol.Consumption = if_else(Alcohol.Consumption == 0, "No", "Si") %>% as.factor)
+
+datos = datos %>% 
+  mutate(Previous.Heart.Problems = if_else(Previous.Heart.Problems == 0, "No", "Si") %>% as.factor)
+
+datos = datos %>% 
+  mutate(Medication.Use = if_else(Medication.Use == 0, "No", "Si") %>% as.factor)
+
+datos = datos %>% 
+  mutate(Heart.Attack.Risk = if_else(Heart.Attack.Risk == 0, "No", "Si") %>% as.factor)
+
 
 str(datos)
 ```
+
