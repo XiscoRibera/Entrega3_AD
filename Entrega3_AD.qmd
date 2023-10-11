@@ -9,8 +9,8 @@ Cargamos la librería
 
 ```{r, warning=FALSE, message=FALSE}
 library(tidyverse)
+library(dplyr)
 ```
-
 
 Cargamos la tabla de datos
 
@@ -19,6 +19,7 @@ datos = read.csv("heart_attack_prediction_dataset.csv", header = T)
 datos = datos %>% as.tibble
 str(datos)
 ```
+
 Vamos a modificar el data set para que sea más cómodo a la hora de trabajar con él:
 
 ```{r}
@@ -64,7 +65,14 @@ datos = datos %>%
 datos = datos %>% 
   mutate(Heart.Attack.Risk = if_else(Heart.Attack.Risk == 0, "No", "Si") %>% as.factor)
 
+# vamos a convertir la columna blood.pressure en high y low
+datos <- datos %>%
+  rowwise() %>%
+  mutate(
+    High.Blood.Pressure = as.numeric(unlist(strsplit(Blood.Pressure, "/"))[1]),
+    Low.Blood.Pressure = as.numeric(unlist(strsplit(Blood.Pressure, "/"))[2])
+  ) %>%
+  ungroup()
 
 str(datos)
 ```
-
