@@ -194,14 +194,17 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb4-49"><a href="#cb4-49" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span></span>
 <span id="cb4-50"><a href="#cb4-50" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ungroup</span>()</span>
 <span id="cb4-51"><a href="#cb4-51" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-52"><a href="#cb4-52" aria-hidden="true" tabindex="-1"></a><span class="fu">str</span>(datos)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb4-52"><a href="#cb4-52" aria-hidden="true" tabindex="-1"></a>datos <span class="ot">&lt;-</span> datos[,<span class="sc">-</span><span class="dv">5</span>]</span>
+<span id="cb4-53"><a href="#cb4-53" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-54"><a href="#cb4-54" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-55"><a href="#cb4-55" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-56"><a href="#cb4-56" aria-hidden="true" tabindex="-1"></a><span class="fu">str</span>(datos)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>tibble [8,763 × 28] (S3: tbl_df/tbl/data.frame)
+<pre><code>tibble [8,763 × 27] (S3: tbl_df/tbl/data.frame)
  $ Patient.ID                     : int [1:8763] 1 2 3 4 5 6 7 8 9 10 ...
  $ Age                            : int [1:8763] 67 21 21 84 66 54 90 84 20 43 ...
  $ Sex                            : Factor w/ 2 levels "Female","Male": 2 2 1 2 2 1 2 2 2 1 ...
  $ Cholesterol                    : int [1:8763] 208 389 324 383 318 297 358 220 145 248 ...
- $ Blood.Pressure                 : chr [1:8763] "158/88" "165/93" "174/99" "163/100" ...
  $ Heart.Rate                     : int [1:8763] 72 98 72 73 93 48 84 107 68 55 ...
  $ Diabetes                       : Factor w/ 2 levels "No","Si": 1 2 2 2 2 2 1 1 2 1 ...
  $ Family.History                 : Factor w/ 2 levels "No","Si": 1 2 1 2 2 2 1 1 1 2 ...
@@ -226,6 +229,60 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
  $ High.Blood.Pressure            : num [1:8763] 158 165 174 163 91 172 102 131 144 160 ...
  $ Low.Blood.Pressure             : num [1:8763] 88 93 99 100 88 86 73 68 105 70 ...</code></pre>
 </div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>variables <span class="ot">=</span> datos <span class="sc">%&gt;%</span> <span class="fu">names</span>()</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>quant <span class="ot">&lt;-</span> datos <span class="sc">%&gt;%</span> </span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(<span class="fu">where</span>(is.numeric))</span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a><span class="fu">names</span>(quant)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code> [1] "Patient.ID"                      "Age"                            
+ [3] "Cholesterol"                     "Heart.Rate"                     
+ [5] "Exercise.Hours.Per.Week"         "Stress.Level"                   
+ [7] "Sedentary.Hours.Per.Day"         "Income"                         
+ [9] "BMI"                             "Triglycerides"                  
+[11] "Physical.Activity.Days.Per.Week" "Sleep.Hours.Per.Day"            
+[13] "High.Blood.Pressure"             "Low.Blood.Pressure"             </code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>qual <span class="ot">&lt;-</span> datos <span class="sc">%&gt;%</span> </span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(<span class="fu">where</span>(is.factor))</span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a><span class="fu">names</span>(qual)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code> [1] "Sex"                     "Diabetes"               
+ [3] "Family.History"          "Smoking"                
+ [5] "Obesity"                 "Alcohol.Consumption"    
+ [7] "Diet"                    "Previous.Heart.Problems"
+ [9] "Medication.Use"          "Country"                
+[11] "Continent"               "Hemisphere"             
+[13] "Heart.Attack.Risk"      </code></pre>
+</div>
+</div>
+<div class="center">
+<table class="table">
+<colgroup>
+<col style="width: 45%">
+<col style="width: 54%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;">Quantit</th>
+<th style="text-align: center;">qualitat</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;"></td>
+<td style="text-align: center;"></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Patient.ID, Age, Cholesterol, Heart.Rate, Exercise.Hours.Per.Week, Stress.Level, Sedentary.Hours.Per.Day, Income, BMI, Triglycerides, Physical.Activity.Days.Per.Week, Sleep.Hours.Per.Day, High.Blood.Pressure, Low.Blood.Pressure</td>
+<td style="text-align: center;">Sex, Diabetes, Family.History, Smoking, Obesity, Alcohol.Consumption, Diet, Previous.Heart.Problems, Medication.Use, Country, Continent, Hemisphere, Heart.Attack.Risk</td>
+</tr>
+</tbody>
+</table>
 </div>
 
 </main>

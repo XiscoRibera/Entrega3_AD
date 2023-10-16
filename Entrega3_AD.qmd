@@ -74,5 +74,35 @@ datos <- datos %>%
   ) %>%
   ungroup()
 
+datos <- datos[,-5]
+
+
+
 str(datos)
+
 ```
+
+```{r}
+variables = datos %>% names()
+
+quant <- datos %>% 
+  select(where(is.numeric))
+names(quant)
+```
+
+
+```{r}
+qual <- datos %>% 
+  select(where(is.factor))
+names(qual)
+```
+
+
+<div class="center">
+| Quantit | qualitat   | 
+|:----|:----:|
+| 
+`r names(quant)`| `r names(qual)` | 
+</div>
+
+
