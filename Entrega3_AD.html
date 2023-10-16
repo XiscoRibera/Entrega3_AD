@@ -103,7 +103,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 <p>Cargamos la librería</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(dplyr)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>Cargamos la tabla de datos</p>
 <div class="cell">
@@ -184,10 +185,18 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb4-40"><a href="#cb4-40" aria-hidden="true" tabindex="-1"></a>datos <span class="ot">=</span> datos <span class="sc">%&gt;%</span> </span>
 <span id="cb4-41"><a href="#cb4-41" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">Heart.Attack.Risk =</span> <span class="fu">if_else</span>(Heart.Attack.Risk <span class="sc">==</span> <span class="dv">0</span>, <span class="st">"No"</span>, <span class="st">"Si"</span>) <span class="sc">%&gt;%</span> as.factor)</span>
 <span id="cb4-42"><a href="#cb4-42" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-43"><a href="#cb4-43" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-44"><a href="#cb4-44" aria-hidden="true" tabindex="-1"></a><span class="fu">str</span>(datos)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb4-43"><a href="#cb4-43" aria-hidden="true" tabindex="-1"></a><span class="co"># vamos a convertir la columna blood.pressure en high y low</span></span>
+<span id="cb4-44"><a href="#cb4-44" aria-hidden="true" tabindex="-1"></a>datos <span class="ot">&lt;-</span> datos <span class="sc">%&gt;%</span></span>
+<span id="cb4-45"><a href="#cb4-45" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rowwise</span>() <span class="sc">%&gt;%</span></span>
+<span id="cb4-46"><a href="#cb4-46" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
+<span id="cb4-47"><a href="#cb4-47" aria-hidden="true" tabindex="-1"></a>    <span class="at">High.Blood.Pressure =</span> <span class="fu">as.numeric</span>(<span class="fu">unlist</span>(<span class="fu">strsplit</span>(Blood.Pressure, <span class="st">"/"</span>))[<span class="dv">1</span>]),</span>
+<span id="cb4-48"><a href="#cb4-48" aria-hidden="true" tabindex="-1"></a>    <span class="at">Low.Blood.Pressure =</span> <span class="fu">as.numeric</span>(<span class="fu">unlist</span>(<span class="fu">strsplit</span>(Blood.Pressure, <span class="st">"/"</span>))[<span class="dv">2</span>])</span>
+<span id="cb4-49"><a href="#cb4-49" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span></span>
+<span id="cb4-50"><a href="#cb4-50" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ungroup</span>()</span>
+<span id="cb4-51"><a href="#cb4-51" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-52"><a href="#cb4-52" aria-hidden="true" tabindex="-1"></a><span class="fu">str</span>(datos)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>tibble [8,763 × 26] (S3: tbl_df/tbl/data.frame)
+<pre><code>tibble [8,763 × 28] (S3: tbl_df/tbl/data.frame)
  $ Patient.ID                     : int [1:8763] 1 2 3 4 5 6 7 8 9 10 ...
  $ Age                            : int [1:8763] 67 21 21 84 66 54 90 84 20 43 ...
  $ Sex                            : Factor w/ 2 levels "Female","Male": 2 2 1 2 2 1 2 2 2 1 ...
@@ -213,7 +222,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
  $ Country                        : Factor w/ 20 levels "Argentina","Australia",..: 1 4 7 4 17 8 4 11 3 11 ...
  $ Continent                      : Factor w/ 6 levels "Africa","Asia",..: 6 5 4 5 2 4 5 2 6 2 ...
  $ Hemisphere                     : Factor w/ 2 levels "Northern Hemisphere",..: 2 1 1 1 1 1 1 1 2 1 ...
- $ Heart.Attack.Risk              : Factor w/ 2 levels "No","Si": 1 1 1 1 1 2 2 2 1 1 ...</code></pre>
+ $ Heart.Attack.Risk              : Factor w/ 2 levels "No","Si": 1 1 1 1 1 2 2 2 1 1 ...
+ $ High.Blood.Pressure            : num [1:8763] 158 165 174 163 91 172 102 131 144 160 ...
+ $ Low.Blood.Pressure             : num [1:8763] 88 93 99 100 88 86 73 68 105 70 ...</code></pre>
 </div>
 </div>
 
