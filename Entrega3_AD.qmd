@@ -12,6 +12,8 @@ library(tidyverse)
 library(dplyr)
 ```
 
+# Convertir los datos en tidy
+
 Cargamos la tabla de datos
 
 ```{r, warning=FALSE}
@@ -74,7 +76,7 @@ datos <- datos %>%
   ) %>%
   ungroup()
 
-datos <- datos[,-5]
+datos <- datos[,c(-5,-18)]
 
 
 
@@ -82,27 +84,87 @@ str(datos)
 
 ```
 
-```{r}
-variables = datos %>% names()
+Reordenamos las columnas
 
-quant <- datos %>% 
-  select(where(is.numeric))
-names(quant)
+```{r}
+
+datos <- datos %>%
+  relocate(where(is.factor)) %>% 
+  relocate(Patient.ID)
+
+view(datos)
+# 1 id
+# 2-14 qual
+# 15-26 quant
+```
+
+::: center
+| qualitat                   |           Quantit           |
+|:---------------------------|:---------------------------:|
+|                            |                             |
+| `r names(datos[,c(2:14)])` | `r names(datos[,c(15:26)])` |
+:::
+
+```{r}
+summary(datos)
+```
+
+# Objetivo del estudio
+
+1.  Estudiar algunos perfiles con riesgo de padecer un ataque al corazón
+2.  Comprobar si hay diferencias entre diferentes continentes respecto al mismo perfil de riesgo.
+3.  Poder predecir si un individuo tiene riesgo de sufrir un ataque al corazón.
+
+# Análisis multivariante exploratorio
+
+```{r, warning=FALSE}
+
+a = datos %>% 
+  select(2,6,12,14,15,16,17) %>% 
+  na.omit
+
+pairs(a, col = c("red", "blue", "green", "yellow", "purple", "orange")[as.integer(a$Continent)],pch=18)
+
+library(GGally)
+
+ggpairs(a)
+
+
+```
+
+## Estimación del vector de medias y la matriz de covarianza y correlación
+
+Calculemos el vector de medias. Para cada variable cuantitativa
+
+```{r}
+
+apply(datos[,15:26], FUN = mean, MARGIN = 2)
+
+```
+
+Veamos ahora la matriz de covariancia (a secas)
+```{r}
+new_names = substr(names(datos[,c(15:26)]),1,5)
+datos_quant <- datos[,c(15:26)]
+colnames(datos_quant) = new_names
+
+
+n = length(datos$Patient.ID)
+
+round(cov(datos_quant)*(n-1)/n,5)
+
+```
+
+```{r}
+library(psych)
+corPlot(datos_quant, cex = 0.8,  main = "Matriz de correlación")
+
 ```
 
 
-```{r}
-qual <- datos %>% 
-  select(where(is.factor))
-names(qual)
-```
 
 
-<div class="center">
-| Quantit | qualitat   | 
-|:----|:----:|
-| 
-`r names(quant)`| `r names(qual)` | 
-</div>
+
+
 
 

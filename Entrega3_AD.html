@@ -106,6 +106,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(dplyr)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
+<section id="convertir-los-datos-en-tidy" class="level1">
+<h1>Convertir los datos en tidy</h1>
 <p>Cargamos la tabla de datos</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>datos <span class="ot">=</span> <span class="fu">read.csv</span>(<span class="st">"heart_attack_prediction_dataset.csv"</span>, <span class="at">header =</span> T)</span>
@@ -194,13 +196,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb4-49"><a href="#cb4-49" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span></span>
 <span id="cb4-50"><a href="#cb4-50" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ungroup</span>()</span>
 <span id="cb4-51"><a href="#cb4-51" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-52"><a href="#cb4-52" aria-hidden="true" tabindex="-1"></a>datos <span class="ot">&lt;-</span> datos[,<span class="sc">-</span><span class="dv">5</span>]</span>
+<span id="cb4-52"><a href="#cb4-52" aria-hidden="true" tabindex="-1"></a>datos <span class="ot">&lt;-</span> datos[,<span class="fu">c</span>(<span class="sc">-</span><span class="dv">5</span>,<span class="sc">-</span><span class="dv">18</span>)]</span>
 <span id="cb4-53"><a href="#cb4-53" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb4-54"><a href="#cb4-54" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb4-55"><a href="#cb4-55" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb4-56"><a href="#cb4-56" aria-hidden="true" tabindex="-1"></a><span class="fu">str</span>(datos)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>tibble [8,763 × 27] (S3: tbl_df/tbl/data.frame)
+<pre><code>tibble [8,763 × 26] (S3: tbl_df/tbl/data.frame)
  $ Patient.ID                     : int [1:8763] 1 2 3 4 5 6 7 8 9 10 ...
  $ Age                            : int [1:8763] 67 21 21 84 66 54 90 84 20 43 ...
  $ Sex                            : Factor w/ 2 levels "Female","Male": 2 2 1 2 2 1 2 2 2 1 ...
@@ -217,7 +219,6 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
  $ Medication.Use                 : Factor w/ 2 levels "No","Si": 1 1 2 1 1 2 1 2 1 1 ...
  $ Stress.Level                   : int [1:8763] 9 1 9 9 6 2 7 4 5 4 ...
  $ Sedentary.Hours.Per.Day        : num [1:8763] 6.62 4.96 9.46 7.65 1.51 ...
- $ Income                         : int [1:8763] 261404 285768 235282 125640 160555 241339 190450 122093 25086 209703 ...
  $ BMI                            : num [1:8763] 31.3 27.2 28.2 36.5 21.8 ...
  $ Triglycerides                  : int [1:8763] 286 235 587 378 231 795 284 370 790 232 ...
  $ Physical.Activity.Days.Per.Week: int [1:8763] 0 1 4 3 1 5 4 6 7 7 ...
@@ -230,46 +231,27 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
  $ Low.Blood.Pressure             : num [1:8763] 88 93 99 100 88 86 73 68 105 70 ...</code></pre>
 </div>
 </div>
+<p>Reordenamos las columnas</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>variables <span class="ot">=</span> datos <span class="sc">%&gt;%</span> <span class="fu">names</span>()</span>
-<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>quant <span class="ot">&lt;-</span> datos <span class="sc">%&gt;%</span> </span>
-<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(<span class="fu">where</span>(is.numeric))</span>
-<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a><span class="fu">names</span>(quant)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code> [1] "Patient.ID"                      "Age"                            
- [3] "Cholesterol"                     "Heart.Rate"                     
- [5] "Exercise.Hours.Per.Week"         "Stress.Level"                   
- [7] "Sedentary.Hours.Per.Day"         "Income"                         
- [9] "BMI"                             "Triglycerides"                  
-[11] "Physical.Activity.Days.Per.Week" "Sleep.Hours.Per.Day"            
-[13] "High.Blood.Pressure"             "Low.Blood.Pressure"             </code></pre>
-</div>
-</div>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>qual <span class="ot">&lt;-</span> datos <span class="sc">%&gt;%</span> </span>
-<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(<span class="fu">where</span>(is.factor))</span>
-<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a><span class="fu">names</span>(qual)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code> [1] "Sex"                     "Diabetes"               
- [3] "Family.History"          "Smoking"                
- [5] "Obesity"                 "Alcohol.Consumption"    
- [7] "Diet"                    "Previous.Heart.Problems"
- [9] "Medication.Use"          "Country"                
-[11] "Continent"               "Hemisphere"             
-[13] "Heart.Attack.Risk"      </code></pre>
-</div>
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>datos <span class="ot">&lt;-</span> datos <span class="sc">%&gt;%</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">relocate</span>(<span class="fu">where</span>(is.factor)) <span class="sc">%&gt;%</span> </span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">relocate</span>(Patient.ID)</span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a><span class="fu">view</span>(datos)</span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a><span class="co"># 1 id</span></span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a><span class="co"># 2-14 qual</span></span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a><span class="co"># 15-26 quant</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="center">
 <table class="table">
 <colgroup>
-<col style="width: 45%">
-<col style="width: 54%">
+<col style="width: 49%">
+<col style="width: 50%">
 </colgroup>
 <thead>
 <tr class="header">
-<th style="text-align: left;">Quantit</th>
-<th style="text-align: center;">qualitat</th>
+<th style="text-align: left;">qualitat</th>
+<th style="text-align: center;">Quantit</th>
 </tr>
 </thead>
 <tbody>
@@ -278,12 +260,200 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <td style="text-align: center;"></td>
 </tr>
 <tr class="even">
-<td style="text-align: left;">Patient.ID, Age, Cholesterol, Heart.Rate, Exercise.Hours.Per.Week, Stress.Level, Sedentary.Hours.Per.Day, Income, BMI, Triglycerides, Physical.Activity.Days.Per.Week, Sleep.Hours.Per.Day, High.Blood.Pressure, Low.Blood.Pressure</td>
-<td style="text-align: center;">Sex, Diabetes, Family.History, Smoking, Obesity, Alcohol.Consumption, Diet, Previous.Heart.Problems, Medication.Use, Country, Continent, Hemisphere, Heart.Attack.Risk</td>
+<td style="text-align: left;">Sex, Diabetes, Family.History, Smoking, Obesity, Alcohol.Consumption, Diet, Previous.Heart.Problems, Medication.Use, Country, Continent, Hemisphere, Heart.Attack.Risk</td>
+<td style="text-align: center;">Age, Cholesterol, Heart.Rate, Exercise.Hours.Per.Week, Stress.Level, Sedentary.Hours.Per.Day, BMI, Triglycerides, Physical.Activity.Days.Per.Week, Sleep.Hours.Per.Day, High.Blood.Pressure, Low.Blood.Pressure</td>
 </tr>
 </tbody>
 </table>
 </div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(datos)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>   Patient.ID       Sex       Diabetes  Family.History Smoking   Obesity  
+ Min.   :   1   Female:2652   No:3047   No:4443        No: 904   No:4369  
+ 1st Qu.:2192   Male  :6111   Si:5716   Si:4320        Si:7859   Si:4394  
+ Median :4382                                                             
+ Mean   :4382                                                             
+ 3rd Qu.:6572                                                             
+ Max.   :8763                                                             
+                                                                          
+ Alcohol.Consumption        Diet      Previous.Heart.Problems Medication.Use
+ No:3522             Average  :2912   No:4418                 No:4396       
+ Si:5241             Healthy  :2960   Si:4345                 Si:4367       
+                     Unhealthy:2891                                         
+                                                                            
+                                                                            
+                                                                            
+                                                                            
+           Country             Continent                  Hemisphere  
+ Germany       : 477   Africa       : 873   Northern Hemisphere:5660  
+ Argentina     : 471   Asia         :2543   Southern Hemisphere:3103  
+ Brazil        : 462   Australia    : 884                             
+ United Kingdom: 457   Europe       :2241                             
+ Australia     : 449   North America: 860                             
+ Nigeria       : 448   South America:1362                             
+ (Other)       :5999                                                  
+ Heart.Attack.Risk      Age         Cholesterol      Heart.Rate    
+ No:5624           Min.   :18.00   Min.   :120.0   Min.   : 40.00  
+ Si:3139           1st Qu.:35.00   1st Qu.:192.0   1st Qu.: 57.00  
+                   Median :54.00   Median :259.0   Median : 75.00  
+                   Mean   :53.71   Mean   :259.9   Mean   : 75.02  
+                   3rd Qu.:72.00   3rd Qu.:330.0   3rd Qu.: 93.00  
+                   Max.   :90.00   Max.   :400.0   Max.   :110.00  
+                                                                   
+ Exercise.Hours.Per.Week  Stress.Level   Sedentary.Hours.Per.Day
+ Min.   : 0.002442       Min.   : 1.00   Min.   : 0.001263      
+ 1st Qu.: 4.981579       1st Qu.: 3.00   1st Qu.: 2.998794      
+ Median :10.069559       Median : 5.00   Median : 5.933622      
+ Mean   :10.014284       Mean   : 5.47   Mean   : 5.993690      
+ 3rd Qu.:15.050018       3rd Qu.: 8.00   3rd Qu.: 9.019124      
+ Max.   :19.998709       Max.   :10.00   Max.   :11.999313      
+                                                                
+      BMI        Triglycerides   Physical.Activity.Days.Per.Week
+ Min.   :18.00   Min.   : 30.0   Min.   :0.00                   
+ 1st Qu.:23.42   1st Qu.:225.5   1st Qu.:2.00                   
+ Median :28.77   Median :417.0   Median :3.00                   
+ Mean   :28.89   Mean   :417.7   Mean   :3.49                   
+ 3rd Qu.:34.32   3rd Qu.:612.0   3rd Qu.:5.00                   
+ Max.   :40.00   Max.   :800.0   Max.   :7.00                   
+                                                                
+ Sleep.Hours.Per.Day High.Blood.Pressure Low.Blood.Pressure
+ Min.   : 4.000      Min.   : 90.0       Min.   : 60.00    
+ 1st Qu.: 5.000      1st Qu.:112.0       1st Qu.: 72.00    
+ Median : 7.000      Median :135.0       Median : 85.00    
+ Mean   : 7.024      Mean   :135.1       Mean   : 85.16    
+ 3rd Qu.: 9.000      3rd Qu.:158.0       3rd Qu.: 98.00    
+ Max.   :10.000      Max.   :180.0       Max.   :110.00    
+                                                           </code></pre>
+</div>
+</div>
+</section>
+<section id="objetivo-del-estudio" class="level1">
+<h1>Objetivo del estudio</h1>
+<ol type="1">
+<li>Estudiar algunos perfiles con riesgo de padecer un ataque al corazón</li>
+<li>Comprobar si hay diferencias entre diferentes continentes respecto al mismo perfil de riesgo.</li>
+<li>Poder predecir si un individuo tiene riesgo de sufrir un ataque al corazón.</li>
+</ol>
+</section>
+<section id="análisis-multivariante-exploratorio" class="level1">
+<h1>Análisis multivariante exploratorio</h1>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>a <span class="ot">=</span> datos <span class="sc">%&gt;%</span> </span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(<span class="dv">2</span>,<span class="dv">6</span>,<span class="dv">12</span>,<span class="dv">14</span>,<span class="dv">15</span>,<span class="dv">16</span>,<span class="dv">17</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>  na.omit</span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a><span class="fu">pairs</span>(a, <span class="at">col =</span> <span class="fu">c</span>(<span class="st">"red"</span>, <span class="st">"blue"</span>, <span class="st">"green"</span>, <span class="st">"yellow"</span>, <span class="st">"purple"</span>, <span class="st">"orange"</span>)[<span class="fu">as.integer</span>(a<span class="sc">$</span>Continent)],<span class="at">pch=</span><span class="dv">18</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="Entrega3_AD_files/figure-html/unnamed-chunk-6-1.png" class="img-fluid" width="672"></p>
+</div>
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(GGally)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Registered S3 method overwritten by 'GGally':
+  method from   
+  +.gg   ggplot2</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggpairs</span>(a)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>`stat_bin()` using `bins = 30`. Pick better value with `binwidth`.</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>`stat_bin()` using `bins = 30`. Pick better value with `binwidth`.
+`stat_bin()` using `bins = 30`. Pick better value with `binwidth`.
+`stat_bin()` using `bins = 30`. Pick better value with `binwidth`.
+`stat_bin()` using `bins = 30`. Pick better value with `binwidth`.
+`stat_bin()` using `bins = 30`. Pick better value with `binwidth`.
+`stat_bin()` using `bins = 30`. Pick better value with `binwidth`.
+`stat_bin()` using `bins = 30`. Pick better value with `binwidth`.
+`stat_bin()` using `bins = 30`. Pick better value with `binwidth`.
+`stat_bin()` using `bins = 30`. Pick better value with `binwidth`.
+`stat_bin()` using `bins = 30`. Pick better value with `binwidth`.
+`stat_bin()` using `bins = 30`. Pick better value with `binwidth`.</code></pre>
+</div>
+<div class="cell-output-display">
+<p><img src="Entrega3_AD_files/figure-html/unnamed-chunk-6-2.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+<section id="estimación-del-vector-de-medias-y-la-matriz-de-covarianza-y-correlación" class="level2">
+<h2 class="anchored" data-anchor-id="estimación-del-vector-de-medias-y-la-matriz-de-covarianza-y-correlación">Estimación del vector de medias y la matriz de covarianza y correlación</h2>
+<p>Calculemos el vector de medias. Para cada variable cuantitativa</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="fu">apply</span>(datos[,<span class="dv">15</span><span class="sc">:</span><span class="dv">26</span>], <span class="at">FUN =</span> mean, <span class="at">MARGIN =</span> <span class="dv">2</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>                            Age                     Cholesterol 
+                      53.707977                      259.877211 
+                     Heart.Rate         Exercise.Hours.Per.Week 
+                      75.021682                       10.014284 
+                   Stress.Level         Sedentary.Hours.Per.Day 
+                       5.469702                        5.993690 
+                            BMI                   Triglycerides 
+                      28.891446                      417.677051 
+Physical.Activity.Days.Per.Week             Sleep.Hours.Per.Day 
+                       3.489672                        7.023508 
+            High.Blood.Pressure              Low.Blood.Pressure 
+                     135.075659                       85.156111 </code></pre>
+</div>
+</div>
+<p>Veamos ahora la matriz de covariancia (a secas)</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>new_names <span class="ot">=</span> <span class="fu">substr</span>(<span class="fu">names</span>(datos[,<span class="fu">c</span>(<span class="dv">15</span><span class="sc">:</span><span class="dv">26</span>)]),<span class="dv">1</span>,<span class="dv">5</span>)</span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>datos_quant <span class="ot">&lt;-</span> datos[,<span class="fu">c</span>(<span class="dv">15</span><span class="sc">:</span><span class="dv">26</span>)]</span>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a><span class="fu">colnames</span>(datos_quant) <span class="ot">=</span> new_names</span>
+<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-5"><a href="#cb17-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-6"><a href="#cb17-6" aria-hidden="true" tabindex="-1"></a>n <span class="ot">=</span> <span class="fu">length</span>(datos<span class="sc">$</span>Patient.ID)</span>
+<span id="cb17-7"><a href="#cb17-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-8"><a href="#cb17-8" aria-hidden="true" tabindex="-1"></a><span class="fu">round</span>(<span class="fu">cov</span>(datos_quant)<span class="sc">*</span>(n<span class="dv">-1</span>)<span class="sc">/</span>n,<span class="dv">5</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>            Age      Chole     Heart    Exerc    Stres    Seden      BMI
+Age   451.49010  -15.64684  -1.67848  0.14816  1.11229  1.27268 -0.35068
+Chole -15.64684 6538.12323   0.52326 10.06226 -5.66171  5.30115  8.83496
+Heart  -1.67848    0.52326 422.29326  0.98362 -0.26717 -0.72882  0.68802
+Exerc   0.14816   10.06226   0.98362 33.44789 -0.15053  0.17552  0.13803
+Stres   1.11229   -5.66171  -0.26717 -0.15053  8.17650 -0.05349 -0.05873
+Seden   1.27268    5.30115  -0.72882  0.17552 -0.05349 12.01427 -0.00052
+BMI    -0.35068    8.83496   0.68802  0.13803 -0.05873 -0.00052 39.92750
+Trigl  16.23469  -98.66296  56.29298  2.22165 -2.50870 -4.48598 -8.43101
+Physi   0.06711    2.96336   0.03914  0.10198  0.04833 -0.04888  0.11698
+Sleep  -0.09230    0.71645   0.07401 -0.01432 -0.08077  0.03303 -0.12602
+High.   1.71889    0.28271   4.59256 -1.44850  1.34470  0.30984  0.71242
+Low.B  -3.06396    2.47221  -5.46259 -0.29442 -0.35439 -0.33604  0.07470
+            Trigl    Physi     Sleep     High.     Low.B
+Age      16.23469  0.06711  -0.09230   1.71889  -3.06396
+Chole   -98.66296  2.96336   0.71645   0.28271   2.47221
+Heart    56.29298  0.03914   0.07401   4.59256  -5.46259
+Exerc     2.22165  0.10198  -0.01432  -1.44850  -0.29442
+Stres    -2.50870  0.04833  -0.08077   1.34470  -0.35439
+Seden    -4.48598 -0.04888   0.03303   0.30984  -0.33604
+BMI      -8.43101  0.11698  -0.12602   0.71242   0.07470
+Trigl 50057.51570 -3.85898 -12.99720  30.18694   1.78920
+Physi    -3.85898  5.21007   0.06369  -0.45551   0.54583
+Sleep   -12.99720  0.06369   3.95357  -0.24245   0.31163
+High.    30.18694 -0.45551  -0.24245 694.24202   5.15719
+Low.B     1.78920  0.54583   0.31163   5.15719 215.37698</code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(psych)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: package 'psych' was built under R version 4.3.1</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>
+Attaching package: 'psych'</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>The following objects are masked from 'package:ggplot2':
+
+    %+%, alpha</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="fu">corPlot</span>(datos_quant, <span class="at">cex =</span> <span class="fl">0.8</span>,  <span class="at">main =</span> <span class="st">"Matriz de correlación"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="Entrega3_AD_files/figure-html/unnamed-chunk-9-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+</section>
+</section>
 
 </main>
 <!-- /main column -->
