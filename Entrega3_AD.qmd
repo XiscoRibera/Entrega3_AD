@@ -117,7 +117,7 @@ summary(datos)
 
 # Análisis multivariante exploratorio
 
-```{r, warning=FALSE}
+```{r, warning=FALSE, cache=TRUE}
 
 a = datos %>% 
   select(2,6,12,14,15,16,17) %>% 
