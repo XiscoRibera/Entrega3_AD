@@ -109,12 +109,6 @@ view(datos)
 summary(datos)
 ```
 
-# Objetivo del estudio
-
-1.  Estudiar algunos perfiles con riesgo de padecer un ataque al corazón
-2.  Comprobar si hay diferencias entre diferentes continentes respecto al mismo perfil de riesgo.
-3.  Poder predecir si un individuo tiene riesgo de sufrir un ataque al corazón.
-
 # Análisis multivariante exploratorio
 
 ```{r, warning=FALSE, cache=TRUE}
@@ -163,6 +157,115 @@ corPlot(datos_quant, cex = 0.8,  main = "Matriz de correlación")
 
 
 
+Separemos las variables en función de diferentes edades, ya que no hemos observado ningua correlación, ni ninguna dependencia. Nosotros suponemos que la edad sí que es un factor clave a la hora de ser un individuo de riesgo
+
+Vamos a dividir los individuos de
+
+```{r}
+datos_menores_30 <- datos %>% 
+  filter(Age < 30) %>%
+  select(15:26)
+colnames(datos_menores_30)=new_names
+corPlot(datos_menores_30, cex = 0.8,  main = "Matriz de correlación de individuos menores de 30 años")
+```
+
+
+```{r}
+datos_30_40 <- datos %>% 
+  filter(Age >= 30) %>% 
+  filter(Age < 40) %>%
+  select(15:26)
+colnames(datos_30_40)=new_names
+corPlot(datos_30_40, cex = 0.8,  main = "Matriz de correlación de individuos de entre 30 y 40 años")
+```
+
+
+```{r}
+datos_40_50 <- datos %>% 
+  filter(Age >= 40) %>% 
+  filter(Age < 50) %>%
+  select(15:26)
+colnames(datos_40_50)=new_names
+corPlot(datos_40_50, cex = 0.8,  main = "Matriz de correlación de individuos de entre 40 y 50 años")
+```
+
+
+```{r}
+datos_50_60 <- datos %>% 
+  filter(Age >= 50) %>% 
+  filter(Age < 60) %>%
+  select(15:26)
+colnames(datos_50_60)=new_names
+corPlot(datos_50_60, cex = 0.8,  main = "Matriz de correlación de individuos de entre 50 y 60 años")
+```
+
+
+```{r}
+datos_60_70 <- datos %>% 
+  filter(Age >= 60) %>% 
+  filter(Age < 70) %>%
+  select(15:26)
+colnames(datos_60_70)=new_names
+corPlot(datos_60_70, cex = 0.8,  main = "Matriz de correlación de individuos de entre 60 y 70 años")
+```
+
+
+```{r}
+datos_70_80 <- datos %>% 
+  filter(Age >= 70) %>% 
+  filter(Age < 80) %>%
+  select(15:26)
+colnames(datos_70_80)=new_names
+corPlot(datos_70_80, cex = 0.8,  main = "Matriz de correlación de individuos de entre 70 y 80 años")
+```
+
+
+```{r}
+datos_80_90 <- datos %>% 
+  filter(Age >= 80) %>% 
+  filter(Age <= 90) %>%
+  select(15:26)
+colnames(datos_80_90)=new_names
+corPlot(datos_80_90, cex = 0.8,  main = "Matriz de correlación de individuos de entre 80 y 90 años")
+```
+
+
+```{r, eval=FALSE}
+datos_adultos <- datos %>% 
+  filter(Age >= 30) %>% 
+  filter(Age <= 60) %>%
+  select(15:26)
+colnames(datos_adultos)=new_names
+corPlot(datos_adultos, cex = 0.8,  main = "Matriz de correlación de individuos de entre 30 y 60 años")
+```
+
+Notemos que no hay mucha diferencia entre la edad de los individuos.
+
+```{r}
+#prop.table(table(datos_30_40$Heart.Attack.Risk))
+
+```
+
+
+Veamos si hay diferencias entre los continentes en los que habitan:
+
+
+```{r, eval=FALSE}
+table(datos$Continent)
+datos_Africa <- datos %>% 
+  filter(Continent == "Africa") %>%
+  select(15:26)
+colnames(datos_70_80)=new_names
+corPlot(datos_70_80, cex = 0.8,  main = "Matriz de correlación de individuos de entre 70 y 80 años")
+```
+
+
+
+# Objetivo del estudio
+
+1.  Estudiar algunos perfiles con riesgo de padecer un ataque al corazón
+2.  Comprobar si hay diferencias entre diferentes continentes respecto al mismo perfil de riesgo.
+3.  Poder predecir si un individuo tiene riesgo de sufrir un ataque al corazón.
 
 
 
