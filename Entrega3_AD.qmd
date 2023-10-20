@@ -5,29 +5,56 @@ editor: visual
 author: Irene LiFeng Julià Pérez y Xisco Ribera Ramis
 ---
 
-Cargamos la librería
+
+# Presentación del problema
+
+Vamos a tratar una base de datos relacionados con la predicción de riesgo de ataque cardíaco. Este hecho es un problema que afecta a un gran porcentaje de la población mundial y es de interés poder predecir esta dolencia.
+
+
+Nuestro objetivo para este estudio sería:
+1.  Estudiar algunos perfiles con riesgo de padecer un ataque al corazón
+2.  Comprobar si hay diferencias entre diferentes continentes respecto al mismo perfil de riesgo.
+3.  Poder predecir si un individuo tiene riesgo de sufrir un ataque al corazón.
+
+
+Los datos provienen de la página web Kaggle:
+[Kaggle - Heart Attack Prediction](https://www.kaggle.com/datasets/iamsouravbanerjee/heart-attack-prediction-dataset).
+
+El dataset consta de 8763 muestras, donde cada una representa una serie de características de un paciente. A cada paciente se le atribuyen 26 valores, uno de ellos es su ID, y el resto son variables relacionadas con la salud cardíaca, tanto geográficas como de hábitos personales.
+
+Antes de explicar cada variable, modifiquemos la tabla de datos para tenerla limpia en formato tidy.
+
+Cargamos la librerías que utilizaremos
 
 ```{r, warning=FALSE, message=FALSE}
 library(tidyverse)
 library(dplyr)
+library(GGally)
+library(psych)
+library(skimr)
 ```
 
 # Convertir los datos en tidy
 
-Cargamos la tabla de datos
+Cargamos la tabla de datos y la convertimos a tibble para facilitarnos la manipulación.
 
 ```{r, warning=FALSE}
 datos = read.csv("heart_attack_prediction_dataset.csv", header = T)
 datos = datos %>% as.tibble
-str(datos)
 ```
 
-Vamos a modificar el data set para que sea más cómodo a la hora de trabajar con él:
+Vamos a modificar el data set para que sea más cómodo a la hora de trabajar con él.
+Empezamos por cambiar el ID del paciente por una enumeración básica.
 
 ```{r}
 datos = datos %>% 
   mutate(Patient.ID = c(1:8763))
+```
 
+
+Transformamos las variables qualitativas en factor y, en las binarias (0: No, 1: Si) cambiamos los valores para que sea más ilustrativa y entendible:
+
+```{r}
 datos = datos %>% 
   mutate(Sex = Sex %>% as.factor)
 
@@ -66,7 +93,11 @@ datos = datos %>%
 
 datos = datos %>% 
   mutate(Heart.Attack.Risk = if_else(Heart.Attack.Risk == 0, "No", "Si") %>% as.factor)
+```
 
+El siguiente paso va a ser separar la variable qualitativa `Blood.Pressure` en dos nuevas variables, ésta vez cuantitativas, ya que la presión arterial está representada como un símbolo que equivale a la presión alta y la baja separadas por una barra:
+
+```{r}
 # vamos a convertir la columna blood.pressure en high y low
 datos <- datos %>%
   rowwise() %>%
@@ -75,16 +106,23 @@ datos <- datos %>%
     Low.Blood.Pressure = as.numeric(unlist(strsplit(Blood.Pressure, "/"))[2])
   ) %>%
   ungroup()
-
-datos <- datos[,c(-5,-18)]
-
-
-
-str(datos)
-
 ```
 
-Reordenamos las columnas
+La variable edad es conveniente tenerla estratificada en varios niveles ya que no vamos a poder sacar conclusiones si consideramos cada edad individualmente:
+
+
+
+
+
+
+
+Por último, vamos a eliminar las variables que consideramos que no van a ser concluyentes para el estudio, en este caso, eliminamos la variable `Income` (nivel de ingresos del paciente) y la variable que anteriormente separamos en dos:
+```{r}
+datos <- datos[,c(-5,-18)]
+```
+
+
+En este punto, tenemos la tabla de datos con la información que queremos estudiar, reordenemos las columnas para finalizar la conversión a `tidy data`:
 
 ```{r}
 
@@ -92,11 +130,50 @@ datos <- datos %>%
   relocate(where(is.factor)) %>% 
   relocate(Patient.ID)
 
-view(datos)
 # 1 id
 # 2-14 qual
 # 15-26 quant
 ```
+
+
+Veamos como se estructuran nuestros datos:
+
+```{r}
+str(datos)
+```
+
+
+# Variables
+
+
+```{r}
+skim(datos)
+```
+
+
+Vamos a crear una tabla con la información de cada variable:
+
+```{r}
+# Separamos los datos en variables cuantitativas y cualitativas
+datos_quant <- datos[,c(15:26)]
+datos_qual <- datos[,c(2:14)]
+
+# Cuantitativas
+
+Media = colMeans(datos_quant)
+
+rango <- function(x){
+  return(max(x)-min(x))
+}
+Rango = round(apply(datos_quant, FUN = rango, MARGIN = 2), 3)
+
+# algo aixi, pero mes ben fet:
+
+tabla = data.frame(Media, Rango)
+tabla
+
+```
+
 
 ::: center
 | qualitat                   |           Quantit           |
@@ -109,6 +186,8 @@ view(datos)
 summary(datos)
 ```
 
+
+
 # Análisis multivariante exploratorio
 
 ```{r, warning=FALSE, cache=TRUE}
@@ -119,12 +198,14 @@ a = datos %>%
 
 pairs(a, col = c("red", "blue", "green", "yellow", "purple", "orange")[as.integer(a$Continent)],pch=18)
 
-library(GGally)
+
 
 ggpairs(a)
 
 
 ```
+
+
 
 ## Estimación del vector de medias y la matriz de covarianza y correlación
 
@@ -139,7 +220,6 @@ apply(datos[,15:26], FUN = mean, MARGIN = 2)
 Veamos ahora la matriz de covariancia (a secas)
 ```{r}
 new_names = substr(names(datos[,c(15:26)]),1,5)
-datos_quant <- datos[,c(15:26)]
 colnames(datos_quant) = new_names
 
 
@@ -150,7 +230,7 @@ round(cov(datos_quant)*(n-1)/n,5)
 ```
 
 ```{r}
-library(psych)
+
 corPlot(datos_quant, cex = 0.8,  main = "Matriz de correlación")
 
 ```
@@ -260,12 +340,6 @@ corPlot(datos_70_80, cex = 0.8,  main = "Matriz de correlación de individuos de
 ```
 
 
-
-# Objetivo del estudio
-
-1.  Estudiar algunos perfiles con riesgo de padecer un ataque al corazón
-2.  Comprobar si hay diferencias entre diferentes continentes respecto al mismo perfil de riesgo.
-3.  Poder predecir si un individuo tiene riesgo de sufrir un ataque al corazón.
 
 
 
