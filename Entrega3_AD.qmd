@@ -95,7 +95,7 @@ datos = datos %>%
   mutate(Heart.Attack.Risk = if_else(Heart.Attack.Risk == 0, "No", "Si") %>% as.factor)
 ```
 
-El siguiente paso va a ser separar la variable qualitativa `Blood.Pressure` en dos nuevas variables, ésta vez cuantitativas, ya que la presión arterial está representada como un símbolo que equivale a la presión alta y la baja separadas por una barra:
+El siguiente paso va a ser separar la variable qualitativa Blood.Pressure en dos nuevas variables, ésta vez cuantitativas, ya que la presión arterial está representada como un símbolo que equivale a la presión alta y la baja separadas por una barra:
 
 ```{r}
 # vamos a convertir la columna blood.pressure en high y low
@@ -116,13 +116,13 @@ La variable edad es conveniente tenerla estratificada en varios niveles ya que n
 
 
 
-Por último, vamos a eliminar las variables que consideramos que no van a ser concluyentes para el estudio, en este caso, eliminamos la variable `Income` (nivel de ingresos del paciente) y la variable que anteriormente separamos en dos:
+Por último, vamos a eliminar las variables que consideramos que no van a ser concluyentes para el estudio, en este caso, eliminamos la variable Income (nivel de ingresos del paciente) y la variable que anteriormente separamos en dos:
 ```{r}
 datos <- datos[,c(-5,-18)]
 ```
 
 
-En este punto, tenemos la tabla de datos con la información que queremos estudiar, reordenemos las columnas para finalizar la conversión a `tidy data`:
+En este punto, tenemos la tabla de datos con la información que queremos estudiar, reordenemos las columnas para finalizar la conversión a tidy data:
 
 ```{r}
 
@@ -171,8 +171,8 @@ Rango = round(apply(datos_quant, FUN = rango, MARGIN = 2), 3)
 
 tabla = data.frame(Media, Rango)
 tabla
-
 ```
+
 
 
 ::: center
@@ -201,9 +201,9 @@ pairs(a, col = c("red", "blue", "green", "yellow", "purple", "orange")[as.intege
 
 
 ggpairs(a)
-
-
 ```
+
+
 
 
 
@@ -214,8 +214,8 @@ Calculemos el vector de medias. Para cada variable cuantitativa
 ```{r}
 
 apply(datos[,15:26], FUN = mean, MARGIN = 2)
-
 ```
+
 
 Veamos ahora la matriz de covariancia (a secas)
 ```{r}
@@ -226,20 +226,20 @@ colnames(datos_quant) = new_names
 n = length(datos$Patient.ID)
 
 round(cov(datos_quant)*(n-1)/n,5)
-
 ```
+
 
 ```{r}
 
 corPlot(datos_quant, cex = 0.8,  main = "Matriz de correlación")
-
 ```
 
 
 
-Separemos las variables en función de diferentes edades, ya que no hemos observado ningua correlación, ni ninguna dependencia. Nosotros suponemos que la edad sí que es un factor clave a la hora de ser un individuo de riesgo
 
-Vamos a dividir los individuos de
+Separemos las variables en función de diferentes edades, ya que no hemos observado ningua correlación, ni ninguna dependencia. Nosotros suponemos que la edad sí que es un factor clave a la hora de ser un individuo de riesgo.
+
+## Segregación por edades
 
 ```{r}
 datos_menores_30 <- datos %>% 
@@ -323,25 +323,205 @@ Notemos que no hay mucha diferencia entre la edad de los individuos.
 
 ```{r}
 #prop.table(table(datos_30_40$Heart.Attack.Risk))
-
 ```
 
+
+## Segregación por continentes
 
 Veamos si hay diferencias entre los continentes en los que habitan:
 
 
-```{r, eval=FALSE}
-table(datos$Continent)
+```{r}
 datos_Africa <- datos %>% 
   filter(Continent == "Africa") %>%
   select(15:26)
-colnames(datos_70_80)=new_names
-corPlot(datos_70_80, cex = 0.8,  main = "Matriz de correlación de individuos de entre 70 y 80 años")
+colnames(datos_Africa)=new_names
+corPlot(datos_Africa, cex = 0.8,  main = "Matriz de correlación de individuos de Àfrica")
+```
+
+```{r}
+datos_Asia <- datos %>% 
+  filter(Continent == "Asia") %>%
+  select(15:26)
+colnames(datos_Asia)=new_names
+corPlot(datos_Asia, cex = 0.8,  main = "Matriz de correlación de individuos de Asia")
+```
+
+```{r}
+datos_Australia <- datos %>% 
+  filter(Continent == "Australia") %>%
+  select(15:26)
+colnames(datos_Australia)=new_names
+corPlot(datos_Australia, cex = 0.8,  main = "Matriz de correlación de individuos de Australia")
+```
+
+```{r}
+datos_Europa <- datos %>% 
+  filter(Continent == "Europe") %>%
+  select(15:26)
+colnames(datos_Europa)=new_names
+corPlot(datos_Europa, cex = 0.8,  main = "Matriz de correlación de individuos de Europa")
+```
+
+```{r}
+datos_SAmerica <- datos %>% 
+  filter(Continent == "South America") %>%
+  select(15:26)
+colnames(datos_SAmerica)=new_names
+corPlot(datos_SAmerica, cex = 0.8,  main = "Matriz de correlación de individuos de Sud América")
 ```
 
 
+```{r}
+datos_NAmerica <- datos %>% 
+  filter(Continent == "North America") %>%
+  select(15:26)
+colnames(datos_NAmerica)=new_names
+corPlot(datos_NAmerica, cex = 0.8,  main = "Matriz de correlación de individuos de Norte América")
+```
 
 
+Tampoco observamos ninguna dependencia entre las variables cuantitativas.
+
+## Segregación por sexo de cada rango de edad
+
+```{r}
+datos_menores_30_M <- datos %>% 
+  filter(Age < 30) %>%
+  filter(Sex == "Male") %>% 
+  select(15:26)
+colnames(datos_menores_30_M)=new_names
+corPlot(datos_menores_30_M, cex = 0.8,  main = "Matriz de correlación de hombres menores de 30 años")
+
+datos_menores_30_F <- datos %>% 
+  filter(Age < 30) %>%
+  filter(Sex == "Female") %>% 
+  select(15:26)
+colnames(datos_menores_30_F)=new_names
+corPlot(datos_menores_30_F, cex = 0.8,  main = "Matriz de correlación de mujeres menores de 30 años")
+```
 
 
+```{r}
+datos_30_40_M <- datos %>% 
+  filter(Age >= 30) %>% 
+  filter(Age < 40) %>%
+  filter(Sex == "Male") %>% 
+  select(15:26)
+colnames(datos_30_40_M)=new_names
+corPlot(datos_30_40_M, cex = 0.8,  main = "Matriz de correlación de hombres de entre 30 y 40 años")
 
+datos_30_40_F <- datos %>% 
+  filter(Age >= 30) %>% 
+  filter(Age < 40) %>%
+  filter(Sex == "Female") %>% 
+  select(15:26)
+colnames(datos_30_40_F)=new_names
+corPlot(datos_30_40_F, cex = 0.8,  main = "Matriz de correlación de mujeres de entre 30 y 40 años")
+```
+
+
+```{r}
+datos_40_50_M <- datos %>% 
+  filter(Age >= 40) %>% 
+  filter(Age < 50) %>%
+  filter(Sex == "Male") %>%
+  select(15:26)
+colnames(datos_40_50_M)=new_names
+corPlot(datos_40_50_M, cex = 0.8,  main = "Matriz de correlación de hombres de entre 40 y 50 años")
+
+datos_40_50_F <- datos %>% 
+  filter(Age >= 40) %>% 
+  filter(Age < 50) %>%
+  filter(Sex == "Female") %>%
+  select(15:26)
+colnames(datos_40_50_F)=new_names
+corPlot(datos_40_50_F, cex = 0.8,  main = "Matriz de correlación de mujeres de entre 40 y 50 años")
+```
+
+
+```{r}
+datos_50_60_M <- datos %>% 
+  filter(Age >= 50) %>% 
+  filter(Age < 60) %>%
+  filter(Sex == "Male") %>% 
+  select(15:26)
+colnames(datos_50_60_M)=new_names
+corPlot(datos_50_60_M, cex = 0.8,  main = "Matriz de correlación de hombres de entre 50 y 60 años")
+
+
+datos_50_60_F <- datos %>% 
+  filter(Age >= 50) %>% 
+  filter(Age < 60) %>%
+  filter(Sex == "Female") %>% 
+  select(15:26)
+colnames(datos_50_60_F)=new_names
+corPlot(datos_50_60_F, cex = 0.8,  main = "Matriz de correlación de mujeres de entre 50 y 60 años")
+```
+
+
+```{r}
+datos_60_70_M <- datos %>% 
+  filter(Age >= 60) %>% 
+  filter(Age < 70) %>%
+  filter(Sex == "Male") %>% 
+  select(15:26)
+colnames(datos_60_70_M)=new_names
+corPlot(datos_60_70_M, cex = 0.8,  main = "Matriz de correlación de hombres de entre 60 y 70 años")
+
+datos_60_70_F <- datos %>% 
+  filter(Age >= 60) %>% 
+  filter(Age < 70) %>%
+  filter(Sex == "Female") %>% 
+  select(15:26)
+colnames(datos_60_70_F)=new_names
+corPlot(datos_60_70_F, cex = 0.8,  main = "Matriz de correlación de mujeres de entre 60 y 70 años")
+```
+
+
+```{r}
+datos_70_80_M <- datos %>% 
+  filter(Age >= 70) %>% 
+  filter(Age < 80) %>%
+  filter(Sex == "Male") %>% 
+  select(15:26)
+colnames(datos_70_80_M)=new_names
+corPlot(datos_70_80_M, cex = 0.8,  main = "Matriz de correlación de hombres de entre 70 y 80 años")
+
+datos_70_80_F <- datos %>% 
+  filter(Age >= 70) %>% 
+  filter(Age < 80) %>%
+  filter(Sex == "Female") %>% 
+  select(15:26)
+colnames(datos_70_80_F)=new_names
+corPlot(datos_70_80_F, cex = 0.8,  main = "Matriz de correlación de mujeres de entre 70 y 80 años")
+```
+
+
+```{r}
+datos_80_90_M <- datos %>% 
+  filter(Age >= 80) %>% 
+  filter(Age <= 90) %>%
+  filter(Sex == "Male") %>% 
+  select(15:26)
+colnames(datos_80_90_M)=new_names
+corPlot(datos_80_90_M, cex = 0.8,  main = "Matriz de correlación de hombres de entre 80 y 90 años")
+
+datos_80_90_F <- datos %>% 
+  filter(Age >= 80) %>% 
+  filter(Age <= 90) %>%
+  filter(Sex == "Female") %>% 
+  select(15:26)
+colnames(datos_80_90_F)=new_names
+corPlot(datos_80_90_F, cex = 0.8,  main = "Matriz de correlación de mujeres de entre 80 y 90 años")
+```
+
+
+```{r, eval=FALSE}
+datos_adultos <- datos %>% 
+  filter(Age >= 30) %>% 
+  filter(Age <= 60) %>%
+  select(15:26)
+colnames(datos_adultos)=new_names
+corPlot(datos_adultos, cex = 0.8,  main = "Matriz de correlación de individuos de entre 30 y 60 años")
+```
