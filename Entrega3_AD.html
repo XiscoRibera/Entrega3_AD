@@ -114,7 +114,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(dplyr)</span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(GGally)</span>
 <span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(psych)</span>
-<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(skimr)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(skimr)</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(fmsb)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
 <section id="convertir-los-datos-en-tidy" class="level1">
@@ -730,39 +731,22 @@ Low.Blood.Pressure               85.156111  50.000</code></pre>
 </section>
 <section id="análisis-multivariante-exploratorio" class="level1">
 <h1>Análisis multivariante exploratorio</h1>
-<div class="cell" data-hash="Entrega3_AD_cache/html/unnamed-chunk-12_96f7314875a9dda490973c810bfb31ff">
+<div class="cell" data-hash="Entrega3_AD_cache/html/unnamed-chunk-12_532ed1f36cafa7988e1671b09e9efc27">
 <div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>a <span class="ot">=</span> datos <span class="sc">%&gt;%</span> </span>
 <span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(<span class="dv">2</span>,<span class="dv">6</span>,<span class="dv">12</span>,<span class="dv">14</span>,<span class="dv">15</span>,<span class="dv">16</span>,<span class="dv">17</span>) <span class="sc">%&gt;%</span> </span>
 <span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>  na.omit</span>
 <span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a><span class="fu">pairs</span>(a, <span class="at">col =</span> <span class="fu">c</span>(<span class="st">"red"</span>, <span class="st">"blue"</span>, <span class="st">"green"</span>, <span class="st">"yellow"</span>, <span class="st">"purple"</span>, <span class="st">"orange"</span>)[<span class="fu">as.integer</span>(a<span class="sc">$</span>Continent)],<span class="at">pch=</span><span class="dv">18</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output-display">
-<p><img src="Entrega3_AD_files/figure-html/unnamed-chunk-12-1.png" class="img-fluid" width="672"></p>
-</div>
-<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggpairs</span>(a)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stderr">
-<pre><code>`stat_bin()` using `bins = 30`. Pick better value with `binwidth`.
-`stat_bin()` using `bins = 30`. Pick better value with `binwidth`.
-`stat_bin()` using `bins = 30`. Pick better value with `binwidth`.
-`stat_bin()` using `bins = 30`. Pick better value with `binwidth`.
-`stat_bin()` using `bins = 30`. Pick better value with `binwidth`.
-`stat_bin()` using `bins = 30`. Pick better value with `binwidth`.
-`stat_bin()` using `bins = 30`. Pick better value with `binwidth`.
-`stat_bin()` using `bins = 30`. Pick better value with `binwidth`.
-`stat_bin()` using `bins = 30`. Pick better value with `binwidth`.
-`stat_bin()` using `bins = 30`. Pick better value with `binwidth`.
-`stat_bin()` using `bins = 30`. Pick better value with `binwidth`.
-`stat_bin()` using `bins = 30`. Pick better value with `binwidth`.</code></pre>
-</div>
-<div class="cell-output-display">
-<p><img src="Entrega3_AD_files/figure-html/unnamed-chunk-12-2.png" class="img-fluid" width="672"></p>
-</div>
+<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a><span class="fu">pairs</span>(a, <span class="at">col =</span> <span class="fu">c</span>(<span class="st">"red"</span>, <span class="st">"blue"</span>, <span class="st">"green"</span>, <span class="st">"yellow"</span>, <span class="st">"purple"</span>, <span class="st">"orange"</span>)[<span class="fu">as.integer</span>(a<span class="sc">$</span>Continent)],<span class="at">pch=</span><span class="dv">18</span>)</span>
+<span id="cb15-6"><a href="#cb15-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-7"><a href="#cb15-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-8"><a href="#cb15-8" aria-hidden="true" tabindex="-1"></a><span class="fu">ggpairs</span>(a)</span>
+<span id="cb15-9"><a href="#cb15-9" aria-hidden="true" tabindex="-1"></a><span class="co"># ggpairs(datos_quant)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <section id="estimación-del-vector-de-medias-y-la-matriz-de-covarianza-y-correlación" class="level2">
 <h2 class="anchored" data-anchor-id="estimación-del-vector-de-medias-y-la-matriz-de-covarianza-y-correlación">Estimación del vector de medias y la matriz de covarianza y correlación</h2>
 <p>Calculemos el vector de medias. Para cada variable cuantitativa</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="fu">apply</span>(datos[,<span class="dv">15</span><span class="sc">:</span><span class="dv">26</span>], <span class="at">FUN =</span> mean, <span class="at">MARGIN =</span> <span class="dv">2</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="fu">apply</span>(datos[,<span class="dv">15</span><span class="sc">:</span><span class="dv">26</span>], <span class="at">FUN =</span> mean, <span class="at">MARGIN =</span> <span class="dv">2</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>                            Age                     Cholesterol 
                       53.707977                      259.877211 
@@ -780,13 +764,13 @@ Physical.Activity.Days.Per.Week             Sleep.Hours.Per.Day
 </div>
 <p>Veamos ahora la matriz de covariancia (a secas)</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a>new_names <span class="ot">=</span> <span class="fu">substr</span>(<span class="fu">names</span>(datos[,<span class="fu">c</span>(<span class="dv">15</span><span class="sc">:</span><span class="dv">26</span>)]),<span class="dv">1</span>,<span class="dv">5</span>)</span>
-<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a><span class="fu">colnames</span>(datos_quant) <span class="ot">=</span> new_names</span>
-<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb20-4"><a href="#cb20-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb20-5"><a href="#cb20-5" aria-hidden="true" tabindex="-1"></a>n <span class="ot">=</span> <span class="fu">length</span>(datos<span class="sc">$</span>Patient.ID)</span>
-<span id="cb20-6"><a href="#cb20-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb20-7"><a href="#cb20-7" aria-hidden="true" tabindex="-1"></a><span class="fu">round</span>(<span class="fu">cov</span>(datos_quant)<span class="sc">*</span>(n<span class="dv">-1</span>)<span class="sc">/</span>n,<span class="dv">5</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a>new_names <span class="ot">=</span> <span class="fu">substr</span>(<span class="fu">names</span>(datos[,<span class="fu">c</span>(<span class="dv">15</span><span class="sc">:</span><span class="dv">26</span>)]),<span class="dv">1</span>,<span class="dv">5</span>)</span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a><span class="fu">colnames</span>(datos_quant) <span class="ot">=</span> new_names</span>
+<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-5"><a href="#cb18-5" aria-hidden="true" tabindex="-1"></a>n <span class="ot">=</span> <span class="fu">length</span>(datos<span class="sc">$</span>Patient.ID)</span>
+<span id="cb18-6"><a href="#cb18-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-7"><a href="#cb18-7" aria-hidden="true" tabindex="-1"></a><span class="fu">round</span>(<span class="fu">cov</span>(datos_quant)<span class="sc">*</span>(n<span class="dv">-1</span>)<span class="sc">/</span>n,<span class="dv">5</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>            Age      Chole     Heart    Exerc    Stres    Seden      BMI
 Age   451.49010  -15.64684  -1.67848  0.14816  1.11229  1.27268 -0.35068
@@ -817,7 +801,7 @@ Low.B     1.78920  0.54583   0.31163   5.15719 215.37698</code></pre>
 </div>
 </div>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="fu">corPlot</span>(datos_quant, <span class="at">cex =</span> <span class="fl">0.8</span>,  <span class="at">main =</span> <span class="st">"Matriz de correlación"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="fu">corPlot</span>(datos_quant, <span class="at">cex =</span> <span class="fl">0.8</span>,  <span class="at">main =</span> <span class="st">"Matriz de correlación"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <p><img src="Entrega3_AD_files/figure-html/unnamed-chunk-15-1.png" class="img-fluid" width="672"></p>
 </div>
@@ -827,290 +811,334 @@ Low.B     1.78920  0.54583   0.31163   5.15719 215.37698</code></pre>
 <section id="segregación-por-edades" class="level2">
 <h2 class="anchored" data-anchor-id="segregación-por-edades">Segregación por edades</h2>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a>datos_menores_30 <span class="ot">&lt;-</span> datos <span class="sc">%&gt;%</span> </span>
-<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(Age <span class="sc">&lt;</span> <span class="dv">30</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(<span class="dv">15</span><span class="sc">:</span><span class="dv">26</span>)</span>
-<span id="cb23-4"><a href="#cb23-4" aria-hidden="true" tabindex="-1"></a><span class="fu">colnames</span>(datos_menores_30)<span class="ot">=</span>new_names</span>
-<span id="cb23-5"><a href="#cb23-5" aria-hidden="true" tabindex="-1"></a><span class="fu">corPlot</span>(datos_menores_30, <span class="at">cex =</span> <span class="fl">0.8</span>,  <span class="at">main =</span> <span class="st">"Matriz de correlación de individuos menores de 30 años"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output-display">
-<p><img src="Entrega3_AD_files/figure-html/unnamed-chunk-16-1.png" class="img-fluid" width="672"></p>
-</div>
+<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a>datos_menores_30 <span class="ot">&lt;-</span> datos <span class="sc">%&gt;%</span> </span>
+<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(Age <span class="sc">&lt;</span> <span class="dv">30</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(<span class="dv">15</span><span class="sc">:</span><span class="dv">26</span>)</span>
+<span id="cb21-4"><a href="#cb21-4" aria-hidden="true" tabindex="-1"></a><span class="fu">colnames</span>(datos_menores_30)<span class="ot">=</span>new_names</span>
+<span id="cb21-5"><a href="#cb21-5" aria-hidden="true" tabindex="-1"></a><span class="co"># corPlot(datos_menores_30, cex = 0.8,  main = "Matriz de correlación de individuos menores de 30 años")</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb24"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a>datos_30_40 <span class="ot">&lt;-</span> datos <span class="sc">%&gt;%</span> </span>
-<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(Age <span class="sc">&gt;=</span> <span class="dv">30</span>) <span class="sc">%&gt;%</span> </span>
-<span id="cb24-3"><a href="#cb24-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(Age <span class="sc">&lt;</span> <span class="dv">40</span>) <span class="sc">%&gt;%</span></span>
+<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a>datos_30_40 <span class="ot">&lt;-</span> datos <span class="sc">%&gt;%</span> </span>
+<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(Age <span class="sc">&gt;=</span> <span class="dv">30</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(Age <span class="sc">&lt;</span> <span class="dv">40</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb22-4"><a href="#cb22-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(<span class="dv">15</span><span class="sc">:</span><span class="dv">26</span>)</span>
+<span id="cb22-5"><a href="#cb22-5" aria-hidden="true" tabindex="-1"></a><span class="fu">colnames</span>(datos_30_40)<span class="ot">=</span>new_names</span>
+<span id="cb22-6"><a href="#cb22-6" aria-hidden="true" tabindex="-1"></a><span class="fu">corPlot</span>(datos_30_40, <span class="at">cex =</span> <span class="fl">0.8</span>,  <span class="at">main =</span> <span class="st">"Matriz de correlación de individuos de entre 30 y 40 años"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a>datos_40_50 <span class="ot">&lt;-</span> datos <span class="sc">%&gt;%</span> </span>
+<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(Age <span class="sc">&gt;=</span> <span class="dv">40</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(Age <span class="sc">&lt;</span> <span class="dv">50</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb23-4"><a href="#cb23-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(<span class="dv">15</span><span class="sc">:</span><span class="dv">26</span>)</span>
+<span id="cb23-5"><a href="#cb23-5" aria-hidden="true" tabindex="-1"></a><span class="fu">colnames</span>(datos_40_50)<span class="ot">=</span>new_names</span>
+<span id="cb23-6"><a href="#cb23-6" aria-hidden="true" tabindex="-1"></a><span class="fu">corPlot</span>(datos_40_50, <span class="at">cex =</span> <span class="fl">0.8</span>,  <span class="at">main =</span> <span class="st">"Matriz de correlación de individuos de entre 40 y 50 años"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb24"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a>datos_50_60 <span class="ot">&lt;-</span> datos <span class="sc">%&gt;%</span> </span>
+<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(Age <span class="sc">&gt;=</span> <span class="dv">50</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb24-3"><a href="#cb24-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(Age <span class="sc">&lt;</span> <span class="dv">60</span>) <span class="sc">%&gt;%</span></span>
 <span id="cb24-4"><a href="#cb24-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(<span class="dv">15</span><span class="sc">:</span><span class="dv">26</span>)</span>
-<span id="cb24-5"><a href="#cb24-5" aria-hidden="true" tabindex="-1"></a><span class="fu">colnames</span>(datos_30_40)<span class="ot">=</span>new_names</span>
-<span id="cb24-6"><a href="#cb24-6" aria-hidden="true" tabindex="-1"></a><span class="fu">corPlot</span>(datos_30_40, <span class="at">cex =</span> <span class="fl">0.8</span>,  <span class="at">main =</span> <span class="st">"Matriz de correlación de individuos de entre 30 y 40 años"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output-display">
-<p><img src="Entrega3_AD_files/figure-html/unnamed-chunk-17-1.png" class="img-fluid" width="672"></p>
-</div>
+<span id="cb24-5"><a href="#cb24-5" aria-hidden="true" tabindex="-1"></a><span class="fu">colnames</span>(datos_50_60)<span class="ot">=</span>new_names</span>
+<span id="cb24-6"><a href="#cb24-6" aria-hidden="true" tabindex="-1"></a><span class="fu">corPlot</span>(datos_50_60, <span class="at">cex =</span> <span class="fl">0.8</span>,  <span class="at">main =</span> <span class="st">"Matriz de correlación de individuos de entre 50 y 60 años"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb25"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a>datos_40_50 <span class="ot">&lt;-</span> datos <span class="sc">%&gt;%</span> </span>
-<span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(Age <span class="sc">&gt;=</span> <span class="dv">40</span>) <span class="sc">%&gt;%</span> </span>
-<span id="cb25-3"><a href="#cb25-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(Age <span class="sc">&lt;</span> <span class="dv">50</span>) <span class="sc">%&gt;%</span></span>
+<div class="sourceCode cell-code" id="cb25"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a>datos_60_70 <span class="ot">&lt;-</span> datos <span class="sc">%&gt;%</span> </span>
+<span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(Age <span class="sc">&gt;=</span> <span class="dv">60</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb25-3"><a href="#cb25-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(Age <span class="sc">&lt;</span> <span class="dv">70</span>) <span class="sc">%&gt;%</span></span>
 <span id="cb25-4"><a href="#cb25-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(<span class="dv">15</span><span class="sc">:</span><span class="dv">26</span>)</span>
-<span id="cb25-5"><a href="#cb25-5" aria-hidden="true" tabindex="-1"></a><span class="fu">colnames</span>(datos_40_50)<span class="ot">=</span>new_names</span>
-<span id="cb25-6"><a href="#cb25-6" aria-hidden="true" tabindex="-1"></a><span class="fu">corPlot</span>(datos_40_50, <span class="at">cex =</span> <span class="fl">0.8</span>,  <span class="at">main =</span> <span class="st">"Matriz de correlación de individuos de entre 40 y 50 años"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output-display">
-<p><img src="Entrega3_AD_files/figure-html/unnamed-chunk-18-1.png" class="img-fluid" width="672"></p>
-</div>
+<span id="cb25-5"><a href="#cb25-5" aria-hidden="true" tabindex="-1"></a><span class="fu">colnames</span>(datos_60_70)<span class="ot">=</span>new_names</span>
+<span id="cb25-6"><a href="#cb25-6" aria-hidden="true" tabindex="-1"></a><span class="fu">corPlot</span>(datos_60_70, <span class="at">cex =</span> <span class="fl">0.8</span>,  <span class="at">main =</span> <span class="st">"Matriz de correlación de individuos de entre 60 y 70 años"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb26"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a>datos_50_60 <span class="ot">&lt;-</span> datos <span class="sc">%&gt;%</span> </span>
-<span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(Age <span class="sc">&gt;=</span> <span class="dv">50</span>) <span class="sc">%&gt;%</span> </span>
-<span id="cb26-3"><a href="#cb26-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(Age <span class="sc">&lt;</span> <span class="dv">60</span>) <span class="sc">%&gt;%</span></span>
+<div class="sourceCode cell-code" id="cb26"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a>datos_70_80 <span class="ot">&lt;-</span> datos <span class="sc">%&gt;%</span> </span>
+<span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(Age <span class="sc">&gt;=</span> <span class="dv">70</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb26-3"><a href="#cb26-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(Age <span class="sc">&lt;</span> <span class="dv">80</span>) <span class="sc">%&gt;%</span></span>
 <span id="cb26-4"><a href="#cb26-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(<span class="dv">15</span><span class="sc">:</span><span class="dv">26</span>)</span>
-<span id="cb26-5"><a href="#cb26-5" aria-hidden="true" tabindex="-1"></a><span class="fu">colnames</span>(datos_50_60)<span class="ot">=</span>new_names</span>
-<span id="cb26-6"><a href="#cb26-6" aria-hidden="true" tabindex="-1"></a><span class="fu">corPlot</span>(datos_50_60, <span class="at">cex =</span> <span class="fl">0.8</span>,  <span class="at">main =</span> <span class="st">"Matriz de correlación de individuos de entre 50 y 60 años"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output-display">
-<p><img src="Entrega3_AD_files/figure-html/unnamed-chunk-19-1.png" class="img-fluid" width="672"></p>
-</div>
+<span id="cb26-5"><a href="#cb26-5" aria-hidden="true" tabindex="-1"></a><span class="fu">colnames</span>(datos_70_80)<span class="ot">=</span>new_names</span>
+<span id="cb26-6"><a href="#cb26-6" aria-hidden="true" tabindex="-1"></a><span class="fu">corPlot</span>(datos_70_80, <span class="at">cex =</span> <span class="fl">0.8</span>,  <span class="at">main =</span> <span class="st">"Matriz de correlación de individuos de entre 70 y 80 años"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb27"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a>datos_60_70 <span class="ot">&lt;-</span> datos <span class="sc">%&gt;%</span> </span>
-<span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(Age <span class="sc">&gt;=</span> <span class="dv">60</span>) <span class="sc">%&gt;%</span> </span>
-<span id="cb27-3"><a href="#cb27-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(Age <span class="sc">&lt;</span> <span class="dv">70</span>) <span class="sc">%&gt;%</span></span>
+<div class="sourceCode cell-code" id="cb27"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a>datos_80_90 <span class="ot">&lt;-</span> datos <span class="sc">%&gt;%</span> </span>
+<span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(Age <span class="sc">&gt;=</span> <span class="dv">80</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb27-3"><a href="#cb27-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(Age <span class="sc">&lt;=</span> <span class="dv">90</span>) <span class="sc">%&gt;%</span></span>
 <span id="cb27-4"><a href="#cb27-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(<span class="dv">15</span><span class="sc">:</span><span class="dv">26</span>)</span>
-<span id="cb27-5"><a href="#cb27-5" aria-hidden="true" tabindex="-1"></a><span class="fu">colnames</span>(datos_60_70)<span class="ot">=</span>new_names</span>
-<span id="cb27-6"><a href="#cb27-6" aria-hidden="true" tabindex="-1"></a><span class="fu">corPlot</span>(datos_60_70, <span class="at">cex =</span> <span class="fl">0.8</span>,  <span class="at">main =</span> <span class="st">"Matriz de correlación de individuos de entre 60 y 70 años"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output-display">
-<p><img src="Entrega3_AD_files/figure-html/unnamed-chunk-20-1.png" class="img-fluid" width="672"></p>
-</div>
+<span id="cb27-5"><a href="#cb27-5" aria-hidden="true" tabindex="-1"></a><span class="fu">colnames</span>(datos_80_90)<span class="ot">=</span>new_names</span>
+<span id="cb27-6"><a href="#cb27-6" aria-hidden="true" tabindex="-1"></a><span class="fu">corPlot</span>(datos_80_90, <span class="at">cex =</span> <span class="fl">0.8</span>,  <span class="at">main =</span> <span class="st">"Matriz de correlación de individuos de entre 80 y 90 años"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb28"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a>datos_70_80 <span class="ot">&lt;-</span> datos <span class="sc">%&gt;%</span> </span>
-<span id="cb28-2"><a href="#cb28-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(Age <span class="sc">&gt;=</span> <span class="dv">70</span>) <span class="sc">%&gt;%</span> </span>
-<span id="cb28-3"><a href="#cb28-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(Age <span class="sc">&lt;</span> <span class="dv">80</span>) <span class="sc">%&gt;%</span></span>
+<div class="sourceCode cell-code" id="cb28"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a>datos_adultos <span class="ot">&lt;-</span> datos <span class="sc">%&gt;%</span> </span>
+<span id="cb28-2"><a href="#cb28-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(Age <span class="sc">&gt;=</span> <span class="dv">30</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb28-3"><a href="#cb28-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(Age <span class="sc">&lt;=</span> <span class="dv">60</span>) <span class="sc">%&gt;%</span></span>
 <span id="cb28-4"><a href="#cb28-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(<span class="dv">15</span><span class="sc">:</span><span class="dv">26</span>)</span>
-<span id="cb28-5"><a href="#cb28-5" aria-hidden="true" tabindex="-1"></a><span class="fu">colnames</span>(datos_70_80)<span class="ot">=</span>new_names</span>
-<span id="cb28-6"><a href="#cb28-6" aria-hidden="true" tabindex="-1"></a><span class="fu">corPlot</span>(datos_70_80, <span class="at">cex =</span> <span class="fl">0.8</span>,  <span class="at">main =</span> <span class="st">"Matriz de correlación de individuos de entre 70 y 80 años"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output-display">
-<p><img src="Entrega3_AD_files/figure-html/unnamed-chunk-21-1.png" class="img-fluid" width="672"></p>
-</div>
-</div>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb29"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a>datos_80_90 <span class="ot">&lt;-</span> datos <span class="sc">%&gt;%</span> </span>
-<span id="cb29-2"><a href="#cb29-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(Age <span class="sc">&gt;=</span> <span class="dv">80</span>) <span class="sc">%&gt;%</span> </span>
-<span id="cb29-3"><a href="#cb29-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(Age <span class="sc">&lt;=</span> <span class="dv">90</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb29-4"><a href="#cb29-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(<span class="dv">15</span><span class="sc">:</span><span class="dv">26</span>)</span>
-<span id="cb29-5"><a href="#cb29-5" aria-hidden="true" tabindex="-1"></a><span class="fu">colnames</span>(datos_80_90)<span class="ot">=</span>new_names</span>
-<span id="cb29-6"><a href="#cb29-6" aria-hidden="true" tabindex="-1"></a><span class="fu">corPlot</span>(datos_80_90, <span class="at">cex =</span> <span class="fl">0.8</span>,  <span class="at">main =</span> <span class="st">"Matriz de correlación de individuos de entre 80 y 90 años"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output-display">
-<p><img src="Entrega3_AD_files/figure-html/unnamed-chunk-22-1.png" class="img-fluid" width="672"></p>
-</div>
-</div>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb30"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a>datos_adultos <span class="ot">&lt;-</span> datos <span class="sc">%&gt;%</span> </span>
-<span id="cb30-2"><a href="#cb30-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(Age <span class="sc">&gt;=</span> <span class="dv">30</span>) <span class="sc">%&gt;%</span> </span>
-<span id="cb30-3"><a href="#cb30-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(Age <span class="sc">&lt;=</span> <span class="dv">60</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb30-4"><a href="#cb30-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(<span class="dv">15</span><span class="sc">:</span><span class="dv">26</span>)</span>
-<span id="cb30-5"><a href="#cb30-5" aria-hidden="true" tabindex="-1"></a><span class="fu">colnames</span>(datos_adultos)<span class="ot">=</span>new_names</span>
-<span id="cb30-6"><a href="#cb30-6" aria-hidden="true" tabindex="-1"></a><span class="fu">corPlot</span>(datos_adultos, <span class="at">cex =</span> <span class="fl">0.8</span>,  <span class="at">main =</span> <span class="st">"Matriz de correlación de individuos de entre 30 y 60 años"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb28-5"><a href="#cb28-5" aria-hidden="true" tabindex="-1"></a><span class="fu">colnames</span>(datos_adultos)<span class="ot">=</span>new_names</span>
+<span id="cb28-6"><a href="#cb28-6" aria-hidden="true" tabindex="-1"></a><span class="fu">corPlot</span>(datos_adultos, <span class="at">cex =</span> <span class="fl">0.8</span>,  <span class="at">main =</span> <span class="st">"Matriz de correlación de individuos de entre 30 y 60 años"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>Notemos que no hay mucha diferencia entre la edad de los individuos.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb31"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a><span class="co">#prop.table(table(datos_30_40$Heart.Attack.Risk))</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb29"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a><span class="co">#lims=c(18,30,50,70,Inf)</span></span>
+<span id="cb29-2"><a href="#cb29-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb29-3"><a href="#cb29-3" aria-hidden="true" tabindex="-1"></a><span class="co">#Etiquetas = c("Joven", "Adulto30-50","Adulto50-70","Mayor")</span></span>
+<span id="cb29-4"><a href="#cb29-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb29-5"><a href="#cb29-5" aria-hidden="true" tabindex="-1"></a><span class="co">#datos$Age = cut(datos$Age, breaks = lims, labels = Etiquetas, right = FALSE)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb30"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> datos, <span class="fu">aes</span>(<span class="at">x =</span> Heart.Attack.Risk, <span class="at">y =</span> Age)) <span class="sc">+</span></span>
+<span id="cb30-2"><a href="#cb30-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_boxplot</span>(<span class="fu">aes</span>(<span class="at">color =</span> Heart.Attack.Risk), <span class="at">width =</span> <span class="fl">0.3</span>, </span>
+<span id="cb30-3"><a href="#cb30-3" aria-hidden="true" tabindex="-1"></a>               <span class="at">show.legend =</span> <span class="cn">FALSE</span>) <span class="sc">+</span> </span>
+<span id="cb30-4"><a href="#cb30-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_jitter</span>(<span class="fu">aes</span>(<span class="at">color =</span> Heart.Attack.Risk), <span class="at">alpha =</span> <span class="fl">0.5</span>, </span>
+<span id="cb30-5"><a href="#cb30-5" aria-hidden="true" tabindex="-1"></a>              <span class="at">show.legend =</span> <span class="cn">FALSE</span>, </span>
+<span id="cb30-6"><a href="#cb30-6" aria-hidden="true" tabindex="-1"></a>              <span class="at">position =</span> <span class="fu">position_jitter</span>(<span class="at">width =</span> <span class="fl">0.2</span>, <span class="at">seed =</span> <span class="dv">0</span>)) <span class="sc">+</span></span>
+<span id="cb30-7"><a href="#cb30-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_color_manual</span>(<span class="at">values =</span> <span class="fu">c</span>(<span class="st">"darkorange"</span>,<span class="st">"purple"</span>)) <span class="sc">+</span></span>
+<span id="cb30-8"><a href="#cb30-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">y =</span> <span class="st">"Edades"</span>, <span class="at">x =</span> <span class="st">"Riesgo ataque al corazón"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="Entrega3_AD_files/figure-html/unnamed-chunk-25-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb31"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a>datos_riesgo <span class="ot">&lt;-</span> datos <span class="sc">%&gt;%</span> </span>
+<span id="cb31-2"><a href="#cb31-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(Heart.Attack.Risk <span class="sc">==</span> <span class="st">"Si"</span>)</span>
+<span id="cb31-3"><a href="#cb31-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb31-4"><a href="#cb31-4" aria-hidden="true" tabindex="-1"></a><span class="co">#ggplot(datos_riesgo, aes(x=Age, colour="purple"))+</span></span>
+<span id="cb31-5"><a href="#cb31-5" aria-hidden="true" tabindex="-1"></a>  <span class="co">#geom_density()</span></span>
+<span id="cb31-6"><a href="#cb31-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb31-7"><a href="#cb31-7" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(datos, <span class="fu">aes</span>(<span class="at">x=</span>Heart.Attack.Risk, <span class="at">y=</span>Age, <span class="at">fill =</span> Heart.Attack.Risk))<span class="sc">+</span></span>
+<span id="cb31-8"><a href="#cb31-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_violin</span>(<span class="at">trim =</span> <span class="cn">FALSE</span>)<span class="sc">+</span></span>
+<span id="cb31-9"><a href="#cb31-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_boxplot</span>(<span class="at">width =</span> <span class="fl">0.07</span>)<span class="sc">+</span></span>
+<span id="cb31-10"><a href="#cb31-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_fill_brewer</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="Entrega3_AD_files/figure-html/unnamed-chunk-26-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb32"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 2 RADARS</span></span>
+<span id="cb32-2"><a href="#cb32-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb32-3"><a href="#cb32-3" aria-hidden="true" tabindex="-1"></a>datos_quant_riesgo <span class="ot">&lt;-</span> datos <span class="sc">%&gt;%</span> </span>
+<span id="cb32-4"><a href="#cb32-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(Heart.Attack.Risk <span class="sc">==</span> <span class="st">"Si"</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb32-5"><a href="#cb32-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(<span class="fu">where</span>(is.numeric)) <span class="sc">%&gt;%</span> </span>
+<span id="cb32-6"><a href="#cb32-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(<span class="sc">-</span><span class="dv">1</span>)</span>
+<span id="cb32-7"><a href="#cb32-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb32-8"><a href="#cb32-8" aria-hidden="true" tabindex="-1"></a>datos_quant_no_riesgo <span class="ot">&lt;-</span> datos <span class="sc">%&gt;%</span> </span>
+<span id="cb32-9"><a href="#cb32-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(Heart.Attack.Risk <span class="sc">==</span> <span class="st">"No"</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb32-10"><a href="#cb32-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(<span class="fu">where</span>(is.numeric)) <span class="sc">%&gt;%</span> </span>
+<span id="cb32-11"><a href="#cb32-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(<span class="sc">-</span><span class="dv">1</span>)</span>
+<span id="cb32-12"><a href="#cb32-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb32-13"><a href="#cb32-13" aria-hidden="true" tabindex="-1"></a>mitjanes1 <span class="ot">=</span> <span class="fu">colMeans</span>(datos_quant_riesgo)</span>
+<span id="cb32-14"><a href="#cb32-14" aria-hidden="true" tabindex="-1"></a>mitjanes1</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>                            Age                     Cholesterol 
+                      53.890092                      261.970373 
+                     Heart.Rate         Exercise.Hours.Per.Week 
+                      74.904747                       10.100466 
+                   Stress.Level         Sedentary.Hours.Per.Day 
+                       5.453966                        5.967648 
+                            BMI                   Triglycerides 
+                      28.891617                      420.812998 
+Physical.Activity.Days.Per.Week             Sleep.Hours.Per.Day 
+                       3.474355                        6.974196 
+            High.Blood.Pressure              Low.Blood.Pressure 
+                     135.731125                       85.008601 </code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb34"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a>mitjanes2 <span class="ot">=</span> <span class="fu">colMeans</span>(datos_quant_no_riesgo)</span>
+<span id="cb34-2"><a href="#cb34-2" aria-hidden="true" tabindex="-1"></a>mitjanes2</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>                            Age                     Cholesterol 
+                      53.606330                      258.708926 
+                     Heart.Rate         Exercise.Hours.Per.Week 
+                      75.086949                        9.966182 
+                   Stress.Level         Sedentary.Hours.Per.Day 
+                       5.478485                        6.008225 
+                            BMI                   Triglycerides 
+                      28.891350                      415.926743 
+Physical.Activity.Days.Per.Week             Sleep.Hours.Per.Day 
+                       3.498222                        7.051031 
+            High.Blood.Pressure              Low.Blood.Pressure 
+                     134.709815                       85.238442 </code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb36"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true" tabindex="-1"></a>minims<span class="ot">=</span><span class="fu">rep</span>(<span class="dv">0</span>,<span class="fu">length</span>(mitjanes1))</span>
+<span id="cb36-2"><a href="#cb36-2" aria-hidden="true" tabindex="-1"></a>maxims <span class="ot">=</span> <span class="fu">pmax</span>(mitjanes1,mitjanes2)</span>
+<span id="cb36-3"><a href="#cb36-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb36-4"><a href="#cb36-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb36-5"><a href="#cb36-5" aria-hidden="true" tabindex="-1"></a>radar1 <span class="ot">=</span> <span class="fu">data.frame</span>(<span class="fu">rbind</span>(<span class="fu">round</span>(maxims,<span class="dv">2</span>), minims, mitjanes1))</span>
+<span id="cb36-6"><a href="#cb36-6" aria-hidden="true" tabindex="-1"></a>radar2 <span class="ot">=</span> <span class="fu">data.frame</span>(<span class="fu">rbind</span>(<span class="fu">round</span>(maxims,<span class="dv">2</span>), minims, mitjanes2))</span>
+<span id="cb36-7"><a href="#cb36-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb36-8"><a href="#cb36-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb36-9"><a href="#cb36-9" aria-hidden="true" tabindex="-1"></a><span class="fu">radarchart</span>(radar1, <span class="at">axistype =</span> <span class="dv">2</span>,</span>
+<span id="cb36-10"><a href="#cb36-10" aria-hidden="true" tabindex="-1"></a>           <span class="at">pcol =</span> <span class="fu">rgb</span>(<span class="fl">0.09</span>,<span class="fl">0.45</span>,<span class="fl">0.8</span>,<span class="fl">0.75</span>), </span>
+<span id="cb36-11"><a href="#cb36-11" aria-hidden="true" tabindex="-1"></a>           <span class="at">pfcol =</span> <span class="fu">rgb</span>(<span class="fl">0.09</span>,<span class="fl">0.45</span>,<span class="fl">0.8</span>,<span class="fl">0.5</span>), </span>
+<span id="cb36-12"><a href="#cb36-12" aria-hidden="true" tabindex="-1"></a>           <span class="at">plwd=</span> <span class="dv">4</span>, </span>
+<span id="cb36-13"><a href="#cb36-13" aria-hidden="true" tabindex="-1"></a>           <span class="at">cglcol =</span> <span class="st">"grey"</span>, </span>
+<span id="cb36-14"><a href="#cb36-14" aria-hidden="true" tabindex="-1"></a>           <span class="at">cglty =</span> <span class="dv">1</span>, </span>
+<span id="cb36-15"><a href="#cb36-15" aria-hidden="true" tabindex="-1"></a>           <span class="at">axislabcol =</span> <span class="st">"grey"</span>, </span>
+<span id="cb36-16"><a href="#cb36-16" aria-hidden="true" tabindex="-1"></a>           <span class="at">cglwd =</span> <span class="fl">0.5</span>, </span>
+<span id="cb36-17"><a href="#cb36-17" aria-hidden="true" tabindex="-1"></a>           <span class="at">vlcex =</span> <span class="fl">0.4</span>, </span>
+<span id="cb36-18"><a href="#cb36-18" aria-hidden="true" tabindex="-1"></a>           <span class="at">title =</span> <span class="st">"Riesgo"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="Entrega3_AD_files/figure-html/unnamed-chunk-27-1.png" class="img-fluid" width="672"></p>
+</div>
+<div class="sourceCode cell-code" id="cb37"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb37-1"><a href="#cb37-1" aria-hidden="true" tabindex="-1"></a><span class="fu">radarchart</span>(radar2, <span class="at">axistype =</span> <span class="dv">2</span>,</span>
+<span id="cb37-2"><a href="#cb37-2" aria-hidden="true" tabindex="-1"></a>           <span class="at">pcol =</span> <span class="fu">rgb</span>(<span class="fl">0.55</span>,<span class="fl">0.54</span>,<span class="fl">0.54</span>,<span class="fl">0.75</span>), </span>
+<span id="cb37-3"><a href="#cb37-3" aria-hidden="true" tabindex="-1"></a>           <span class="at">pfcol =</span> <span class="fu">rgb</span>(<span class="fl">0.55</span>,<span class="fl">0.54</span>,<span class="fl">0.54</span>,<span class="fl">0.5</span>), </span>
+<span id="cb37-4"><a href="#cb37-4" aria-hidden="true" tabindex="-1"></a>           <span class="at">plwd=</span> <span class="dv">4</span>, </span>
+<span id="cb37-5"><a href="#cb37-5" aria-hidden="true" tabindex="-1"></a>           <span class="at">cglcol =</span> <span class="st">"grey"</span>, </span>
+<span id="cb37-6"><a href="#cb37-6" aria-hidden="true" tabindex="-1"></a>           <span class="at">cglty =</span> <span class="fl">0.9</span>, </span>
+<span id="cb37-7"><a href="#cb37-7" aria-hidden="true" tabindex="-1"></a>           <span class="at">axislabcol =</span> <span class="st">"grey"</span>, </span>
+<span id="cb37-8"><a href="#cb37-8" aria-hidden="true" tabindex="-1"></a>           <span class="at">cglwd =</span> <span class="dv">1</span>, </span>
+<span id="cb37-9"><a href="#cb37-9" aria-hidden="true" tabindex="-1"></a>           <span class="at">vlcex =</span> <span class="fl">0.8</span>, </span>
+<span id="cb37-10"><a href="#cb37-10" aria-hidden="true" tabindex="-1"></a>           <span class="at">title =</span> <span class="st">"NO Riesgo"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="Entrega3_AD_files/figure-html/unnamed-chunk-27-2.png" class="img-fluid" width="672"></p>
+</div>
 </div>
 </section>
 <section id="segregación-por-continentes" class="level2">
 <h2 class="anchored" data-anchor-id="segregación-por-continentes">Segregación por continentes</h2>
 <p>Veamos si hay diferencias entre los continentes en los que habitan:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb32"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a>datos_Africa <span class="ot">&lt;-</span> datos <span class="sc">%&gt;%</span> </span>
-<span id="cb32-2"><a href="#cb32-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(Continent <span class="sc">==</span> <span class="st">"Africa"</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb32-3"><a href="#cb32-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(<span class="dv">15</span><span class="sc">:</span><span class="dv">26</span>)</span>
-<span id="cb32-4"><a href="#cb32-4" aria-hidden="true" tabindex="-1"></a><span class="fu">colnames</span>(datos_Africa)<span class="ot">=</span>new_names</span>
-<span id="cb32-5"><a href="#cb32-5" aria-hidden="true" tabindex="-1"></a><span class="fu">corPlot</span>(datos_Africa, <span class="at">cex =</span> <span class="fl">0.8</span>,  <span class="at">main =</span> <span class="st">"Matriz de correlación de individuos de Àfrica"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output-display">
-<p><img src="Entrega3_AD_files/figure-html/unnamed-chunk-25-1.png" class="img-fluid" width="672"></p>
-</div>
+<div class="sourceCode cell-code" id="cb38"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb38-1"><a href="#cb38-1" aria-hidden="true" tabindex="-1"></a>datos_Africa <span class="ot">&lt;-</span> datos <span class="sc">%&gt;%</span> </span>
+<span id="cb38-2"><a href="#cb38-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(Continent <span class="sc">==</span> <span class="st">"Africa"</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb38-3"><a href="#cb38-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(<span class="dv">15</span><span class="sc">:</span><span class="dv">26</span>)</span>
+<span id="cb38-4"><a href="#cb38-4" aria-hidden="true" tabindex="-1"></a><span class="fu">colnames</span>(datos_Africa)<span class="ot">=</span>new_names</span>
+<span id="cb38-5"><a href="#cb38-5" aria-hidden="true" tabindex="-1"></a><span class="fu">corPlot</span>(datos_Africa, <span class="at">cex =</span> <span class="fl">0.8</span>,  <span class="at">main =</span> <span class="st">"Matriz de correlación de individuos de Àfrica"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb33"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a>datos_Asia <span class="ot">&lt;-</span> datos <span class="sc">%&gt;%</span> </span>
-<span id="cb33-2"><a href="#cb33-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(Continent <span class="sc">==</span> <span class="st">"Asia"</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb33-3"><a href="#cb33-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(<span class="dv">15</span><span class="sc">:</span><span class="dv">26</span>)</span>
-<span id="cb33-4"><a href="#cb33-4" aria-hidden="true" tabindex="-1"></a><span class="fu">colnames</span>(datos_Asia)<span class="ot">=</span>new_names</span>
-<span id="cb33-5"><a href="#cb33-5" aria-hidden="true" tabindex="-1"></a><span class="fu">corPlot</span>(datos_Asia, <span class="at">cex =</span> <span class="fl">0.8</span>,  <span class="at">main =</span> <span class="st">"Matriz de correlación de individuos de Asia"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output-display">
-<p><img src="Entrega3_AD_files/figure-html/unnamed-chunk-26-1.png" class="img-fluid" width="672"></p>
-</div>
+<div class="sourceCode cell-code" id="cb39"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb39-1"><a href="#cb39-1" aria-hidden="true" tabindex="-1"></a>datos_Asia <span class="ot">&lt;-</span> datos <span class="sc">%&gt;%</span> </span>
+<span id="cb39-2"><a href="#cb39-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(Continent <span class="sc">==</span> <span class="st">"Asia"</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb39-3"><a href="#cb39-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(<span class="dv">15</span><span class="sc">:</span><span class="dv">26</span>)</span>
+<span id="cb39-4"><a href="#cb39-4" aria-hidden="true" tabindex="-1"></a><span class="fu">colnames</span>(datos_Asia)<span class="ot">=</span>new_names</span>
+<span id="cb39-5"><a href="#cb39-5" aria-hidden="true" tabindex="-1"></a><span class="fu">corPlot</span>(datos_Asia, <span class="at">cex =</span> <span class="fl">0.8</span>,  <span class="at">main =</span> <span class="st">"Matriz de correlación de individuos de Asia"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb34"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a>datos_Australia <span class="ot">&lt;-</span> datos <span class="sc">%&gt;%</span> </span>
-<span id="cb34-2"><a href="#cb34-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(Continent <span class="sc">==</span> <span class="st">"Australia"</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb34-3"><a href="#cb34-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(<span class="dv">15</span><span class="sc">:</span><span class="dv">26</span>)</span>
-<span id="cb34-4"><a href="#cb34-4" aria-hidden="true" tabindex="-1"></a><span class="fu">colnames</span>(datos_Australia)<span class="ot">=</span>new_names</span>
-<span id="cb34-5"><a href="#cb34-5" aria-hidden="true" tabindex="-1"></a><span class="fu">corPlot</span>(datos_Australia, <span class="at">cex =</span> <span class="fl">0.8</span>,  <span class="at">main =</span> <span class="st">"Matriz de correlación de individuos de Australia"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output-display">
-<p><img src="Entrega3_AD_files/figure-html/unnamed-chunk-27-1.png" class="img-fluid" width="672"></p>
-</div>
+<div class="sourceCode cell-code" id="cb40"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb40-1"><a href="#cb40-1" aria-hidden="true" tabindex="-1"></a>datos_Australia <span class="ot">&lt;-</span> datos <span class="sc">%&gt;%</span> </span>
+<span id="cb40-2"><a href="#cb40-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(Continent <span class="sc">==</span> <span class="st">"Australia"</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb40-3"><a href="#cb40-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(<span class="dv">15</span><span class="sc">:</span><span class="dv">26</span>)</span>
+<span id="cb40-4"><a href="#cb40-4" aria-hidden="true" tabindex="-1"></a><span class="fu">colnames</span>(datos_Australia)<span class="ot">=</span>new_names</span>
+<span id="cb40-5"><a href="#cb40-5" aria-hidden="true" tabindex="-1"></a><span class="fu">corPlot</span>(datos_Australia, <span class="at">cex =</span> <span class="fl">0.8</span>,  <span class="at">main =</span> <span class="st">"Matriz de correlación de individuos de Australia"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb35"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a>datos_Europa <span class="ot">&lt;-</span> datos <span class="sc">%&gt;%</span> </span>
-<span id="cb35-2"><a href="#cb35-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(Continent <span class="sc">==</span> <span class="st">"Europe"</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb35-3"><a href="#cb35-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(<span class="dv">15</span><span class="sc">:</span><span class="dv">26</span>)</span>
-<span id="cb35-4"><a href="#cb35-4" aria-hidden="true" tabindex="-1"></a><span class="fu">colnames</span>(datos_Europa)<span class="ot">=</span>new_names</span>
-<span id="cb35-5"><a href="#cb35-5" aria-hidden="true" tabindex="-1"></a><span class="fu">corPlot</span>(datos_Europa, <span class="at">cex =</span> <span class="fl">0.8</span>,  <span class="at">main =</span> <span class="st">"Matriz de correlación de individuos de Europa"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output-display">
-<p><img src="Entrega3_AD_files/figure-html/unnamed-chunk-28-1.png" class="img-fluid" width="672"></p>
-</div>
+<div class="sourceCode cell-code" id="cb41"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb41-1"><a href="#cb41-1" aria-hidden="true" tabindex="-1"></a>datos_Europa <span class="ot">&lt;-</span> datos <span class="sc">%&gt;%</span> </span>
+<span id="cb41-2"><a href="#cb41-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(Continent <span class="sc">==</span> <span class="st">"Europe"</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb41-3"><a href="#cb41-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(<span class="dv">15</span><span class="sc">:</span><span class="dv">26</span>)</span>
+<span id="cb41-4"><a href="#cb41-4" aria-hidden="true" tabindex="-1"></a><span class="fu">colnames</span>(datos_Europa)<span class="ot">=</span>new_names</span>
+<span id="cb41-5"><a href="#cb41-5" aria-hidden="true" tabindex="-1"></a><span class="fu">corPlot</span>(datos_Europa, <span class="at">cex =</span> <span class="fl">0.8</span>,  <span class="at">main =</span> <span class="st">"Matriz de correlación de individuos de Europa"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb36"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true" tabindex="-1"></a>datos_SAmerica <span class="ot">&lt;-</span> datos <span class="sc">%&gt;%</span> </span>
-<span id="cb36-2"><a href="#cb36-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(Continent <span class="sc">==</span> <span class="st">"South America"</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb36-3"><a href="#cb36-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(<span class="dv">15</span><span class="sc">:</span><span class="dv">26</span>)</span>
-<span id="cb36-4"><a href="#cb36-4" aria-hidden="true" tabindex="-1"></a><span class="fu">colnames</span>(datos_SAmerica)<span class="ot">=</span>new_names</span>
-<span id="cb36-5"><a href="#cb36-5" aria-hidden="true" tabindex="-1"></a><span class="fu">corPlot</span>(datos_SAmerica, <span class="at">cex =</span> <span class="fl">0.8</span>,  <span class="at">main =</span> <span class="st">"Matriz de correlación de individuos de Sud América"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output-display">
-<p><img src="Entrega3_AD_files/figure-html/unnamed-chunk-29-1.png" class="img-fluid" width="672"></p>
-</div>
+<div class="sourceCode cell-code" id="cb42"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb42-1"><a href="#cb42-1" aria-hidden="true" tabindex="-1"></a>datos_SAmerica <span class="ot">&lt;-</span> datos <span class="sc">%&gt;%</span> </span>
+<span id="cb42-2"><a href="#cb42-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(Continent <span class="sc">==</span> <span class="st">"South America"</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb42-3"><a href="#cb42-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(<span class="dv">15</span><span class="sc">:</span><span class="dv">26</span>)</span>
+<span id="cb42-4"><a href="#cb42-4" aria-hidden="true" tabindex="-1"></a><span class="fu">colnames</span>(datos_SAmerica)<span class="ot">=</span>new_names</span>
+<span id="cb42-5"><a href="#cb42-5" aria-hidden="true" tabindex="-1"></a><span class="fu">corPlot</span>(datos_SAmerica, <span class="at">cex =</span> <span class="fl">0.8</span>,  <span class="at">main =</span> <span class="st">"Matriz de correlación de individuos de Sud América"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb37"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb37-1"><a href="#cb37-1" aria-hidden="true" tabindex="-1"></a>datos_NAmerica <span class="ot">&lt;-</span> datos <span class="sc">%&gt;%</span> </span>
-<span id="cb37-2"><a href="#cb37-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(Continent <span class="sc">==</span> <span class="st">"North America"</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb37-3"><a href="#cb37-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(<span class="dv">15</span><span class="sc">:</span><span class="dv">26</span>)</span>
-<span id="cb37-4"><a href="#cb37-4" aria-hidden="true" tabindex="-1"></a><span class="fu">colnames</span>(datos_NAmerica)<span class="ot">=</span>new_names</span>
-<span id="cb37-5"><a href="#cb37-5" aria-hidden="true" tabindex="-1"></a><span class="fu">corPlot</span>(datos_NAmerica, <span class="at">cex =</span> <span class="fl">0.8</span>,  <span class="at">main =</span> <span class="st">"Matriz de correlación de individuos de Norte América"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output-display">
-<p><img src="Entrega3_AD_files/figure-html/unnamed-chunk-30-1.png" class="img-fluid" width="672"></p>
-</div>
+<div class="sourceCode cell-code" id="cb43"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb43-1"><a href="#cb43-1" aria-hidden="true" tabindex="-1"></a>datos_NAmerica <span class="ot">&lt;-</span> datos <span class="sc">%&gt;%</span> </span>
+<span id="cb43-2"><a href="#cb43-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(Continent <span class="sc">==</span> <span class="st">"North America"</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb43-3"><a href="#cb43-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(<span class="dv">15</span><span class="sc">:</span><span class="dv">26</span>)</span>
+<span id="cb43-4"><a href="#cb43-4" aria-hidden="true" tabindex="-1"></a><span class="fu">colnames</span>(datos_NAmerica)<span class="ot">=</span>new_names</span>
+<span id="cb43-5"><a href="#cb43-5" aria-hidden="true" tabindex="-1"></a><span class="fu">corPlot</span>(datos_NAmerica, <span class="at">cex =</span> <span class="fl">0.8</span>,  <span class="at">main =</span> <span class="st">"Matriz de correlación de individuos de Norte América"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>Tampoco observamos ninguna dependencia entre las variables cuantitativas.</p>
 </section>
 <section id="segregación-por-sexo-de-cada-rango-de-edad" class="level2">
 <h2 class="anchored" data-anchor-id="segregación-por-sexo-de-cada-rango-de-edad">Segregación por sexo de cada rango de edad</h2>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb38"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb38-1"><a href="#cb38-1" aria-hidden="true" tabindex="-1"></a>datos_menores_30_M <span class="ot">&lt;-</span> datos <span class="sc">%&gt;%</span> </span>
-<span id="cb38-2"><a href="#cb38-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(Age <span class="sc">&lt;</span> <span class="dv">30</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb38-3"><a href="#cb38-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(Sex <span class="sc">==</span> <span class="st">"Male"</span>) <span class="sc">%&gt;%</span> </span>
-<span id="cb38-4"><a href="#cb38-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(<span class="dv">15</span><span class="sc">:</span><span class="dv">26</span>)</span>
-<span id="cb38-5"><a href="#cb38-5" aria-hidden="true" tabindex="-1"></a><span class="fu">colnames</span>(datos_menores_30_M)<span class="ot">=</span>new_names</span>
-<span id="cb38-6"><a href="#cb38-6" aria-hidden="true" tabindex="-1"></a><span class="fu">corPlot</span>(datos_menores_30_M, <span class="at">cex =</span> <span class="fl">0.8</span>,  <span class="at">main =</span> <span class="st">"Matriz de correlación de hombres menores de 30 años"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output-display">
-<p><img src="Entrega3_AD_files/figure-html/unnamed-chunk-31-1.png" class="img-fluid" width="672"></p>
-</div>
-<div class="sourceCode cell-code" id="cb39"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb39-1"><a href="#cb39-1" aria-hidden="true" tabindex="-1"></a>datos_menores_30_F <span class="ot">&lt;-</span> datos <span class="sc">%&gt;%</span> </span>
-<span id="cb39-2"><a href="#cb39-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(Age <span class="sc">&lt;</span> <span class="dv">30</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb39-3"><a href="#cb39-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(Sex <span class="sc">==</span> <span class="st">"Female"</span>) <span class="sc">%&gt;%</span> </span>
-<span id="cb39-4"><a href="#cb39-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(<span class="dv">15</span><span class="sc">:</span><span class="dv">26</span>)</span>
-<span id="cb39-5"><a href="#cb39-5" aria-hidden="true" tabindex="-1"></a><span class="fu">colnames</span>(datos_menores_30_F)<span class="ot">=</span>new_names</span>
-<span id="cb39-6"><a href="#cb39-6" aria-hidden="true" tabindex="-1"></a><span class="fu">corPlot</span>(datos_menores_30_F, <span class="at">cex =</span> <span class="fl">0.8</span>,  <span class="at">main =</span> <span class="st">"Matriz de correlación de mujeres menores de 30 años"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output-display">
-<p><img src="Entrega3_AD_files/figure-html/unnamed-chunk-31-2.png" class="img-fluid" width="672"></p>
-</div>
+<div class="sourceCode cell-code" id="cb44"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb44-1"><a href="#cb44-1" aria-hidden="true" tabindex="-1"></a>datos_menores_30_M <span class="ot">&lt;-</span> datos <span class="sc">%&gt;%</span> </span>
+<span id="cb44-2"><a href="#cb44-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(Age <span class="sc">&lt;</span> <span class="dv">30</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb44-3"><a href="#cb44-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(Sex <span class="sc">==</span> <span class="st">"Male"</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb44-4"><a href="#cb44-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(<span class="dv">15</span><span class="sc">:</span><span class="dv">26</span>)</span>
+<span id="cb44-5"><a href="#cb44-5" aria-hidden="true" tabindex="-1"></a><span class="fu">colnames</span>(datos_menores_30_M)<span class="ot">=</span>new_names</span>
+<span id="cb44-6"><a href="#cb44-6" aria-hidden="true" tabindex="-1"></a><span class="fu">corPlot</span>(datos_menores_30_M, <span class="at">cex =</span> <span class="fl">0.8</span>,  <span class="at">main =</span> <span class="st">"Matriz de correlación de hombres menores de 30 años"</span>)</span>
+<span id="cb44-7"><a href="#cb44-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb44-8"><a href="#cb44-8" aria-hidden="true" tabindex="-1"></a>datos_menores_30_F <span class="ot">&lt;-</span> datos <span class="sc">%&gt;%</span> </span>
+<span id="cb44-9"><a href="#cb44-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(Age <span class="sc">&lt;</span> <span class="dv">30</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb44-10"><a href="#cb44-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(Sex <span class="sc">==</span> <span class="st">"Female"</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb44-11"><a href="#cb44-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(<span class="dv">15</span><span class="sc">:</span><span class="dv">26</span>)</span>
+<span id="cb44-12"><a href="#cb44-12" aria-hidden="true" tabindex="-1"></a><span class="fu">colnames</span>(datos_menores_30_F)<span class="ot">=</span>new_names</span>
+<span id="cb44-13"><a href="#cb44-13" aria-hidden="true" tabindex="-1"></a><span class="fu">corPlot</span>(datos_menores_30_F, <span class="at">cex =</span> <span class="fl">0.8</span>,  <span class="at">main =</span> <span class="st">"Matriz de correlación de mujeres menores de 30 años"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb40"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb40-1"><a href="#cb40-1" aria-hidden="true" tabindex="-1"></a>datos_30_40_M <span class="ot">&lt;-</span> datos <span class="sc">%&gt;%</span> </span>
-<span id="cb40-2"><a href="#cb40-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(Age <span class="sc">&gt;=</span> <span class="dv">30</span>) <span class="sc">%&gt;%</span> </span>
-<span id="cb40-3"><a href="#cb40-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(Age <span class="sc">&lt;</span> <span class="dv">40</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb40-4"><a href="#cb40-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(Sex <span class="sc">==</span> <span class="st">"Male"</span>) <span class="sc">%&gt;%</span> </span>
-<span id="cb40-5"><a href="#cb40-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(<span class="dv">15</span><span class="sc">:</span><span class="dv">26</span>)</span>
-<span id="cb40-6"><a href="#cb40-6" aria-hidden="true" tabindex="-1"></a><span class="fu">colnames</span>(datos_30_40_M)<span class="ot">=</span>new_names</span>
-<span id="cb40-7"><a href="#cb40-7" aria-hidden="true" tabindex="-1"></a><span class="fu">corPlot</span>(datos_30_40_M, <span class="at">cex =</span> <span class="fl">0.8</span>,  <span class="at">main =</span> <span class="st">"Matriz de correlación de hombres de entre 30 y 40 años"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output-display">
-<p><img src="Entrega3_AD_files/figure-html/unnamed-chunk-32-1.png" class="img-fluid" width="672"></p>
-</div>
-<div class="sourceCode cell-code" id="cb41"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb41-1"><a href="#cb41-1" aria-hidden="true" tabindex="-1"></a>datos_30_40_F <span class="ot">&lt;-</span> datos <span class="sc">%&gt;%</span> </span>
-<span id="cb41-2"><a href="#cb41-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(Age <span class="sc">&gt;=</span> <span class="dv">30</span>) <span class="sc">%&gt;%</span> </span>
-<span id="cb41-3"><a href="#cb41-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(Age <span class="sc">&lt;</span> <span class="dv">40</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb41-4"><a href="#cb41-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(Sex <span class="sc">==</span> <span class="st">"Female"</span>) <span class="sc">%&gt;%</span> </span>
-<span id="cb41-5"><a href="#cb41-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(<span class="dv">15</span><span class="sc">:</span><span class="dv">26</span>)</span>
-<span id="cb41-6"><a href="#cb41-6" aria-hidden="true" tabindex="-1"></a><span class="fu">colnames</span>(datos_30_40_F)<span class="ot">=</span>new_names</span>
-<span id="cb41-7"><a href="#cb41-7" aria-hidden="true" tabindex="-1"></a><span class="fu">corPlot</span>(datos_30_40_F, <span class="at">cex =</span> <span class="fl">0.8</span>,  <span class="at">main =</span> <span class="st">"Matriz de correlación de mujeres de entre 30 y 40 años"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output-display">
-<p><img src="Entrega3_AD_files/figure-html/unnamed-chunk-32-2.png" class="img-fluid" width="672"></p>
-</div>
-</div>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb42"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb42-1"><a href="#cb42-1" aria-hidden="true" tabindex="-1"></a>datos_40_50_M <span class="ot">&lt;-</span> datos <span class="sc">%&gt;%</span> </span>
-<span id="cb42-2"><a href="#cb42-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(Age <span class="sc">&gt;=</span> <span class="dv">40</span>) <span class="sc">%&gt;%</span> </span>
-<span id="cb42-3"><a href="#cb42-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(Age <span class="sc">&lt;</span> <span class="dv">50</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb42-4"><a href="#cb42-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(Sex <span class="sc">==</span> <span class="st">"Male"</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb42-5"><a href="#cb42-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(<span class="dv">15</span><span class="sc">:</span><span class="dv">26</span>)</span>
-<span id="cb42-6"><a href="#cb42-6" aria-hidden="true" tabindex="-1"></a><span class="fu">colnames</span>(datos_40_50_M)<span class="ot">=</span>new_names</span>
-<span id="cb42-7"><a href="#cb42-7" aria-hidden="true" tabindex="-1"></a><span class="fu">corPlot</span>(datos_40_50_M, <span class="at">cex =</span> <span class="fl">0.8</span>,  <span class="at">main =</span> <span class="st">"Matriz de correlación de hombres de entre 40 y 50 años"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output-display">
-<p><img src="Entrega3_AD_files/figure-html/unnamed-chunk-33-1.png" class="img-fluid" width="672"></p>
-</div>
-<div class="sourceCode cell-code" id="cb43"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb43-1"><a href="#cb43-1" aria-hidden="true" tabindex="-1"></a>datos_40_50_F <span class="ot">&lt;-</span> datos <span class="sc">%&gt;%</span> </span>
-<span id="cb43-2"><a href="#cb43-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(Age <span class="sc">&gt;=</span> <span class="dv">40</span>) <span class="sc">%&gt;%</span> </span>
-<span id="cb43-3"><a href="#cb43-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(Age <span class="sc">&lt;</span> <span class="dv">50</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb43-4"><a href="#cb43-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(Sex <span class="sc">==</span> <span class="st">"Female"</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb43-5"><a href="#cb43-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(<span class="dv">15</span><span class="sc">:</span><span class="dv">26</span>)</span>
-<span id="cb43-6"><a href="#cb43-6" aria-hidden="true" tabindex="-1"></a><span class="fu">colnames</span>(datos_40_50_F)<span class="ot">=</span>new_names</span>
-<span id="cb43-7"><a href="#cb43-7" aria-hidden="true" tabindex="-1"></a><span class="fu">corPlot</span>(datos_40_50_F, <span class="at">cex =</span> <span class="fl">0.8</span>,  <span class="at">main =</span> <span class="st">"Matriz de correlación de mujeres de entre 40 y 50 años"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output-display">
-<p><img src="Entrega3_AD_files/figure-html/unnamed-chunk-33-2.png" class="img-fluid" width="672"></p>
-</div>
-</div>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb44"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb44-1"><a href="#cb44-1" aria-hidden="true" tabindex="-1"></a>datos_50_60_M <span class="ot">&lt;-</span> datos <span class="sc">%&gt;%</span> </span>
-<span id="cb44-2"><a href="#cb44-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(Age <span class="sc">&gt;=</span> <span class="dv">50</span>) <span class="sc">%&gt;%</span> </span>
-<span id="cb44-3"><a href="#cb44-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(Age <span class="sc">&lt;</span> <span class="dv">60</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb44-4"><a href="#cb44-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(Sex <span class="sc">==</span> <span class="st">"Male"</span>) <span class="sc">%&gt;%</span> </span>
-<span id="cb44-5"><a href="#cb44-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(<span class="dv">15</span><span class="sc">:</span><span class="dv">26</span>)</span>
-<span id="cb44-6"><a href="#cb44-6" aria-hidden="true" tabindex="-1"></a><span class="fu">colnames</span>(datos_50_60_M)<span class="ot">=</span>new_names</span>
-<span id="cb44-7"><a href="#cb44-7" aria-hidden="true" tabindex="-1"></a><span class="fu">corPlot</span>(datos_50_60_M, <span class="at">cex =</span> <span class="fl">0.8</span>,  <span class="at">main =</span> <span class="st">"Matriz de correlación de hombres de entre 50 y 60 años"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output-display">
-<p><img src="Entrega3_AD_files/figure-html/unnamed-chunk-34-1.png" class="img-fluid" width="672"></p>
-</div>
-<div class="sourceCode cell-code" id="cb45"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb45-1"><a href="#cb45-1" aria-hidden="true" tabindex="-1"></a>datos_50_60_F <span class="ot">&lt;-</span> datos <span class="sc">%&gt;%</span> </span>
-<span id="cb45-2"><a href="#cb45-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(Age <span class="sc">&gt;=</span> <span class="dv">50</span>) <span class="sc">%&gt;%</span> </span>
-<span id="cb45-3"><a href="#cb45-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(Age <span class="sc">&lt;</span> <span class="dv">60</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb45-4"><a href="#cb45-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(Sex <span class="sc">==</span> <span class="st">"Female"</span>) <span class="sc">%&gt;%</span> </span>
+<div class="sourceCode cell-code" id="cb45"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb45-1"><a href="#cb45-1" aria-hidden="true" tabindex="-1"></a>datos_30_40_M <span class="ot">&lt;-</span> datos <span class="sc">%&gt;%</span> </span>
+<span id="cb45-2"><a href="#cb45-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(Age <span class="sc">&gt;=</span> <span class="dv">30</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb45-3"><a href="#cb45-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(Age <span class="sc">&lt;</span> <span class="dv">40</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb45-4"><a href="#cb45-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(Sex <span class="sc">==</span> <span class="st">"Male"</span>) <span class="sc">%&gt;%</span> </span>
 <span id="cb45-5"><a href="#cb45-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(<span class="dv">15</span><span class="sc">:</span><span class="dv">26</span>)</span>
-<span id="cb45-6"><a href="#cb45-6" aria-hidden="true" tabindex="-1"></a><span class="fu">colnames</span>(datos_50_60_F)<span class="ot">=</span>new_names</span>
-<span id="cb45-7"><a href="#cb45-7" aria-hidden="true" tabindex="-1"></a><span class="fu">corPlot</span>(datos_50_60_F, <span class="at">cex =</span> <span class="fl">0.8</span>,  <span class="at">main =</span> <span class="st">"Matriz de correlación de mujeres de entre 50 y 60 años"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output-display">
-<p><img src="Entrega3_AD_files/figure-html/unnamed-chunk-34-2.png" class="img-fluid" width="672"></p>
-</div>
+<span id="cb45-6"><a href="#cb45-6" aria-hidden="true" tabindex="-1"></a><span class="fu">colnames</span>(datos_30_40_M)<span class="ot">=</span>new_names</span>
+<span id="cb45-7"><a href="#cb45-7" aria-hidden="true" tabindex="-1"></a><span class="fu">corPlot</span>(datos_30_40_M, <span class="at">cex =</span> <span class="fl">0.8</span>,  <span class="at">main =</span> <span class="st">"Matriz de correlación de hombres de entre 30 y 40 años"</span>)</span>
+<span id="cb45-8"><a href="#cb45-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb45-9"><a href="#cb45-9" aria-hidden="true" tabindex="-1"></a>datos_30_40_F <span class="ot">&lt;-</span> datos <span class="sc">%&gt;%</span> </span>
+<span id="cb45-10"><a href="#cb45-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(Age <span class="sc">&gt;=</span> <span class="dv">30</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb45-11"><a href="#cb45-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(Age <span class="sc">&lt;</span> <span class="dv">40</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb45-12"><a href="#cb45-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(Sex <span class="sc">==</span> <span class="st">"Female"</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb45-13"><a href="#cb45-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(<span class="dv">15</span><span class="sc">:</span><span class="dv">26</span>)</span>
+<span id="cb45-14"><a href="#cb45-14" aria-hidden="true" tabindex="-1"></a><span class="fu">colnames</span>(datos_30_40_F)<span class="ot">=</span>new_names</span>
+<span id="cb45-15"><a href="#cb45-15" aria-hidden="true" tabindex="-1"></a><span class="fu">corPlot</span>(datos_30_40_F, <span class="at">cex =</span> <span class="fl">0.8</span>,  <span class="at">main =</span> <span class="st">"Matriz de correlación de mujeres de entre 30 y 40 años"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb46"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb46-1"><a href="#cb46-1" aria-hidden="true" tabindex="-1"></a>datos_60_70_M <span class="ot">&lt;-</span> datos <span class="sc">%&gt;%</span> </span>
-<span id="cb46-2"><a href="#cb46-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(Age <span class="sc">&gt;=</span> <span class="dv">60</span>) <span class="sc">%&gt;%</span> </span>
-<span id="cb46-3"><a href="#cb46-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(Age <span class="sc">&lt;</span> <span class="dv">70</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb46-4"><a href="#cb46-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(Sex <span class="sc">==</span> <span class="st">"Male"</span>) <span class="sc">%&gt;%</span> </span>
+<div class="sourceCode cell-code" id="cb46"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb46-1"><a href="#cb46-1" aria-hidden="true" tabindex="-1"></a>datos_40_50_M <span class="ot">&lt;-</span> datos <span class="sc">%&gt;%</span> </span>
+<span id="cb46-2"><a href="#cb46-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(Age <span class="sc">&gt;=</span> <span class="dv">40</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb46-3"><a href="#cb46-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(Age <span class="sc">&lt;</span> <span class="dv">50</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb46-4"><a href="#cb46-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(Sex <span class="sc">==</span> <span class="st">"Male"</span>) <span class="sc">%&gt;%</span></span>
 <span id="cb46-5"><a href="#cb46-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(<span class="dv">15</span><span class="sc">:</span><span class="dv">26</span>)</span>
-<span id="cb46-6"><a href="#cb46-6" aria-hidden="true" tabindex="-1"></a><span class="fu">colnames</span>(datos_60_70_M)<span class="ot">=</span>new_names</span>
-<span id="cb46-7"><a href="#cb46-7" aria-hidden="true" tabindex="-1"></a><span class="fu">corPlot</span>(datos_60_70_M, <span class="at">cex =</span> <span class="fl">0.8</span>,  <span class="at">main =</span> <span class="st">"Matriz de correlación de hombres de entre 60 y 70 años"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output-display">
-<p><img src="Entrega3_AD_files/figure-html/unnamed-chunk-35-1.png" class="img-fluid" width="672"></p>
-</div>
-<div class="sourceCode cell-code" id="cb47"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb47-1"><a href="#cb47-1" aria-hidden="true" tabindex="-1"></a>datos_60_70_F <span class="ot">&lt;-</span> datos <span class="sc">%&gt;%</span> </span>
-<span id="cb47-2"><a href="#cb47-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(Age <span class="sc">&gt;=</span> <span class="dv">60</span>) <span class="sc">%&gt;%</span> </span>
-<span id="cb47-3"><a href="#cb47-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(Age <span class="sc">&lt;</span> <span class="dv">70</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb47-4"><a href="#cb47-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(Sex <span class="sc">==</span> <span class="st">"Female"</span>) <span class="sc">%&gt;%</span> </span>
-<span id="cb47-5"><a href="#cb47-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(<span class="dv">15</span><span class="sc">:</span><span class="dv">26</span>)</span>
-<span id="cb47-6"><a href="#cb47-6" aria-hidden="true" tabindex="-1"></a><span class="fu">colnames</span>(datos_60_70_F)<span class="ot">=</span>new_names</span>
-<span id="cb47-7"><a href="#cb47-7" aria-hidden="true" tabindex="-1"></a><span class="fu">corPlot</span>(datos_60_70_F, <span class="at">cex =</span> <span class="fl">0.8</span>,  <span class="at">main =</span> <span class="st">"Matriz de correlación de mujeres de entre 60 y 70 años"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output-display">
-<p><img src="Entrega3_AD_files/figure-html/unnamed-chunk-35-2.png" class="img-fluid" width="672"></p>
-</div>
+<span id="cb46-6"><a href="#cb46-6" aria-hidden="true" tabindex="-1"></a><span class="fu">colnames</span>(datos_40_50_M)<span class="ot">=</span>new_names</span>
+<span id="cb46-7"><a href="#cb46-7" aria-hidden="true" tabindex="-1"></a><span class="fu">corPlot</span>(datos_40_50_M, <span class="at">cex =</span> <span class="fl">0.8</span>,  <span class="at">main =</span> <span class="st">"Matriz de correlación de hombres de entre 40 y 50 años"</span>)</span>
+<span id="cb46-8"><a href="#cb46-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb46-9"><a href="#cb46-9" aria-hidden="true" tabindex="-1"></a>datos_40_50_F <span class="ot">&lt;-</span> datos <span class="sc">%&gt;%</span> </span>
+<span id="cb46-10"><a href="#cb46-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(Age <span class="sc">&gt;=</span> <span class="dv">40</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb46-11"><a href="#cb46-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(Age <span class="sc">&lt;</span> <span class="dv">50</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb46-12"><a href="#cb46-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(Sex <span class="sc">==</span> <span class="st">"Female"</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb46-13"><a href="#cb46-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(<span class="dv">15</span><span class="sc">:</span><span class="dv">26</span>)</span>
+<span id="cb46-14"><a href="#cb46-14" aria-hidden="true" tabindex="-1"></a><span class="fu">colnames</span>(datos_40_50_F)<span class="ot">=</span>new_names</span>
+<span id="cb46-15"><a href="#cb46-15" aria-hidden="true" tabindex="-1"></a><span class="fu">corPlot</span>(datos_40_50_F, <span class="at">cex =</span> <span class="fl">0.8</span>,  <span class="at">main =</span> <span class="st">"Matriz de correlación de mujeres de entre 40 y 50 años"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb48"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb48-1"><a href="#cb48-1" aria-hidden="true" tabindex="-1"></a>datos_70_80_M <span class="ot">&lt;-</span> datos <span class="sc">%&gt;%</span> </span>
-<span id="cb48-2"><a href="#cb48-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(Age <span class="sc">&gt;=</span> <span class="dv">70</span>) <span class="sc">%&gt;%</span> </span>
-<span id="cb48-3"><a href="#cb48-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(Age <span class="sc">&lt;</span> <span class="dv">80</span>) <span class="sc">%&gt;%</span></span>
+<div class="sourceCode cell-code" id="cb47"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb47-1"><a href="#cb47-1" aria-hidden="true" tabindex="-1"></a>datos_50_60_M <span class="ot">&lt;-</span> datos <span class="sc">%&gt;%</span> </span>
+<span id="cb47-2"><a href="#cb47-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(Age <span class="sc">&gt;=</span> <span class="dv">50</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb47-3"><a href="#cb47-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(Age <span class="sc">&lt;</span> <span class="dv">60</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb47-4"><a href="#cb47-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(Sex <span class="sc">==</span> <span class="st">"Male"</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb47-5"><a href="#cb47-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(<span class="dv">15</span><span class="sc">:</span><span class="dv">26</span>)</span>
+<span id="cb47-6"><a href="#cb47-6" aria-hidden="true" tabindex="-1"></a><span class="fu">colnames</span>(datos_50_60_M)<span class="ot">=</span>new_names</span>
+<span id="cb47-7"><a href="#cb47-7" aria-hidden="true" tabindex="-1"></a><span class="fu">corPlot</span>(datos_50_60_M, <span class="at">cex =</span> <span class="fl">0.8</span>,  <span class="at">main =</span> <span class="st">"Matriz de correlación de hombres de entre 50 y 60 años"</span>)</span>
+<span id="cb47-8"><a href="#cb47-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb47-9"><a href="#cb47-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb47-10"><a href="#cb47-10" aria-hidden="true" tabindex="-1"></a>datos_50_60_F <span class="ot">&lt;-</span> datos <span class="sc">%&gt;%</span> </span>
+<span id="cb47-11"><a href="#cb47-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(Age <span class="sc">&gt;=</span> <span class="dv">50</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb47-12"><a href="#cb47-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(Age <span class="sc">&lt;</span> <span class="dv">60</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb47-13"><a href="#cb47-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(Sex <span class="sc">==</span> <span class="st">"Female"</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb47-14"><a href="#cb47-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(<span class="dv">15</span><span class="sc">:</span><span class="dv">26</span>)</span>
+<span id="cb47-15"><a href="#cb47-15" aria-hidden="true" tabindex="-1"></a><span class="fu">colnames</span>(datos_50_60_F)<span class="ot">=</span>new_names</span>
+<span id="cb47-16"><a href="#cb47-16" aria-hidden="true" tabindex="-1"></a><span class="fu">corPlot</span>(datos_50_60_F, <span class="at">cex =</span> <span class="fl">0.8</span>,  <span class="at">main =</span> <span class="st">"Matriz de correlación de mujeres de entre 50 y 60 años"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb48"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb48-1"><a href="#cb48-1" aria-hidden="true" tabindex="-1"></a>datos_60_70_M <span class="ot">&lt;-</span> datos <span class="sc">%&gt;%</span> </span>
+<span id="cb48-2"><a href="#cb48-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(Age <span class="sc">&gt;=</span> <span class="dv">60</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb48-3"><a href="#cb48-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(Age <span class="sc">&lt;</span> <span class="dv">70</span>) <span class="sc">%&gt;%</span></span>
 <span id="cb48-4"><a href="#cb48-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(Sex <span class="sc">==</span> <span class="st">"Male"</span>) <span class="sc">%&gt;%</span> </span>
 <span id="cb48-5"><a href="#cb48-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(<span class="dv">15</span><span class="sc">:</span><span class="dv">26</span>)</span>
-<span id="cb48-6"><a href="#cb48-6" aria-hidden="true" tabindex="-1"></a><span class="fu">colnames</span>(datos_70_80_M)<span class="ot">=</span>new_names</span>
-<span id="cb48-7"><a href="#cb48-7" aria-hidden="true" tabindex="-1"></a><span class="fu">corPlot</span>(datos_70_80_M, <span class="at">cex =</span> <span class="fl">0.8</span>,  <span class="at">main =</span> <span class="st">"Matriz de correlación de hombres de entre 70 y 80 años"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output-display">
-<p><img src="Entrega3_AD_files/figure-html/unnamed-chunk-36-1.png" class="img-fluid" width="672"></p>
+<span id="cb48-6"><a href="#cb48-6" aria-hidden="true" tabindex="-1"></a><span class="fu">colnames</span>(datos_60_70_M)<span class="ot">=</span>new_names</span>
+<span id="cb48-7"><a href="#cb48-7" aria-hidden="true" tabindex="-1"></a><span class="fu">corPlot</span>(datos_60_70_M, <span class="at">cex =</span> <span class="fl">0.8</span>,  <span class="at">main =</span> <span class="st">"Matriz de correlación de hombres de entre 60 y 70 años"</span>)</span>
+<span id="cb48-8"><a href="#cb48-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb48-9"><a href="#cb48-9" aria-hidden="true" tabindex="-1"></a>datos_60_70_F <span class="ot">&lt;-</span> datos <span class="sc">%&gt;%</span> </span>
+<span id="cb48-10"><a href="#cb48-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(Age <span class="sc">&gt;=</span> <span class="dv">60</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb48-11"><a href="#cb48-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(Age <span class="sc">&lt;</span> <span class="dv">70</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb48-12"><a href="#cb48-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(Sex <span class="sc">==</span> <span class="st">"Female"</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb48-13"><a href="#cb48-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(<span class="dv">15</span><span class="sc">:</span><span class="dv">26</span>)</span>
+<span id="cb48-14"><a href="#cb48-14" aria-hidden="true" tabindex="-1"></a><span class="fu">colnames</span>(datos_60_70_F)<span class="ot">=</span>new_names</span>
+<span id="cb48-15"><a href="#cb48-15" aria-hidden="true" tabindex="-1"></a><span class="fu">corPlot</span>(datos_60_70_F, <span class="at">cex =</span> <span class="fl">0.8</span>,  <span class="at">main =</span> <span class="st">"Matriz de correlación de mujeres de entre 60 y 70 años"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div class="sourceCode cell-code" id="cb49"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb49-1"><a href="#cb49-1" aria-hidden="true" tabindex="-1"></a>datos_70_80_F <span class="ot">&lt;-</span> datos <span class="sc">%&gt;%</span> </span>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb49"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb49-1"><a href="#cb49-1" aria-hidden="true" tabindex="-1"></a>datos_70_80_M <span class="ot">&lt;-</span> datos <span class="sc">%&gt;%</span> </span>
 <span id="cb49-2"><a href="#cb49-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(Age <span class="sc">&gt;=</span> <span class="dv">70</span>) <span class="sc">%&gt;%</span> </span>
 <span id="cb49-3"><a href="#cb49-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(Age <span class="sc">&lt;</span> <span class="dv">80</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb49-4"><a href="#cb49-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(Sex <span class="sc">==</span> <span class="st">"Female"</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb49-4"><a href="#cb49-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(Sex <span class="sc">==</span> <span class="st">"Male"</span>) <span class="sc">%&gt;%</span> </span>
 <span id="cb49-5"><a href="#cb49-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(<span class="dv">15</span><span class="sc">:</span><span class="dv">26</span>)</span>
-<span id="cb49-6"><a href="#cb49-6" aria-hidden="true" tabindex="-1"></a><span class="fu">colnames</span>(datos_70_80_F)<span class="ot">=</span>new_names</span>
-<span id="cb49-7"><a href="#cb49-7" aria-hidden="true" tabindex="-1"></a><span class="fu">corPlot</span>(datos_70_80_F, <span class="at">cex =</span> <span class="fl">0.8</span>,  <span class="at">main =</span> <span class="st">"Matriz de correlación de mujeres de entre 70 y 80 años"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output-display">
-<p><img src="Entrega3_AD_files/figure-html/unnamed-chunk-36-2.png" class="img-fluid" width="672"></p>
-</div>
+<span id="cb49-6"><a href="#cb49-6" aria-hidden="true" tabindex="-1"></a><span class="fu">colnames</span>(datos_70_80_M)<span class="ot">=</span>new_names</span>
+<span id="cb49-7"><a href="#cb49-7" aria-hidden="true" tabindex="-1"></a><span class="fu">corPlot</span>(datos_70_80_M, <span class="at">cex =</span> <span class="fl">0.8</span>,  <span class="at">main =</span> <span class="st">"Matriz de correlación de hombres de entre 70 y 80 años"</span>)</span>
+<span id="cb49-8"><a href="#cb49-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb49-9"><a href="#cb49-9" aria-hidden="true" tabindex="-1"></a>datos_70_80_F <span class="ot">&lt;-</span> datos <span class="sc">%&gt;%</span> </span>
+<span id="cb49-10"><a href="#cb49-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(Age <span class="sc">&gt;=</span> <span class="dv">70</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb49-11"><a href="#cb49-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(Age <span class="sc">&lt;</span> <span class="dv">80</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb49-12"><a href="#cb49-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(Sex <span class="sc">==</span> <span class="st">"Female"</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb49-13"><a href="#cb49-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(<span class="dv">15</span><span class="sc">:</span><span class="dv">26</span>)</span>
+<span id="cb49-14"><a href="#cb49-14" aria-hidden="true" tabindex="-1"></a><span class="fu">colnames</span>(datos_70_80_F)<span class="ot">=</span>new_names</span>
+<span id="cb49-15"><a href="#cb49-15" aria-hidden="true" tabindex="-1"></a><span class="fu">corPlot</span>(datos_70_80_F, <span class="at">cex =</span> <span class="fl">0.8</span>,  <span class="at">main =</span> <span class="st">"Matriz de correlación de mujeres de entre 70 y 80 años"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb50"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb50-1"><a href="#cb50-1" aria-hidden="true" tabindex="-1"></a>datos_80_90_M <span class="ot">&lt;-</span> datos <span class="sc">%&gt;%</span> </span>
@@ -1119,28 +1147,23 @@ Low.B     1.78920  0.54583   0.31163   5.15719 215.37698</code></pre>
 <span id="cb50-4"><a href="#cb50-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(Sex <span class="sc">==</span> <span class="st">"Male"</span>) <span class="sc">%&gt;%</span> </span>
 <span id="cb50-5"><a href="#cb50-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(<span class="dv">15</span><span class="sc">:</span><span class="dv">26</span>)</span>
 <span id="cb50-6"><a href="#cb50-6" aria-hidden="true" tabindex="-1"></a><span class="fu">colnames</span>(datos_80_90_M)<span class="ot">=</span>new_names</span>
-<span id="cb50-7"><a href="#cb50-7" aria-hidden="true" tabindex="-1"></a><span class="fu">corPlot</span>(datos_80_90_M, <span class="at">cex =</span> <span class="fl">0.8</span>,  <span class="at">main =</span> <span class="st">"Matriz de correlación de hombres de entre 80 y 90 años"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output-display">
-<p><img src="Entrega3_AD_files/figure-html/unnamed-chunk-37-1.png" class="img-fluid" width="672"></p>
-</div>
-<div class="sourceCode cell-code" id="cb51"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb51-1"><a href="#cb51-1" aria-hidden="true" tabindex="-1"></a>datos_80_90_F <span class="ot">&lt;-</span> datos <span class="sc">%&gt;%</span> </span>
-<span id="cb51-2"><a href="#cb51-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(Age <span class="sc">&gt;=</span> <span class="dv">80</span>) <span class="sc">%&gt;%</span> </span>
-<span id="cb51-3"><a href="#cb51-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(Age <span class="sc">&lt;=</span> <span class="dv">90</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb51-4"><a href="#cb51-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(Sex <span class="sc">==</span> <span class="st">"Female"</span>) <span class="sc">%&gt;%</span> </span>
-<span id="cb51-5"><a href="#cb51-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(<span class="dv">15</span><span class="sc">:</span><span class="dv">26</span>)</span>
-<span id="cb51-6"><a href="#cb51-6" aria-hidden="true" tabindex="-1"></a><span class="fu">colnames</span>(datos_80_90_F)<span class="ot">=</span>new_names</span>
-<span id="cb51-7"><a href="#cb51-7" aria-hidden="true" tabindex="-1"></a><span class="fu">corPlot</span>(datos_80_90_F, <span class="at">cex =</span> <span class="fl">0.8</span>,  <span class="at">main =</span> <span class="st">"Matriz de correlación de mujeres de entre 80 y 90 años"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output-display">
-<p><img src="Entrega3_AD_files/figure-html/unnamed-chunk-37-2.png" class="img-fluid" width="672"></p>
-</div>
+<span id="cb50-7"><a href="#cb50-7" aria-hidden="true" tabindex="-1"></a><span class="fu">corPlot</span>(datos_80_90_M, <span class="at">cex =</span> <span class="fl">0.8</span>,  <span class="at">main =</span> <span class="st">"Matriz de correlación de hombres de entre 80 y 90 años"</span>)</span>
+<span id="cb50-8"><a href="#cb50-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb50-9"><a href="#cb50-9" aria-hidden="true" tabindex="-1"></a>datos_80_90_F <span class="ot">&lt;-</span> datos <span class="sc">%&gt;%</span> </span>
+<span id="cb50-10"><a href="#cb50-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(Age <span class="sc">&gt;=</span> <span class="dv">80</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb50-11"><a href="#cb50-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(Age <span class="sc">&lt;=</span> <span class="dv">90</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb50-12"><a href="#cb50-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(Sex <span class="sc">==</span> <span class="st">"Female"</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb50-13"><a href="#cb50-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(<span class="dv">15</span><span class="sc">:</span><span class="dv">26</span>)</span>
+<span id="cb50-14"><a href="#cb50-14" aria-hidden="true" tabindex="-1"></a><span class="fu">colnames</span>(datos_80_90_F)<span class="ot">=</span>new_names</span>
+<span id="cb50-15"><a href="#cb50-15" aria-hidden="true" tabindex="-1"></a><span class="fu">corPlot</span>(datos_80_90_F, <span class="at">cex =</span> <span class="fl">0.8</span>,  <span class="at">main =</span> <span class="st">"Matriz de correlación de mujeres de entre 80 y 90 años"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb52"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb52-1"><a href="#cb52-1" aria-hidden="true" tabindex="-1"></a>datos_adultos <span class="ot">&lt;-</span> datos <span class="sc">%&gt;%</span> </span>
-<span id="cb52-2"><a href="#cb52-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(Age <span class="sc">&gt;=</span> <span class="dv">30</span>) <span class="sc">%&gt;%</span> </span>
-<span id="cb52-3"><a href="#cb52-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(Age <span class="sc">&lt;=</span> <span class="dv">60</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb52-4"><a href="#cb52-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(<span class="dv">15</span><span class="sc">:</span><span class="dv">26</span>)</span>
-<span id="cb52-5"><a href="#cb52-5" aria-hidden="true" tabindex="-1"></a><span class="fu">colnames</span>(datos_adultos)<span class="ot">=</span>new_names</span>
-<span id="cb52-6"><a href="#cb52-6" aria-hidden="true" tabindex="-1"></a><span class="fu">corPlot</span>(datos_adultos, <span class="at">cex =</span> <span class="fl">0.8</span>,  <span class="at">main =</span> <span class="st">"Matriz de correlación de individuos de entre 30 y 60 años"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb51"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb51-1"><a href="#cb51-1" aria-hidden="true" tabindex="-1"></a>datos_adultos <span class="ot">&lt;-</span> datos <span class="sc">%&gt;%</span> </span>
+<span id="cb51-2"><a href="#cb51-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(Age <span class="sc">&gt;=</span> <span class="dv">30</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb51-3"><a href="#cb51-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(Age <span class="sc">&lt;=</span> <span class="dv">60</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb51-4"><a href="#cb51-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(<span class="dv">15</span><span class="sc">:</span><span class="dv">26</span>)</span>
+<span id="cb51-5"><a href="#cb51-5" aria-hidden="true" tabindex="-1"></a><span class="fu">colnames</span>(datos_adultos)<span class="ot">=</span>new_names</span>
+<span id="cb51-6"><a href="#cb51-6" aria-hidden="true" tabindex="-1"></a><span class="fu">corPlot</span>(datos_adultos, <span class="at">cex =</span> <span class="fl">0.8</span>,  <span class="at">main =</span> <span class="st">"Matriz de correlación de individuos de entre 30 y 60 años"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
 </section>

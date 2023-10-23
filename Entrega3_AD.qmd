@@ -25,6 +25,7 @@ library(dplyr)
 library(GGally)
 library(psych)
 library(skimr)
+library(fmsb)
 ```
 
 # Convertir los datos en tidy
@@ -167,7 +168,7 @@ summary(datos)
 
 # Análisis multivariante exploratorio
 
-```{r, warning=FALSE, cache=TRUE}
+```{r, eval = FALSE, warning=FALSE, cache=TRUE}
 
 a = datos %>% 
   select(2,6,12,14,15,16,17) %>% 
@@ -176,8 +177,8 @@ a = datos %>%
 pairs(a, col = c("red", "blue", "green", "yellow", "purple", "orange")[as.integer(a$Continent)],pch=18)
 
 
-
 ggpairs(a)
+# ggpairs(datos_quant)
 ```
 
 ## Estimación del vector de medias y la matriz de covarianza y correlación
@@ -210,15 +211,15 @@ Separemos las variables en función de diferentes edades, ya que no hemos observ
 
 ## Segregación por edades
 
-```{r}
+```{r, eval=FALSE}
 datos_menores_30 <- datos %>% 
   filter(Age < 30) %>%
   select(15:26)
 colnames(datos_menores_30)=new_names
-corPlot(datos_menores_30, cex = 0.8,  main = "Matriz de correlación de individuos menores de 30 años")
+# corPlot(datos_menores_30, cex = 0.8,  main = "Matriz de correlación de individuos menores de 30 años")
 ```
 
-```{r}
+```{r, eval=FALSE}
 datos_30_40 <- datos %>% 
   filter(Age >= 30) %>% 
   filter(Age < 40) %>%
@@ -227,7 +228,7 @@ colnames(datos_30_40)=new_names
 corPlot(datos_30_40, cex = 0.8,  main = "Matriz de correlación de individuos de entre 30 y 40 años")
 ```
 
-```{r}
+```{r, eval=FALSE}
 datos_40_50 <- datos %>% 
   filter(Age >= 40) %>% 
   filter(Age < 50) %>%
@@ -236,7 +237,7 @@ colnames(datos_40_50)=new_names
 corPlot(datos_40_50, cex = 0.8,  main = "Matriz de correlación de individuos de entre 40 y 50 años")
 ```
 
-```{r}
+```{r, eval=FALSE}
 datos_50_60 <- datos %>% 
   filter(Age >= 50) %>% 
   filter(Age < 60) %>%
@@ -245,7 +246,7 @@ colnames(datos_50_60)=new_names
 corPlot(datos_50_60, cex = 0.8,  main = "Matriz de correlación de individuos de entre 50 y 60 años")
 ```
 
-```{r}
+```{r, eval=FALSE}
 datos_60_70 <- datos %>% 
   filter(Age >= 60) %>% 
   filter(Age < 70) %>%
@@ -254,7 +255,7 @@ colnames(datos_60_70)=new_names
 corPlot(datos_60_70, cex = 0.8,  main = "Matriz de correlación de individuos de entre 60 y 70 años")
 ```
 
-```{r}
+```{r, eval=FALSE}
 datos_70_80 <- datos %>% 
   filter(Age >= 70) %>% 
   filter(Age < 80) %>%
@@ -263,7 +264,7 @@ colnames(datos_70_80)=new_names
 corPlot(datos_70_80, cex = 0.8,  main = "Matriz de correlación de individuos de entre 70 y 80 años")
 ```
 
-```{r}
+```{r, eval=FALSE}
 datos_80_90 <- datos %>% 
   filter(Age >= 80) %>% 
   filter(Age <= 90) %>%
@@ -283,15 +284,102 @@ corPlot(datos_adultos, cex = 0.8,  main = "Matriz de correlación de individuos 
 
 Notemos que no hay mucha diferencia entre la edad de los individuos.
 
+```{r, eval=TRUE}
+#lims=c(18,30,50,70,Inf)
+
+#Etiquetas = c("Joven", "Adulto30-50","Adulto50-70","Mayor")
+
+#datos$Age = cut(datos$Age, breaks = lims, labels = Etiquetas, right = FALSE)
+```
+
+
+
 ```{r}
-#prop.table(table(datos_30_40$Heart.Attack.Risk))
+ggplot(data = datos, aes(x = Heart.Attack.Risk, y = Age)) +
+  geom_boxplot(aes(color = Heart.Attack.Risk), width = 0.3, 
+               show.legend = FALSE) + 
+  geom_jitter(aes(color = Heart.Attack.Risk), alpha = 0.5, 
+              show.legend = FALSE, 
+              position = position_jitter(width = 0.2, seed = 0)) +
+  scale_color_manual(values = c("darkorange","purple")) +
+  labs(y = "Edades", x = "Riesgo ataque al corazón")
+```
+
+
+
+
+```{r}
+datos_riesgo <- datos %>% 
+  filter(Heart.Attack.Risk == "Si")
+
+#ggplot(datos_riesgo, aes(x=Age, colour="purple"))+
+  #geom_density()
+
+ggplot(datos, aes(x=Heart.Attack.Risk, y=Age, fill = Heart.Attack.Risk))+
+  geom_violin(trim = FALSE)+
+  geom_boxplot(width = 0.07)+
+  scale_fill_brewer()
+```
+
+
+
+
+```{r}
+# 2 RADARS
+
+datos_quant_riesgo <- datos %>% 
+  filter(Heart.Attack.Risk == "Si") %>%
+  select(where(is.numeric)) %>% 
+  select(-1)
+
+datos_quant_no_riesgo <- datos %>% 
+  filter(Heart.Attack.Risk == "No") %>% 
+  select(where(is.numeric)) %>% 
+  select(-1)
+
+mitjanes1 = colMeans(datos_quant_riesgo)
+mitjanes1
+
+mitjanes2 = colMeans(datos_quant_no_riesgo)
+mitjanes2
+
+minims=rep(0,length(mitjanes1))
+maxims = pmax(mitjanes1,mitjanes2)
+
+
+radar1 = data.frame(rbind(round(maxims,2), minims, mitjanes1))
+radar2 = data.frame(rbind(round(maxims,2), minims, mitjanes2))
+
+
+radarchart(radar1, axistype = 2,
+           pcol = rgb(0.09,0.45,0.8,0.75), 
+           pfcol = rgb(0.09,0.45,0.8,0.5), 
+           plwd= 4, 
+           cglcol = "grey", 
+           cglty = 1, 
+           axislabcol = "grey", 
+           cglwd = 0.5, 
+           vlcex = 0.4, 
+           title = "Riesgo")
+
+radarchart(radar2, axistype = 2,
+           pcol = rgb(0.55,0.54,0.54,0.75), 
+           pfcol = rgb(0.55,0.54,0.54,0.5), 
+           plwd= 4, 
+           cglcol = "grey", 
+           cglty = 0.9, 
+           axislabcol = "grey", 
+           cglwd = 1, 
+           vlcex = 0.8, 
+           title = "NO Riesgo")
+
 ```
 
 ## Segregación por continentes
 
 Veamos si hay diferencias entre los continentes en los que habitan:
 
-```{r}
+```{r, eval=FALSE}
 datos_Africa <- datos %>% 
   filter(Continent == "Africa") %>%
   select(15:26)
@@ -299,7 +387,7 @@ colnames(datos_Africa)=new_names
 corPlot(datos_Africa, cex = 0.8,  main = "Matriz de correlación de individuos de Àfrica")
 ```
 
-```{r}
+```{r, eval=FALSE}
 datos_Asia <- datos %>% 
   filter(Continent == "Asia") %>%
   select(15:26)
@@ -307,7 +395,7 @@ colnames(datos_Asia)=new_names
 corPlot(datos_Asia, cex = 0.8,  main = "Matriz de correlación de individuos de Asia")
 ```
 
-```{r}
+```{r, eval=FALSE}
 datos_Australia <- datos %>% 
   filter(Continent == "Australia") %>%
   select(15:26)
@@ -315,7 +403,7 @@ colnames(datos_Australia)=new_names
 corPlot(datos_Australia, cex = 0.8,  main = "Matriz de correlación de individuos de Australia")
 ```
 
-```{r}
+```{r, eval=FALSE}
 datos_Europa <- datos %>% 
   filter(Continent == "Europe") %>%
   select(15:26)
@@ -323,7 +411,7 @@ colnames(datos_Europa)=new_names
 corPlot(datos_Europa, cex = 0.8,  main = "Matriz de correlación de individuos de Europa")
 ```
 
-```{r}
+```{r, eval=FALSE}
 datos_SAmerica <- datos %>% 
   filter(Continent == "South America") %>%
   select(15:26)
@@ -331,7 +419,7 @@ colnames(datos_SAmerica)=new_names
 corPlot(datos_SAmerica, cex = 0.8,  main = "Matriz de correlación de individuos de Sud América")
 ```
 
-```{r}
+```{r, eval=FALSE}
 datos_NAmerica <- datos %>% 
   filter(Continent == "North America") %>%
   select(15:26)
@@ -343,7 +431,7 @@ Tampoco observamos ninguna dependencia entre las variables cuantitativas.
 
 ## Segregación por sexo de cada rango de edad
 
-```{r}
+```{r, eval=FALSE}
 datos_menores_30_M <- datos %>% 
   filter(Age < 30) %>%
   filter(Sex == "Male") %>% 
@@ -359,7 +447,7 @@ colnames(datos_menores_30_F)=new_names
 corPlot(datos_menores_30_F, cex = 0.8,  main = "Matriz de correlación de mujeres menores de 30 años")
 ```
 
-```{r}
+```{r, eval=FALSE}
 datos_30_40_M <- datos %>% 
   filter(Age >= 30) %>% 
   filter(Age < 40) %>%
@@ -377,7 +465,7 @@ colnames(datos_30_40_F)=new_names
 corPlot(datos_30_40_F, cex = 0.8,  main = "Matriz de correlación de mujeres de entre 30 y 40 años")
 ```
 
-```{r}
+```{r, eval=FALSE}
 datos_40_50_M <- datos %>% 
   filter(Age >= 40) %>% 
   filter(Age < 50) %>%
@@ -395,7 +483,7 @@ colnames(datos_40_50_F)=new_names
 corPlot(datos_40_50_F, cex = 0.8,  main = "Matriz de correlación de mujeres de entre 40 y 50 años")
 ```
 
-```{r}
+```{r, eval=FALSE}
 datos_50_60_M <- datos %>% 
   filter(Age >= 50) %>% 
   filter(Age < 60) %>%
@@ -414,7 +502,7 @@ colnames(datos_50_60_F)=new_names
 corPlot(datos_50_60_F, cex = 0.8,  main = "Matriz de correlación de mujeres de entre 50 y 60 años")
 ```
 
-```{r}
+```{r, eval=FALSE}
 datos_60_70_M <- datos %>% 
   filter(Age >= 60) %>% 
   filter(Age < 70) %>%
@@ -432,7 +520,7 @@ colnames(datos_60_70_F)=new_names
 corPlot(datos_60_70_F, cex = 0.8,  main = "Matriz de correlación de mujeres de entre 60 y 70 años")
 ```
 
-```{r}
+```{r, eval=FALSE}
 datos_70_80_M <- datos %>% 
   filter(Age >= 70) %>% 
   filter(Age < 80) %>%
@@ -450,7 +538,7 @@ colnames(datos_70_80_F)=new_names
 corPlot(datos_70_80_F, cex = 0.8,  main = "Matriz de correlación de mujeres de entre 70 y 80 años")
 ```
 
-```{r}
+```{r, eval=FALSE}
 datos_80_90_M <- datos %>% 
   filter(Age >= 80) %>% 
   filter(Age <= 90) %>%
