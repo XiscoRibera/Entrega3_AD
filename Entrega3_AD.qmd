@@ -5,20 +5,13 @@ editor: visual
 author: Irene LiFeng Julià Pérez y Xisco Ribera Ramis
 ---
 
-
 # Presentación del problema
 
 Vamos a tratar una base de datos relacionados con la predicción de riesgo de ataque cardíaco. Este hecho es un problema que afecta a un gran porcentaje de la población mundial y es de interés poder predecir esta dolencia.
 
+Nuestro objetivo para este estudio sería: 1. Estudiar algunos perfiles con riesgo de padecer un ataque al corazón 2. Comprobar si hay diferencias entre diferentes continentes respecto al mismo perfil de riesgo. 3. Poder predecir si un individuo tiene riesgo de sufrir un ataque al corazón.
 
-Nuestro objetivo para este estudio sería:
-1.  Estudiar algunos perfiles con riesgo de padecer un ataque al corazón
-2.  Comprobar si hay diferencias entre diferentes continentes respecto al mismo perfil de riesgo.
-3.  Poder predecir si un individuo tiene riesgo de sufrir un ataque al corazón.
-
-
-Los datos provienen de la página web Kaggle:
-[Kaggle - Heart Attack Prediction](https://www.kaggle.com/datasets/iamsouravbanerjee/heart-attack-prediction-dataset).
+Los datos provienen de la página web Kaggle: [Kaggle - Heart Attack Prediction](https://www.kaggle.com/datasets/iamsouravbanerjee/heart-attack-prediction-dataset).
 
 El dataset consta de 8763 muestras, donde cada una representa una serie de características de un paciente. A cada paciente se le atribuyen 26 valores, uno de ellos es su ID, y el resto son variables relacionadas con la salud cardíaca, tanto geográficas como de hábitos personales.
 
@@ -43,14 +36,12 @@ datos = read.csv("heart_attack_prediction_dataset.csv", header = T)
 datos = datos %>% as.tibble
 ```
 
-Vamos a modificar el data set para que sea más cómodo a la hora de trabajar con él.
-Empezamos por cambiar el ID del paciente por una enumeración básica.
+Vamos a modificar el data set para que sea más cómodo a la hora de trabajar con él. Empezamos por cambiar el ID del paciente por una enumeración básica.
 
 ```{r}
 datos = datos %>% 
   mutate(Patient.ID = c(1:8763))
 ```
-
 
 Transformamos las variables qualitativas en factor y, en las binarias (0: No, 1: Si) cambiamos los valores para que sea más ilustrativa y entendible:
 
@@ -110,17 +101,11 @@ datos <- datos %>%
 
 La variable edad es conveniente tenerla estratificada en varios niveles ya que no vamos a poder sacar conclusiones si consideramos cada edad individualmente:
 
-
-
-
-
-
-
 Por último, vamos a eliminar las variables que consideramos que no van a ser concluyentes para el estudio, en este caso, eliminamos la variable Income (nivel de ingresos del paciente) y la variable que anteriormente separamos en dos:
+
 ```{r}
 datos <- datos[,c(-5,-18)]
 ```
-
 
 En este punto, tenemos la tabla de datos con la información que queremos estudiar, reordenemos las columnas para finalizar la conversión a tidy data:
 
@@ -135,21 +120,17 @@ datos <- datos %>%
 # 15-26 quant
 ```
 
-
 Veamos como se estructuran nuestros datos:
 
 ```{r}
 str(datos)
 ```
 
-
 # Variables
-
 
 ```{r}
 skim(datos)
 ```
-
 
 Vamos a crear una tabla con la información de cada variable:
 
@@ -173,8 +154,6 @@ tabla = data.frame(Media, Rango)
 tabla
 ```
 
-
-
 ::: center
 | qualitat                   |           Quantit           |
 |:---------------------------|:---------------------------:|
@@ -185,8 +164,6 @@ tabla
 ```{r}
 summary(datos)
 ```
-
-
 
 # Análisis multivariante exploratorio
 
@@ -203,10 +180,6 @@ pairs(a, col = c("red", "blue", "green", "yellow", "purple", "orange")[as.intege
 ggpairs(a)
 ```
 
-
-
-
-
 ## Estimación del vector de medias y la matriz de covarianza y correlación
 
 Calculemos el vector de medias. Para cada variable cuantitativa
@@ -216,8 +189,8 @@ Calculemos el vector de medias. Para cada variable cuantitativa
 apply(datos[,15:26], FUN = mean, MARGIN = 2)
 ```
 
-
 Veamos ahora la matriz de covariancia (a secas)
+
 ```{r}
 new_names = substr(names(datos[,c(15:26)]),1,5)
 colnames(datos_quant) = new_names
@@ -228,14 +201,10 @@ n = length(datos$Patient.ID)
 round(cov(datos_quant)*(n-1)/n,5)
 ```
 
-
 ```{r}
 
 corPlot(datos_quant, cex = 0.8,  main = "Matriz de correlación")
 ```
-
-
-
 
 Separemos las variables en función de diferentes edades, ya que no hemos observado ningua correlación, ni ninguna dependencia. Nosotros suponemos que la edad sí que es un factor clave a la hora de ser un individuo de riesgo.
 
@@ -249,7 +218,6 @@ colnames(datos_menores_30)=new_names
 corPlot(datos_menores_30, cex = 0.8,  main = "Matriz de correlación de individuos menores de 30 años")
 ```
 
-
 ```{r}
 datos_30_40 <- datos %>% 
   filter(Age >= 30) %>% 
@@ -258,7 +226,6 @@ datos_30_40 <- datos %>%
 colnames(datos_30_40)=new_names
 corPlot(datos_30_40, cex = 0.8,  main = "Matriz de correlación de individuos de entre 30 y 40 años")
 ```
-
 
 ```{r}
 datos_40_50 <- datos %>% 
@@ -269,7 +236,6 @@ colnames(datos_40_50)=new_names
 corPlot(datos_40_50, cex = 0.8,  main = "Matriz de correlación de individuos de entre 40 y 50 años")
 ```
 
-
 ```{r}
 datos_50_60 <- datos %>% 
   filter(Age >= 50) %>% 
@@ -278,7 +244,6 @@ datos_50_60 <- datos %>%
 colnames(datos_50_60)=new_names
 corPlot(datos_50_60, cex = 0.8,  main = "Matriz de correlación de individuos de entre 50 y 60 años")
 ```
-
 
 ```{r}
 datos_60_70 <- datos %>% 
@@ -289,7 +254,6 @@ colnames(datos_60_70)=new_names
 corPlot(datos_60_70, cex = 0.8,  main = "Matriz de correlación de individuos de entre 60 y 70 años")
 ```
 
-
 ```{r}
 datos_70_80 <- datos %>% 
   filter(Age >= 70) %>% 
@@ -299,7 +263,6 @@ colnames(datos_70_80)=new_names
 corPlot(datos_70_80, cex = 0.8,  main = "Matriz de correlación de individuos de entre 70 y 80 años")
 ```
 
-
 ```{r}
 datos_80_90 <- datos %>% 
   filter(Age >= 80) %>% 
@@ -308,7 +271,6 @@ datos_80_90 <- datos %>%
 colnames(datos_80_90)=new_names
 corPlot(datos_80_90, cex = 0.8,  main = "Matriz de correlación de individuos de entre 80 y 90 años")
 ```
-
 
 ```{r, eval=FALSE}
 datos_adultos <- datos %>% 
@@ -325,11 +287,9 @@ Notemos que no hay mucha diferencia entre la edad de los individuos.
 #prop.table(table(datos_30_40$Heart.Attack.Risk))
 ```
 
-
 ## Segregación por continentes
 
 Veamos si hay diferencias entre los continentes en los que habitan:
-
 
 ```{r}
 datos_Africa <- datos %>% 
@@ -371,7 +331,6 @@ colnames(datos_SAmerica)=new_names
 corPlot(datos_SAmerica, cex = 0.8,  main = "Matriz de correlación de individuos de Sud América")
 ```
 
-
 ```{r}
 datos_NAmerica <- datos %>% 
   filter(Continent == "North America") %>%
@@ -379,7 +338,6 @@ datos_NAmerica <- datos %>%
 colnames(datos_NAmerica)=new_names
 corPlot(datos_NAmerica, cex = 0.8,  main = "Matriz de correlación de individuos de Norte América")
 ```
-
 
 Tampoco observamos ninguna dependencia entre las variables cuantitativas.
 
@@ -401,7 +359,6 @@ colnames(datos_menores_30_F)=new_names
 corPlot(datos_menores_30_F, cex = 0.8,  main = "Matriz de correlación de mujeres menores de 30 años")
 ```
 
-
 ```{r}
 datos_30_40_M <- datos %>% 
   filter(Age >= 30) %>% 
@@ -420,7 +377,6 @@ colnames(datos_30_40_F)=new_names
 corPlot(datos_30_40_F, cex = 0.8,  main = "Matriz de correlación de mujeres de entre 30 y 40 años")
 ```
 
-
 ```{r}
 datos_40_50_M <- datos %>% 
   filter(Age >= 40) %>% 
@@ -438,7 +394,6 @@ datos_40_50_F <- datos %>%
 colnames(datos_40_50_F)=new_names
 corPlot(datos_40_50_F, cex = 0.8,  main = "Matriz de correlación de mujeres de entre 40 y 50 años")
 ```
-
 
 ```{r}
 datos_50_60_M <- datos %>% 
@@ -459,7 +414,6 @@ colnames(datos_50_60_F)=new_names
 corPlot(datos_50_60_F, cex = 0.8,  main = "Matriz de correlación de mujeres de entre 50 y 60 años")
 ```
 
-
 ```{r}
 datos_60_70_M <- datos %>% 
   filter(Age >= 60) %>% 
@@ -477,7 +431,6 @@ datos_60_70_F <- datos %>%
 colnames(datos_60_70_F)=new_names
 corPlot(datos_60_70_F, cex = 0.8,  main = "Matriz de correlación de mujeres de entre 60 y 70 años")
 ```
-
 
 ```{r}
 datos_70_80_M <- datos %>% 
@@ -497,7 +450,6 @@ colnames(datos_70_80_F)=new_names
 corPlot(datos_70_80_F, cex = 0.8,  main = "Matriz de correlación de mujeres de entre 70 y 80 años")
 ```
 
-
 ```{r}
 datos_80_90_M <- datos %>% 
   filter(Age >= 80) %>% 
@@ -515,7 +467,6 @@ datos_80_90_F <- datos %>%
 colnames(datos_80_90_F)=new_names
 corPlot(datos_80_90_F, cex = 0.8,  main = "Matriz de correlación de mujeres de entre 80 y 90 años")
 ```
-
 
 ```{r, eval=FALSE}
 datos_adultos <- datos %>% 

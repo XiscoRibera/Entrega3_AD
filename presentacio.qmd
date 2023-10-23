@@ -1,0 +1,18 @@
+---
+title: "Entrega 3 Análisis de Datos"
+format: revealjs
+editor: visual
+author: Irene LiFeng Julià Pérez y Xisco Ribera Ramis
+---
+
+## Datos
+
+Cargamos las librerías
+
+```{r, warning=FALSE, message=FALSE}
+library(tidyverse)
+library(dplyr)
+library(GGally)
+library(psych)
+library(skimr)
+```
