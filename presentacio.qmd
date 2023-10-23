@@ -17,5 +17,4 @@ library(psych)
 library(skimr)
 ```
 
-
 Prueba, a ver si ahora funciona
