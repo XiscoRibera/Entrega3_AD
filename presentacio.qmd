@@ -9,10 +9,13 @@ author: Irene LiFeng Julià Pérez y Xisco Ribera Ramis
 
 Cargamos las librerías
 
-```{r, warning=FALSE, message=FALSE}
+```{r}
 library(tidyverse)
 library(dplyr)
 library(GGally)
 library(psych)
 library(skimr)
 ```
+
+Convertimos a tidy
+
