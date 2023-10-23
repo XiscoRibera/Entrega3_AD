@@ -17,5 +17,5 @@ library(psych)
 library(skimr)
 ```
 
-Convertimos a tidy
 
+Prueba, a ver si ahora funciona
