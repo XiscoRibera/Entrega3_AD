@@ -380,3 +380,7 @@ No observamos una gran diferenciaentre estra matriz y la matriz con todos los in
 - Nuestros datos no son adecuados para realizar ningun estudio de clasificación, ya que no hay diferencias entre las personas de riesgo y las que no.
 
 - No nay ninguna variable dependiente de otra.
+
+
+
+

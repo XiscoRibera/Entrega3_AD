@@ -1,10 +1,129 @@
 ---
 title: "Entrega 3 Análisis de Datos"
-format: revealjs
+format: 
+  revealjs:
+    smaller: TRUE
+    scrollable: TRUE
 editor: visual
 author: Irene LiFeng Julià Pérez y Xisco Ribera Ramis
 ---
 
-# Presentación del problema
+```{r, warning=FALSE, message=FALSE}
+library(tidyverse)
+library(dplyr)
+library(GGally)
+library(psych)
+library(skimr)
+library(fmsb)
+```
 
-Vamos a tratar una base de datos relacionados con la predicción de riesgo de ataque cardíaco. Este hecho es un problema que afecta a un gran porcentaje de la población mundial y es de interés poder predecir esta dolencia.
+
+### Presentación del problema
+
+- Base de datos relacionados con la predicción de riesgo de ataque cardíaco.
+
+- Fuente: [Kaggle - Heart Attack Prediction](https://www.kaggle.com/datasets/iamsouravbanerjee/heart-attack-prediction-dataset)
+
+<div>
+<p style = 'text-align:center;'>
+<img src= "Imagen dataset.png" width="600px">
+</p>
+</div>
+
+##
+
+### Datos unTidy:
+
+```{r, warning=FALSE}
+datos = read.csv("heart_attack_prediction_dataset.csv", header = T)
+datos = datos %>% as.tibble
+str(datos)
+```
+
+
+##
+
+### Convertir datos en Tidy
+
+Transformamos:
+
+- el ID del paciente por una enumeración básica
+- las variables qualitativas en factor
+- las binarias (0: No, 1: Si)
+
+```{r, echo=TRUE}
+datos = datos %>% 
+  mutate(Patient.ID = c(1:8763))
+
+datos = datos %>% 
+  mutate(Sex = Sex %>% as.factor)
+
+datos = datos %>% 
+  mutate(Diet = Diet %>% as.factor)
+
+datos = datos %>% 
+  mutate(Country = Country %>% as.factor)
+
+datos = datos %>% 
+  mutate(Continent = Continent %>% as.factor)
+
+datos = datos %>% 
+  mutate(Hemisphere = Hemisphere %>% as.factor)
+
+datos = datos %>% 
+  mutate(Diabetes = if_else(Diabetes == 0, "No", "Si") %>% as.factor)
+
+datos = datos %>% 
+  mutate(Family.History = if_else(Family.History == 0, "No", "Si") %>% as.factor)
+
+datos = datos %>% 
+  mutate(Smoking = if_else(Smoking == 0, "No", "Si") %>% as.factor)
+
+datos = datos %>% 
+  mutate(Obesity = if_else(Obesity == 0, "No", "Si") %>% as.factor)
+
+datos = datos %>% 
+  mutate(Alcohol.Consumption = if_else(Alcohol.Consumption == 0, "No", "Si") %>% as.factor)
+
+datos = datos %>% 
+  mutate(Previous.Heart.Problems = if_else(Previous.Heart.Problems == 0, "No", "Si") %>% as.factor)
+
+datos = datos %>% 
+  mutate(Medication.Use = if_else(Medication.Use == 0, "No", "Si") %>% as.factor)
+
+datos = datos %>% 
+  mutate(Heart.Attack.Risk = if_else(Heart.Attack.Risk == 0, "No", "Si") %>% as.factor)
+
+datos = datos %>% 
+  mutate(Stress.Level = Stress.Level %>% as.factor)
+```
+
+##
+
+- Dividimos la variable `Blood.Pressure` en otras dos numéricas, la alta y la baja.
+
+```{r, echo=TRUE}
+# vamos a convertir la columna blood.pressure en high y low
+datos <- datos %>%
+  rowwise() %>%
+  mutate(
+    High.Blood.Pressure = as.numeric(unlist(strsplit(Blood.Pressure, "/"))[1]),
+    Low.Blood.Pressure = as.numeric(unlist(strsplit(Blood.Pressure, "/"))[2])
+  ) %>%
+  ungroup()
+```
+
+- Por último, eliminamos la variable `Blood.Pressure`, y `Income`, ya que
+
+
+```{r, echo=TRUE}
+datos <- datos[,c(-5,-18)]
+```
+
+- reordenemos las columnas para finalizar la conversión a tidy data:
+
+```{r, echo=TRUE}
+datos <- datos %>%
+  relocate(where(is.factor)) %>% 
+  relocate(Patient.ID)
+```

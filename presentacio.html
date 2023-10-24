@@ -29,6 +29,71 @@
       margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
       vertical-align: middle;
     }
+    /* CSS for syntax highlighting */
+    pre > code.sourceCode { white-space: pre; position: relative; }
+    pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+    pre > code.sourceCode > span:empty { height: 1.2em; }
+    .sourceCode { overflow: visible; }
+    code.sourceCode > span { color: inherit; text-decoration: inherit; }
+    div.sourceCode { margin: 1em 0; }
+    pre.sourceCode { margin: 0; }
+    @media screen {
+    div.sourceCode { overflow: auto; }
+    }
+    @media print {
+    pre > code.sourceCode { white-space: pre-wrap; }
+    pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+    }
+    pre.numberSource code
+      { counter-reset: source-line 0; }
+    pre.numberSource code > span
+      { position: relative; left: -4em; counter-increment: source-line; }
+    pre.numberSource code > span > a:first-child::before
+      { content: counter(source-line);
+        position: relative; left: -1em; text-align: right; vertical-align: baseline;
+        border: none; display: inline-block;
+        -webkit-touch-callout: none; -webkit-user-select: none;
+        -khtml-user-select: none; -moz-user-select: none;
+        -ms-user-select: none; user-select: none;
+        padding: 0 4px; width: 4em;
+        color: #aaaaaa;
+      }
+    pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+    div.sourceCode
+      { color: #003b4f; background-color: #f1f3f5; }
+    @media screen {
+    pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+    }
+    code span { color: #003b4f; } /* Normal */
+    code span.al { color: #ad0000; } /* Alert */
+    code span.an { color: #5e5e5e; } /* Annotation */
+    code span.at { color: #657422; } /* Attribute */
+    code span.bn { color: #ad0000; } /* BaseN */
+    code span.bu { } /* BuiltIn */
+    code span.cf { color: #003b4f; } /* ControlFlow */
+    code span.ch { color: #20794d; } /* Char */
+    code span.cn { color: #8f5902; } /* Constant */
+    code span.co { color: #5e5e5e; } /* Comment */
+    code span.cv { color: #5e5e5e; font-style: italic; } /* CommentVar */
+    code span.do { color: #5e5e5e; font-style: italic; } /* Documentation */
+    code span.dt { color: #ad0000; } /* DataType */
+    code span.dv { color: #ad0000; } /* DecVal */
+    code span.er { color: #ad0000; } /* Error */
+    code span.ex { } /* Extension */
+    code span.fl { color: #ad0000; } /* Float */
+    code span.fu { color: #4758ab; } /* Function */
+    code span.im { color: #00769e; } /* Import */
+    code span.in { color: #5e5e5e; } /* Information */
+    code span.kw { color: #003b4f; } /* Keyword */
+    code span.op { color: #5e5e5e; } /* Operator */
+    code span.ot { color: #003b4f; } /* Other */
+    code span.pp { color: #ad0000; } /* Preprocessor */
+    code span.sc { color: #5e5e5e; } /* SpecialChar */
+    code span.ss { color: #20794d; } /* SpecialString */
+    code span.st { color: #20794d; } /* String */
+    code span.va { color: #111111; } /* Variable */
+    code span.vs { color: #20794d; } /* VerbatimString */
+    code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
   </style>
   <link rel="stylesheet" href="presentacio_files/libs/revealjs/dist/theme/quarto.css">
   <link href="presentacio_files/libs/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
@@ -243,6 +308,7 @@
     }
     .reveal .slide:not(.center) {
       height: 100%;
+      overflow-y: auto;
     }
     .reveal .slide.scrollable {
       overflow-y: auto;
@@ -336,9 +402,139 @@ Irene LiFeng Julià Pérez y Xisco Ribera Ramis
 </div>
 
 </section>
-<section id="presentación-del-problema" class="title-slide slide level1 center">
-<h1>Presentación del problema</h1>
-<p>Vamos a tratar una base de datos relacionados con la predicción de riesgo de ataque cardíaco. Este hecho es un problema que afecta a un gran porcentaje de la población mundial y es de interés poder predecir esta dolencia.</p>
+<section class="slide level2">
+
+<h3 id="presentación-del-problema">Presentación del problema</h3>
+<ul>
+<li><p>Base de datos relacionados con la predicción de riesgo de ataque cardíaco.</p></li>
+<li><p>Fuente: <a href="https://www.kaggle.com/datasets/iamsouravbanerjee/heart-attack-prediction-dataset">Kaggle - Heart Attack Prediction</a></p></li>
+</ul>
+<div>
+<p style="text-align:center;">
+<img src="Imagen dataset.png" width="600px">
+</p>
+</div>
+</section>
+<section id="section" class="slide level2">
+<h2></h2>
+<h3 id="datos-untidy">Datos unTidy:</h3>
+<div class="cell">
+<div class="cell-output cell-output-stdout">
+<pre><code>tibble [8,763 × 26] (S3: tbl_df/tbl/data.frame)
+ $ Patient.ID                     : chr [1:8763] "BMW7812" "CZE1114" "BNI9906" "JLN3497" ...
+ $ Age                            : int [1:8763] 67 21 21 84 66 54 90 84 20 43 ...
+ $ Sex                            : chr [1:8763] "Male" "Male" "Female" "Male" ...
+ $ Cholesterol                    : int [1:8763] 208 389 324 383 318 297 358 220 145 248 ...
+ $ Blood.Pressure                 : chr [1:8763] "158/88" "165/93" "174/99" "163/100" ...
+ $ Heart.Rate                     : int [1:8763] 72 98 72 73 93 48 84 107 68 55 ...
+ $ Diabetes                       : int [1:8763] 0 1 1 1 1 1 0 0 1 0 ...
+ $ Family.History                 : int [1:8763] 0 1 0 1 1 1 0 0 0 1 ...
+ $ Smoking                        : int [1:8763] 1 1 0 1 1 1 1 1 1 1 ...
+ $ Obesity                        : int [1:8763] 0 1 0 0 1 0 0 1 1 1 ...
+ $ Alcohol.Consumption            : int [1:8763] 0 1 0 1 0 1 1 1 0 1 ...
+ $ Exercise.Hours.Per.Week        : num [1:8763] 4.17 1.81 2.08 9.83 5.8 ...
+ $ Diet                           : chr [1:8763] "Average" "Unhealthy" "Healthy" "Average" ...
+ $ Previous.Heart.Problems        : int [1:8763] 0 1 1 1 1 1 0 0 0 0 ...
+ $ Medication.Use                 : int [1:8763] 0 0 1 0 0 1 0 1 0 0 ...
+ $ Stress.Level                   : int [1:8763] 9 1 9 9 6 2 7 4 5 4 ...
+ $ Sedentary.Hours.Per.Day        : num [1:8763] 6.62 4.96 9.46 7.65 1.51 ...
+ $ Income                         : int [1:8763] 261404 285768 235282 125640 160555 241339 190450 122093 25086 209703 ...
+ $ BMI                            : num [1:8763] 31.3 27.2 28.2 36.5 21.8 ...
+ $ Triglycerides                  : int [1:8763] 286 235 587 378 231 795 284 370 790 232 ...
+ $ Physical.Activity.Days.Per.Week: int [1:8763] 0 1 4 3 1 5 4 6 7 7 ...
+ $ Sleep.Hours.Per.Day            : int [1:8763] 6 7 4 4 5 10 10 7 4 7 ...
+ $ Country                        : chr [1:8763] "Argentina" "Canada" "France" "Canada" ...
+ $ Continent                      : chr [1:8763] "South America" "North America" "Europe" "North America" ...
+ $ Hemisphere                     : chr [1:8763] "Southern Hemisphere" "Northern Hemisphere" "Northern Hemisphere" "Northern Hemisphere" ...
+ $ Heart.Attack.Risk              : int [1:8763] 0 0 0 0 0 1 1 1 0 0 ...</code></pre>
+</div>
+</div>
+</section>
+<section id="section-1" class="slide level2">
+<h2></h2>
+<h3 id="convertir-datos-en-tidy">Convertir datos en Tidy</h3>
+<p>Transformamos:</p>
+<ul>
+<li>el ID del paciente por una enumeración básica</li>
+<li>las variables qualitativas en factor</li>
+<li>las binarias (0: No, 1: Si)</li>
+</ul>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1"></a>datos <span class="ot">=</span> datos <span class="sc">%&gt;%</span> </span>
+<span id="cb2-2"><a href="#cb2-2"></a>  <span class="fu">mutate</span>(<span class="at">Patient.ID =</span> <span class="fu">c</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">8763</span>))</span>
+<span id="cb2-3"><a href="#cb2-3"></a></span>
+<span id="cb2-4"><a href="#cb2-4"></a>datos <span class="ot">=</span> datos <span class="sc">%&gt;%</span> </span>
+<span id="cb2-5"><a href="#cb2-5"></a>  <span class="fu">mutate</span>(<span class="at">Sex =</span> Sex <span class="sc">%&gt;%</span> as.factor)</span>
+<span id="cb2-6"><a href="#cb2-6"></a></span>
+<span id="cb2-7"><a href="#cb2-7"></a>datos <span class="ot">=</span> datos <span class="sc">%&gt;%</span> </span>
+<span id="cb2-8"><a href="#cb2-8"></a>  <span class="fu">mutate</span>(<span class="at">Diet =</span> Diet <span class="sc">%&gt;%</span> as.factor)</span>
+<span id="cb2-9"><a href="#cb2-9"></a></span>
+<span id="cb2-10"><a href="#cb2-10"></a>datos <span class="ot">=</span> datos <span class="sc">%&gt;%</span> </span>
+<span id="cb2-11"><a href="#cb2-11"></a>  <span class="fu">mutate</span>(<span class="at">Country =</span> Country <span class="sc">%&gt;%</span> as.factor)</span>
+<span id="cb2-12"><a href="#cb2-12"></a></span>
+<span id="cb2-13"><a href="#cb2-13"></a>datos <span class="ot">=</span> datos <span class="sc">%&gt;%</span> </span>
+<span id="cb2-14"><a href="#cb2-14"></a>  <span class="fu">mutate</span>(<span class="at">Continent =</span> Continent <span class="sc">%&gt;%</span> as.factor)</span>
+<span id="cb2-15"><a href="#cb2-15"></a></span>
+<span id="cb2-16"><a href="#cb2-16"></a>datos <span class="ot">=</span> datos <span class="sc">%&gt;%</span> </span>
+<span id="cb2-17"><a href="#cb2-17"></a>  <span class="fu">mutate</span>(<span class="at">Hemisphere =</span> Hemisphere <span class="sc">%&gt;%</span> as.factor)</span>
+<span id="cb2-18"><a href="#cb2-18"></a></span>
+<span id="cb2-19"><a href="#cb2-19"></a>datos <span class="ot">=</span> datos <span class="sc">%&gt;%</span> </span>
+<span id="cb2-20"><a href="#cb2-20"></a>  <span class="fu">mutate</span>(<span class="at">Diabetes =</span> <span class="fu">if_else</span>(Diabetes <span class="sc">==</span> <span class="dv">0</span>, <span class="st">"No"</span>, <span class="st">"Si"</span>) <span class="sc">%&gt;%</span> as.factor)</span>
+<span id="cb2-21"><a href="#cb2-21"></a></span>
+<span id="cb2-22"><a href="#cb2-22"></a>datos <span class="ot">=</span> datos <span class="sc">%&gt;%</span> </span>
+<span id="cb2-23"><a href="#cb2-23"></a>  <span class="fu">mutate</span>(<span class="at">Family.History =</span> <span class="fu">if_else</span>(Family.History <span class="sc">==</span> <span class="dv">0</span>, <span class="st">"No"</span>, <span class="st">"Si"</span>) <span class="sc">%&gt;%</span> as.factor)</span>
+<span id="cb2-24"><a href="#cb2-24"></a></span>
+<span id="cb2-25"><a href="#cb2-25"></a>datos <span class="ot">=</span> datos <span class="sc">%&gt;%</span> </span>
+<span id="cb2-26"><a href="#cb2-26"></a>  <span class="fu">mutate</span>(<span class="at">Smoking =</span> <span class="fu">if_else</span>(Smoking <span class="sc">==</span> <span class="dv">0</span>, <span class="st">"No"</span>, <span class="st">"Si"</span>) <span class="sc">%&gt;%</span> as.factor)</span>
+<span id="cb2-27"><a href="#cb2-27"></a></span>
+<span id="cb2-28"><a href="#cb2-28"></a>datos <span class="ot">=</span> datos <span class="sc">%&gt;%</span> </span>
+<span id="cb2-29"><a href="#cb2-29"></a>  <span class="fu">mutate</span>(<span class="at">Obesity =</span> <span class="fu">if_else</span>(Obesity <span class="sc">==</span> <span class="dv">0</span>, <span class="st">"No"</span>, <span class="st">"Si"</span>) <span class="sc">%&gt;%</span> as.factor)</span>
+<span id="cb2-30"><a href="#cb2-30"></a></span>
+<span id="cb2-31"><a href="#cb2-31"></a>datos <span class="ot">=</span> datos <span class="sc">%&gt;%</span> </span>
+<span id="cb2-32"><a href="#cb2-32"></a>  <span class="fu">mutate</span>(<span class="at">Alcohol.Consumption =</span> <span class="fu">if_else</span>(Alcohol.Consumption <span class="sc">==</span> <span class="dv">0</span>, <span class="st">"No"</span>, <span class="st">"Si"</span>) <span class="sc">%&gt;%</span> as.factor)</span>
+<span id="cb2-33"><a href="#cb2-33"></a></span>
+<span id="cb2-34"><a href="#cb2-34"></a>datos <span class="ot">=</span> datos <span class="sc">%&gt;%</span> </span>
+<span id="cb2-35"><a href="#cb2-35"></a>  <span class="fu">mutate</span>(<span class="at">Previous.Heart.Problems =</span> <span class="fu">if_else</span>(Previous.Heart.Problems <span class="sc">==</span> <span class="dv">0</span>, <span class="st">"No"</span>, <span class="st">"Si"</span>) <span class="sc">%&gt;%</span> as.factor)</span>
+<span id="cb2-36"><a href="#cb2-36"></a></span>
+<span id="cb2-37"><a href="#cb2-37"></a>datos <span class="ot">=</span> datos <span class="sc">%&gt;%</span> </span>
+<span id="cb2-38"><a href="#cb2-38"></a>  <span class="fu">mutate</span>(<span class="at">Medication.Use =</span> <span class="fu">if_else</span>(Medication.Use <span class="sc">==</span> <span class="dv">0</span>, <span class="st">"No"</span>, <span class="st">"Si"</span>) <span class="sc">%&gt;%</span> as.factor)</span>
+<span id="cb2-39"><a href="#cb2-39"></a></span>
+<span id="cb2-40"><a href="#cb2-40"></a>datos <span class="ot">=</span> datos <span class="sc">%&gt;%</span> </span>
+<span id="cb2-41"><a href="#cb2-41"></a>  <span class="fu">mutate</span>(<span class="at">Heart.Attack.Risk =</span> <span class="fu">if_else</span>(Heart.Attack.Risk <span class="sc">==</span> <span class="dv">0</span>, <span class="st">"No"</span>, <span class="st">"Si"</span>) <span class="sc">%&gt;%</span> as.factor)</span>
+<span id="cb2-42"><a href="#cb2-42"></a></span>
+<span id="cb2-43"><a href="#cb2-43"></a>datos <span class="ot">=</span> datos <span class="sc">%&gt;%</span> </span>
+<span id="cb2-44"><a href="#cb2-44"></a>  <span class="fu">mutate</span>(<span class="at">Stress.Level =</span> Stress.Level <span class="sc">%&gt;%</span> as.factor)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="section-2" class="slide level2">
+<h2></h2>
+<ul>
+<li>Dividimos la variable <code>Blood.Pressure</code> en otras dos numéricas, la alta y la baja.</li>
+</ul>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1"></a><span class="co"># vamos a convertir la columna blood.pressure en high y low</span></span>
+<span id="cb3-2"><a href="#cb3-2"></a>datos <span class="ot">&lt;-</span> datos <span class="sc">%&gt;%</span></span>
+<span id="cb3-3"><a href="#cb3-3"></a>  <span class="fu">rowwise</span>() <span class="sc">%&gt;%</span></span>
+<span id="cb3-4"><a href="#cb3-4"></a>  <span class="fu">mutate</span>(</span>
+<span id="cb3-5"><a href="#cb3-5"></a>    <span class="at">High.Blood.Pressure =</span> <span class="fu">as.numeric</span>(<span class="fu">unlist</span>(<span class="fu">strsplit</span>(Blood.Pressure, <span class="st">"/"</span>))[<span class="dv">1</span>]),</span>
+<span id="cb3-6"><a href="#cb3-6"></a>    <span class="at">Low.Blood.Pressure =</span> <span class="fu">as.numeric</span>(<span class="fu">unlist</span>(<span class="fu">strsplit</span>(Blood.Pressure, <span class="st">"/"</span>))[<span class="dv">2</span>])</span>
+<span id="cb3-7"><a href="#cb3-7"></a>  ) <span class="sc">%&gt;%</span></span>
+<span id="cb3-8"><a href="#cb3-8"></a>  <span class="fu">ungroup</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<ul>
+<li>Por último, eliminamos la variable <code>Blood.Pressure</code>, y <code>Income</code>, ya que</li>
+</ul>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1"></a>datos <span class="ot">&lt;-</span> datos[,<span class="fu">c</span>(<span class="sc">-</span><span class="dv">5</span>,<span class="sc">-</span><span class="dv">18</span>)]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<ul>
+<li>reordenemos las columnas para finalizar la conversión a tidy data:</li>
+</ul>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1"></a>datos <span class="ot">&lt;-</span> datos <span class="sc">%&gt;%</span></span>
+<span id="cb5-2"><a href="#cb5-2"></a>  <span class="fu">relocate</span>(<span class="fu">where</span>(is.factor)) <span class="sc">%&gt;%</span> </span>
+<span id="cb5-3"><a href="#cb5-3"></a>  <span class="fu">relocate</span>(Patient.ID)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
 <div class="footer footer-default">
 
 </div>
@@ -369,13 +565,13 @@ Irene LiFeng Julià Pérez y Xisco Ribera Ramis
       Reveal.initialize({
 'controlsAuto': true,
 'previewLinksAuto': false,
-'smaller': false,
+'smaller': true,
 'pdfSeparateFragments': false,
 'autoAnimateEasing': "ease",
 'autoAnimateDuration': 1,
 'autoAnimateUnmatched': true,
 'menu': {"side":"left","useTextContentForMissingTitles":true,"markers":false,"loadIcons":false,"custom":[{"title":"Tools","icon":"<i class=\"fas fa-gear\"></i>","content":"<ul class=\"slide-menu-items\">\n<li class=\"slide-tool-item active\" data-item=\"0\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.fullscreen(event)\"><kbd>f</kbd> Fullscreen</a></li>\n<li class=\"slide-tool-item\" data-item=\"1\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.speakerMode(event)\"><kbd>s</kbd> Speaker View</a></li>\n<li class=\"slide-tool-item\" data-item=\"2\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.overview(event)\"><kbd>o</kbd> Slide Overview</a></li>\n<li class=\"slide-tool-item\" data-item=\"3\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.togglePdfExport(event)\"><kbd>e</kbd> PDF Export Mode</a></li>\n<li class=\"slide-tool-item\" data-item=\"4\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.keyboardHelp(event)\"><kbd>?</kbd> Keyboard Help</a></li>\n</ul>"}],"openButton":true},
-'smaller': false,
+'smaller': true,
  
         // Display controls in the bottom right corner
         controls: false,
@@ -554,6 +750,44 @@ Irene LiFeng Julià Pérez y Xisco Ribera Ramis
         ]
       });
     </script>
+    
+    <script>
+      // htmlwidgets need to know to resize themselves when slides are shown/hidden.
+      // Fire the "slideenter" event (handled by htmlwidgets.js) when the current
+      // slide changes (different for each slide format).
+      (function () {
+        // dispatch for htmlwidgets
+        function fireSlideEnter() {
+          const event = window.document.createEvent("Event");
+          event.initEvent("slideenter", true, true);
+          window.document.dispatchEvent(event);
+        }
+
+        function fireSlideChanged(previousSlide, currentSlide) {
+          fireSlideEnter();
+
+          // dispatch for shiny
+          if (window.jQuery) {
+            if (previousSlide) {
+              window.jQuery(previousSlide).trigger("hidden");
+            }
+            if (currentSlide) {
+              window.jQuery(currentSlide).trigger("shown");
+            }
+          }
+        }
+
+        // hookup for slidy
+        if (window.w3c_slidy) {
+          window.w3c_slidy.add_observer(function (slide_num) {
+            // slide_num starts at position 1
+            fireSlideChanged(null, w3c_slidy.slides[slide_num - 1]);
+          });
+        }
+
+      })();
+    </script>
+
     <script id="quarto-html-after-body" type="application/javascript">
     window.document.addEventListener("DOMContentLoaded", function (event) {
       const toggleBodyColorMode = (bsSheetEl) => {
