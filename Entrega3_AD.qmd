@@ -290,7 +290,9 @@ perfil_riesgo = datos %>%
   filter(Diet == "Unhealthy") %>% 
   filter(Stress.Level == c("7","8","9","10"))
 
-pie(table(perfil_riesgo$Heart.Attack.Risk))
+pie(table(perfil_riesgo$Heart.Attack.Risk), main = "Perfil de riesgo")
+
+pie(table(datos$Heart.Attack.Risk), main = "Todos los individuos")
 ```
 
 
@@ -344,7 +346,6 @@ round(cov(datos_quant)*(n-1)/n,5)
 
 Matriz de correlación:
 ```{r}
-
 corPlot(datos_quant, cex = 0.8,  main = "Matriz de correlación")
 ```
 
