@@ -11,7 +11,7 @@ Vamos a tratar una base de datos relacionados con la predicción de riesgo de at
 
 Nuestro objetivo para este estudio sería: 
 
-1. Estudiar algunos perfiles con riesgo de padecer un ataque al corazón 
+1. Estudiar algunos perfiles con riesgo de padecer un ataque al corazón.
 
 2. Comprobar si hay diferencias entre diferentes continentes respecto al mismo perfil de riesgo.
 
@@ -96,7 +96,7 @@ datos = datos %>%
   mutate(Stress.Level = Stress.Level %>% as.factor)
 ```
 
-El siguiente paso va a ser separar la variable qualitativa Blood.Pressure en dos nuevas variables, ésta vez cuantitativas, ya que la presión arterial está representada como un símbolo que equivale a la presión alta y la baja separadas por una barra:
+El siguiente paso va a ser separar la variable qualitativa `Blood.Pressure` en dos nuevas variables, ésta vez cuantitativas, ya que la presión arterial está representada como un símbolo que equivale a la presión alta y la baja separadas por una barra:
 
 ```{r}
 # vamos a convertir la columna blood.pressure en high y low
@@ -109,7 +109,7 @@ datos <- datos %>%
   ungroup()
 ```
 
-Por último, vamos a eliminar las variables que consideramos que no van a ser concluyentes para el estudio, en este caso, eliminamos la variable Income (nivel de ingresos del paciente) y la variable que anteriormente separamos en dos:
+Por último, vamos a eliminar las variables que consideramos que no van a ser concluyentes para el estudio, en este caso, eliminamos la variable `Income` (nivel de ingresos del paciente) y la variable que anteriormente separamos en dos:
 
 ```{r}
 datos <- datos[,c(-5,-18)]
@@ -118,14 +118,13 @@ datos <- datos[,c(-5,-18)]
 En este punto, tenemos la tabla de datos con la información que queremos estudiar, reordenemos las columnas para finalizar la conversión a tidy data:
 
 ```{r}
-
 datos <- datos %>%
   relocate(where(is.factor)) %>% 
   relocate(Patient.ID)
 
 # 1 id
-# 2-14 qual
-# 15-26 quant
+# 2-14 cualitativas
+# 15-26 cuantitativas
 ```
 
 Veamos como se estructuran nuestros datos:
@@ -136,11 +135,9 @@ str(datos)
 
 # Variables
 
-```{r}
+Vamos a crear una tabla con la información de cada variable.
 
-```
-
-Vamos a crear una tabla con la información de cada variable:
+Empezamos por las cuantitativas
 
 ```{r, echo=FALSE}
 # Separamos los datos en variables cuantitativas y cualitativas
@@ -171,8 +168,9 @@ tabla = data.frame(Unidad, Media, Desv, Minimo, Maximo, Rango)
 tabla
 ```
 
+Veamos ahora los datos cualitativos
 
-```{r}
+```{r, echo=FALSE}
 summary(datos_qual)
 ```
 
@@ -238,18 +236,21 @@ radarchart(radar2, axistype = 2,
 
 
 
-Notemos que con las variables cuantitativas, no podemos establecer un perfil de riesgo.
+Notemos que, con las variables cuantitativas, no podemos establecer un perfil de riesgo.
 
 
 Veamos si a simple vista, hay diferencias entre las variables cualitativas y el hecho de tener riesgo de padecer un ataque cardíaco.
-```{r}
+
+Para ello, consideramos unas tablas de frecuencias:
+
+```{r, echo=FALSE}
 table(datos$Heart.Attack.Risk, datos$Stress.Level, dnn = c("Riesgo", "Estres"))
 ```
 Notemos que parace ser que el nivel de estres no afecta.
 
 
 
-```{r}
+```{r, echo=FALSE}
 table(datos$Heart.Attack.Risk, datos$Obesity, dnn = c("Riesgo", "Obesidad"))
 ```
 
@@ -258,30 +259,30 @@ Notemos que hay prácticamente el doble de individuos con obesidad que no tienen
 
 
 
-```{r}
+```{r, echo=FALSE}
 table(datos$Heart.Attack.Risk, datos$Family.History, dnn = c("Riesgo", "Historial Familiar"))
 ```
 Notemos que hay muchos más individuos con casos de ataque en su familia que no tienen riesgo de tener un ataque. Y de los que son de riesgo, hay casi el mismo número de personas con antecedentes familiares que sin ellos.
 
-```{r}
+```{r, echo=FALSE}
 table(datos$Heart.Attack.Risk, datos$Alcohol.Consumption, dnn = c("Riesgo", "Consumo de alcohol"))
 ```
 Notemos que hay muchos más individuos que consumen alcohol y no tienen riesgo de tener un ataque. Y de los que son de riesgo, hay casi el mismo número de personas con que consumen alcohol que los que no.
 
 
-```{r}
+```{r, echo=FALSE}
 table(datos$Heart.Attack.Risk, datos$Diet, dnn = c("Riesgo", "Dieta"))
 ```
 Notemos que hay más individuos con mala dieta que no tienen riesgo de tener un ataque. Y de los que son de riesgo, hay prácticamente el mismo número de de individuos en cada tipo de dieta.
 
-```{r}
+```{r, echo=FALSE}
 table(datos$Heart.Attack.Risk, datos$Smoking, dnn = c("Riesgo", "Fumar"))
 ```
 
 Notemos que hay aproximadamente el doble de individuos que fuman y no tienen riesgo de tener un ataque. Pero, de los que sí tienen riesgo, en este caso, hay muchos más individuos que fuman.
 
 
-Por tanto, intentemos establecer un perfil con las variables cualitativas.
+Después de estas observaciones, intentemos establecer un perfil con las variables cualitativas.
 
 ```{r,cache=TRUE}
 perfil_riesgo = datos %>% 
@@ -289,10 +290,15 @@ perfil_riesgo = datos %>%
   filter(Obesity=="Si") %>% 
   filter(Diet == "Unhealthy") %>% 
   filter(Stress.Level == c("7","8","9","10"))
+```
 
-pie(table(perfil_riesgo$Heart.Attack.Risk), main = "Perfil de riesgo")
 
-pie(table(datos$Heart.Attack.Risk), main = "Todos los individuos")
+
+```{r,cache=TRUE, echo=FALSE}
+par(mfrow=c(1,2))
+pie(table(perfil_riesgo$Heart.Attack.Risk), main = "Perfil de riesgo", col = c("#99CFD1", "#2A5676"))
+
+pie(table(datos$Heart.Attack.Risk), main = "Todos los individuos", col = c("#99CFD1", "#2A5676"))
 ```
 
 
@@ -309,12 +315,13 @@ datos_riesgo <- datos %>%
 ggplot(datos, aes(x=Heart.Attack.Risk, y=Age, fill = Heart.Attack.Risk))+
   geom_violin(trim = FALSE)+
   geom_boxplot(width = 0.07)+
-  scale_fill_brewer()
+  scale_fill_brewer()+
+  theme_bw()
 ```
-Vemos que la edad no parece influir en el perfil de riesgo, ya que se disrtibuyen bastante igual.
+Vemos que la edad no parece influir en el perfil de riesgo, ya que se disrtibuyen de forma similar.
 
 
-Por último hagamos un ggpais para las variables cuantitativas
+Por último, hagamos un `ggpairs` para las variables cuantitativas
 
 ```{r, warning=FALSE, cache=TRUE}
 ggpairs(datos_quant)
@@ -327,13 +334,13 @@ A simple vista no hay ninguna variable dependiente de otra, ni ninguna tendencia
 
 Calculemos el vector de medias para cada variable cuantitativa
 
-```{r}
+```{r, echo=FALSE}
 apply(datos_quant, FUN = mean, MARGIN = 2)
 ```
 
-Veamos ahora la matriz de covariancia (a secas)
+Veamos ahora la matriz de covarianza (a secas)
 
-```{r}
+```{r, echo=FALSE}
 new_names = substr(names(datos_quant),1,5)
 colnames(datos_quant) = new_names
 
@@ -345,7 +352,7 @@ round(cov(datos_quant)*(n-1)/n,5)
 
 
 Matriz de correlación:
-```{r}
+```{r, echo=FALSE}
 corPlot(datos_quant, cex = 0.8,  main = "Matriz de correlación")
 ```
 
@@ -361,26 +368,29 @@ datos$Age = cut(datos$Age, breaks = lims, labels = Etiquetas, right = FALSE)
 
 Respecto al perfil de reisgo que hemos definido anteriormente, veamos si existe alguna dependencia entre las variables quantitativas
 
-```{r,cache=TRUE}
+```{r,cache=TRUE, echo=FALSE}
 perfil_riesgo_quant = perfil_riesgo %>% 
   select(where(is.numeric)) %>% 
   select(-1)
 
 new_names = substr(names(datos_quant),1,9)
 colnames(perfil_riesgo_quant)=new_names
-perfil_riesgo_quant
+
 
 corPlot(perfil_riesgo_quant, cex = 0.8,  main = "Matriz de correlación de perfil de riesgo")
 
 ```
 
-No observamos una gran diferenciaentre estra matriz y la matriz con todos los individuos.
+
+En este caso se aprecia una pequeña diferencia respecto de la anterior, sin embargo, no parece ser significativo ya que los índices de correlación son muy cercanos a 0.
 
 # Conclusiones
 
-- Nuestros datos no son adecuados para realizar ningun estudio de clasificación, ya que no hay diferencias entre las personas de riesgo y las que no.
+- Nuestros datos no son adecuados para realizar ningun estudio de clasificación, ya que no se observan diferencias entre los perfiles de riesgo y los que no.
 
 - No nay ninguna variable dependiente de otra.
+
+- Teniendo en cuenta que hay evidencia de ciertos perfiles de riesgo, es de extrañar la obtención de estos resultados. Este problema podría deberse a una toma de muestras desafortunada y es posible que repitiendo el muestreo se consiguiesen unos resultados más cercanos a lo que esperabamos.
 
 
 

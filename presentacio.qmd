@@ -1,5 +1,5 @@
 ---
-title: "Entrega 3 Análisis de Datos"
+title: "Predicción de Riesgo de Ataque Cardíaco"
 format: 
   revealjs:
     smaller: TRUE
@@ -47,9 +47,9 @@ str(datos)
 
 Transformamos:
 
-- el ID del paciente por una enumeración básica
-- las variables qualitativas en factor
-- las binarias (0: No, 1: Si)
+- El ID del paciente por una enumeración básica
+- Las variables qualitativas en factor
+- Las binarias (0: No, 1: Si)
 
 ```{r, echo=TRUE}
 datos = datos %>% 
@@ -120,10 +120,133 @@ datos <- datos %>%
 datos <- datos[,c(-5,-18)]
 ```
 
-- reordenemos las columnas para finalizar la conversión a tidy data:
+- Reordenemos las columnas para finalizar la conversión a tidy data:
 
 ```{r, echo=TRUE}
 datos <- datos %>%
   relocate(where(is.factor)) %>% 
   relocate(Patient.ID)
 ```
+
+
+##
+
+### Variables
+
+Variables cuantitativas
+
+```{r, echo=FALSE}
+# Separamos los datos en variables cuantitativas y cualitativas
+datos_quant <- datos %>% 
+  select(where(is.numeric)) %>% 
+  select(-1)
+
+
+datos_qual <- datos %>% 
+  select(where(is.factor))
+
+# Cuantitativas
+
+Unidad = c("Años", "mg/dl", "lpm", "h", "h", "kg/m^2", "mg/dl", "días", "h", "mm Hg", "mm Hg")
+
+Media = round(colMeans(datos_quant),3)
+
+rango <- function(x){
+  return(max(x)-min(x))
+}
+Rango = round(apply(datos_quant, FUN = rango, MARGIN = 2), 3)
+Minimo = round(apply(datos_quant, FUN = min, 2),3)
+Maximo = round(apply(datos_quant, FUN = max, 2),3)
+Desv = round(apply(datos_quant, FUN = sd, 2), 3)
+# algo aixi, pero mes ben fet:
+
+tabla = data.frame(Unidad, Media, Desv, Minimo, Maximo, Rango)
+tabla
+```
+
+
+##
+
+Variables cualitativas
+
+```{r, echo=FALSE}
+summary(datos_qual)
+```
+
+
+
+##
+### Análisis multivariante exploratorio
+
+Queremos encontrar un perfil de paciente con riesgo
+
+Características numéricas
+
+```{r, echo=FALSE}
+# 2 RADARS
+
+datos_quant_riesgo <- datos %>% 
+  filter(Heart.Attack.Risk == "Si") %>%
+  select(where(is.numeric)) %>% 
+  select(-1)
+
+datos_quant_no_riesgo <- datos %>% 
+  filter(Heart.Attack.Risk == "No") %>% 
+  select(where(is.numeric)) %>% 
+  select(-1)
+
+mitjanes1 = colMeans(datos_quant_riesgo)
+
+
+mitjanes2 = colMeans(datos_quant_no_riesgo)
+
+
+minims=rep(0,length(mitjanes1))
+maxims = pmax(mitjanes1,mitjanes2)
+
+
+radar1 = data.frame(rbind(round(maxims,2), minims, mitjanes1))
+
+radar2 = data.frame(rbind(round(maxims,2), minims, mitjanes2))
+
+par(mfrow=c(1,2))
+
+radarchart(radar1, axistype = 2,
+           pcol = rgb(0.09,0.45,0.8,0.75), 
+           pfcol = rgb(0.09,0.45,0.8,0.5), 
+           plwd= 4, 
+           cglcol = "grey", 
+           cglty = 1,
+           axislabcol = "grey", 
+           cglwd = 0.5, 
+           vlcex = 0.8, 
+           title = "Riesgo")
+
+radarchart(radar2, axistype = 2,
+           pcol = rgb(1, 0.5, 0,0.75), 
+           pfcol = rgb(1, 0.5, 0,0.5), 
+           plwd= 4, 
+           cglcol = "grey", 
+           cglty = 1, 
+           axislabcol = "grey", 
+           cglwd = 1, 
+           vlcex = 0.8, 
+           title = "NO Riesgo")
+
+```
+
+
+
+##
+
+comparamos el riesgo del paciente a padecer un ataque cardíaco con varias variables cualitativas.
+
+- Nivel de estrés
+
+```{r, echo=FALSE}
+table(datos$Heart.Attack.Risk, datos$Stress.Level, dnn = c("Riesgo", "Estres"))
+```
+
+
+
+

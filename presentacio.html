@@ -11,7 +11,7 @@
   <meta name="generator" content="quarto-1.3.433">
 
   <meta name="author" content="Irene LiFeng Julià Pérez y Xisco Ribera Ramis">
-  <title>Entrega 3 Análisis de Datos</title>
+  <title>Predicción de Riesgo de Ataque Cardíaco</title>
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
@@ -391,7 +391,7 @@
     <div class="slides">
 
 <section id="title-slide" class="quarto-title-block center">
-  <h1 class="title">Entrega 3 Análisis de Datos</h1>
+  <h1 class="title">Predicción de Riesgo de Ataque Cardíaco</h1>
 
 <div class="quarto-title-authors">
 <div class="quarto-title-author">
@@ -455,9 +455,9 @@ Irene LiFeng Julià Pérez y Xisco Ribera Ramis
 <h3 id="convertir-datos-en-tidy">Convertir datos en Tidy</h3>
 <p>Transformamos:</p>
 <ul>
-<li>el ID del paciente por una enumeración básica</li>
-<li>las variables qualitativas en factor</li>
-<li>las binarias (0: No, 1: Si)</li>
+<li>El ID del paciente por una enumeración básica</li>
+<li>Las variables qualitativas en factor</li>
+<li>Las binarias (0: No, 1: Si)</li>
 </ul>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb2"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1"></a>datos <span class="ot">=</span> datos <span class="sc">%&gt;%</span> </span>
@@ -528,12 +528,95 @@ Irene LiFeng Julià Pérez y Xisco Ribera Ramis
 <div class="sourceCode cell-code" id="cb4"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1"></a>datos <span class="ot">&lt;-</span> datos[,<span class="fu">c</span>(<span class="sc">-</span><span class="dv">5</span>,<span class="sc">-</span><span class="dv">18</span>)]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <ul>
-<li>reordenemos las columnas para finalizar la conversión a tidy data:</li>
+<li>Reordenemos las columnas para finalizar la conversión a tidy data:</li>
 </ul>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb5"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1"></a>datos <span class="ot">&lt;-</span> datos <span class="sc">%&gt;%</span></span>
 <span id="cb5-2"><a href="#cb5-2"></a>  <span class="fu">relocate</span>(<span class="fu">where</span>(is.factor)) <span class="sc">%&gt;%</span> </span>
 <span id="cb5-3"><a href="#cb5-3"></a>  <span class="fu">relocate</span>(Patient.ID)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="section-3" class="slide level2">
+<h2></h2>
+<h3 id="variables">Variables</h3>
+<p>Variables cuantitativas</p>
+<div class="cell">
+<div class="cell-output cell-output-stdout">
+<pre><code>                                Unidad   Media    Desv  Minimo  Maximo   Rango
+Age                               Años  53.708  21.250  18.000  90.000  72.000
+Cholesterol                      mg/dl 259.877  80.863 120.000 400.000 280.000
+Heart.Rate                         lpm  75.022  20.551  40.000 110.000  70.000
+Exercise.Hours.Per.Week              h  10.014   5.784   0.002  19.999  19.996
+Sedentary.Hours.Per.Day              h   5.994   3.466   0.001  11.999  11.998
+BMI                             kg/m^2  28.891   6.319  18.002  39.997  21.995
+Triglycerides                    mg/dl 417.677 223.748  30.000 800.000 770.000
+Physical.Activity.Days.Per.Week   días   3.490   2.283   0.000   7.000   7.000
+Sleep.Hours.Per.Day                  h   7.024   1.988   4.000  10.000   6.000
+High.Blood.Pressure              mm Hg 135.076  26.350  90.000 180.000  90.000
+Low.Blood.Pressure               mm Hg  85.156  14.677  60.000 110.000  50.000</code></pre>
+</div>
+</div>
+</section>
+<section id="section-4" class="slide level2">
+<h2></h2>
+<p>Variables cualitativas</p>
+<div class="cell">
+<div class="cell-output cell-output-stdout">
+<pre><code>     Sex       Diabetes  Family.History Smoking   Obesity   Alcohol.Consumption
+ Female:2652   No:3047   No:4443        No: 904   No:4369   No:3522            
+ Male  :6111   Si:5716   Si:4320        Si:7859   Si:4394   Si:5241            
+                                                                               
+                                                                               
+                                                                               
+                                                                               
+                                                                               
+        Diet      Previous.Heart.Problems Medication.Use  Stress.Level 
+ Average  :2912   No:4418                 No:4396        2      : 913  
+ Healthy  :2960   Si:4345                 Si:4367        4      : 910  
+ Unhealthy:2891                                          7      : 903  
+                                                         9      : 887  
+                                                         8      : 879  
+                                                         3      : 868  
+                                                         (Other):3403  
+           Country             Continent                  Hemisphere  
+ Germany       : 477   Africa       : 873   Northern Hemisphere:5660  
+ Argentina     : 471   Asia         :2543   Southern Hemisphere:3103  
+ Brazil        : 462   Australia    : 884                             
+ United Kingdom: 457   Europe       :2241                             
+ Australia     : 449   North America: 860                             
+ Nigeria       : 448   South America:1362                             
+ (Other)       :5999                                                  
+ Heart.Attack.Risk
+ No:5624          
+ Si:3139          
+                  
+                  
+                  
+                  
+                  </code></pre>
+</div>
+</div>
+</section>
+<section id="section-5" class="slide level2">
+<h2></h2>
+<h3 id="análisis-multivariante-exploratorio">Análisis multivariante exploratorio</h3>
+<p>Queremos encontrar un perfil de paciente con riesgo</p>
+<p>Características numéricas</p>
+
+<img data-src="presentacio_files/figure-revealjs/unnamed-chunk-9-1.png" width="960" class="r-stretch"></section>
+<section id="section-6" class="slide level2">
+<h2></h2>
+<p>comparamos el riesgo del paciente a padecer un ataque cardíaco con varias variables cualitativas.</p>
+<ul>
+<li>Nivel de estrés</li>
+</ul>
+<div class="cell">
+<div class="cell-output cell-output-stdout">
+<pre><code>      Estres
+Riesgo   1   2   3   4   5   6   7   8   9  10
+    No 562 583 551 597 543 533 567 568 584 536
+    Si 303 330 317 313 317 322 336 311 303 287</code></pre>
+</div>
 </div>
 <div class="footer footer-default">
 
