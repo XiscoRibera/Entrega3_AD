@@ -260,7 +260,6 @@ Low.Blood.Pressure               mm Hg  85.156  14.677  60.000 110.000  50.000</
 </div>
 <p>Veamos ahora los datos cualitativos</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(datos_qual)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>     Sex       Diabetes  Family.History Smoking   Obesity   Alcohol.Consumption
  Female:2652   No:3047   No:4443        No: 904   No:4369   No:3522            
@@ -364,9 +363,16 @@ Riesgo   No   Si
 </div>
 <p>Notemos que hay aproximadamente el doble de individuos que fuman y no tienen riesgo de tener un ataque. Pero, de los que sí tienen riesgo, en este caso, hay muchos más individuos que fuman.</p>
 <p>Después de estas observaciones, intentemos establecer un perfil con las variables cualitativas.</p>
-<div class="cell" data-hash="Entrega3_AD_cache/html/unnamed-chunk-18_0cdbb05d615cf5a1a2e954a3abca1380">
+<div class="cell" data-hash="Entrega3_AD_cache/html/unnamed-chunk-18_8950fbbf24969fb5c75fabf46c2b8ca4">
+<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a>perfil_riesgo <span class="ot">=</span> datos <span class="sc">%&gt;%</span> </span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(Smoking <span class="sc">==</span> <span class="st">"Si"</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(Obesity<span class="sc">==</span><span class="st">"Si"</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(Diet <span class="sc">==</span> <span class="st">"Unhealthy"</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb18-5"><a href="#cb18-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(Stress.Level <span class="sc">==</span> <span class="fu">c</span>(<span class="st">"7"</span>,<span class="st">"8"</span>,<span class="st">"9"</span>,<span class="st">"10"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell" data-hash="Entrega3_AD_cache/html/unnamed-chunk-19_4e3cb622355d053c6b1744867faba76d">
 <div class="cell-output-display">
-<p><img src="Entrega3_AD_files/figure-html/unnamed-chunk-18-1.png" class="img-fluid" width="672"></p>
+<p><img src="Entrega3_AD_files/figure-html/unnamed-chunk-19-1.png" class="img-fluid" width="672"></p>
 </div>
 </div>
 <p>Notemos que hay poca proporción de individuos que cumplen una serie de caraterísticas que pensábamos que era un perfil de riesgo.</p>
@@ -384,15 +390,15 @@ Riesgo   No   Si
 <span id="cb19-10"><a href="#cb19-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_fill_brewer</span>()<span class="sc">+</span></span>
 <span id="cb19-11"><a href="#cb19-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_bw</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<p><img src="Entrega3_AD_files/figure-html/unnamed-chunk-19-1.png" class="img-fluid" width="672"></p>
+<p><img src="Entrega3_AD_files/figure-html/unnamed-chunk-20-1.png" class="img-fluid" width="672"></p>
 </div>
 </div>
 <p>Vemos que la edad no parece influir en el perfil de riesgo, ya que se disrtibuyen de forma similar.</p>
 <p>Por último, hagamos un <code>ggpairs</code> para las variables cuantitativas</p>
-<div class="cell" data-hash="Entrega3_AD_cache/html/unnamed-chunk-20_dc947f2fd49af4e48a49cf23df198596">
+<div class="cell" data-hash="Entrega3_AD_cache/html/unnamed-chunk-21_30197420405be1fc051d1af9b42c59ca">
 <div class="sourceCode cell-code" id="cb20"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggpairs</span>(datos_quant)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<p><img src="Entrega3_AD_files/figure-html/unnamed-chunk-20-1.png" class="img-fluid" width="672"></p>
+<p><img src="Entrega3_AD_files/figure-html/unnamed-chunk-21-1.png" class="img-fluid" width="672"></p>
 </div>
 </div>
 <p>A simple vista no hay ninguna variable dependiente de otra, ni ninguna tendencia.</p>
@@ -448,13 +454,13 @@ Low.B  0.54583   0.31163   5.15719 215.37698</code></pre>
 <p>Matriz de correlación:</p>
 <div class="cell">
 <div class="cell-output-display">
-<p><img src="Entrega3_AD_files/figure-html/unnamed-chunk-23-1.png" class="img-fluid" width="672"></p>
+<p><img src="Entrega3_AD_files/figure-html/unnamed-chunk-24-1.png" class="img-fluid" width="672"></p>
 </div>
 </div>
 <p>Respecto al perfil de reisgo que hemos definido anteriormente, veamos si existe alguna dependencia entre las variables quantitativas</p>
-<div class="cell" data-hash="Entrega3_AD_cache/html/unnamed-chunk-25_5c6d46d05b52e22d3c489d8121591b21">
+<div class="cell" data-hash="Entrega3_AD_cache/html/unnamed-chunk-26_c2b3efcb5ad7f2832dd6a512ad05de07">
 <div class="cell-output-display">
-<p><img src="Entrega3_AD_files/figure-html/unnamed-chunk-25-1.png" class="img-fluid" width="672"></p>
+<p><img src="Entrega3_AD_files/figure-html/unnamed-chunk-26-1.png" class="img-fluid" width="672"></p>
 </div>
 </div>
 <p>En este caso se aprecia una pequeña diferencia respecto de la anterior, sin embargo, no parece ser significativo ya que los índices de correlación son muy cercanos a 0.</p>
