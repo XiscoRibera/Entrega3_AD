@@ -337,7 +337,27 @@ Riesgo   No   Si
 </div>
 <p>Notemos que hay muchos más individuos con casos de ataque en su familia que no tienen riesgo de tener un ataque. Y de los que son de riesgo, hay casi el mismo número de personas con antecedentes familiares que sin ellos.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="fu">table</span>(datos<span class="sc">$</span>Heart.Attack.Risk, datos<span class="sc">$</span>Smoking, <span class="at">dnn =</span> <span class="fu">c</span>(<span class="st">"Riesgo"</span>, <span class="st">"Fumar"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="fu">table</span>(datos<span class="sc">$</span>Heart.Attack.Risk, datos<span class="sc">$</span>Alcohol.Consumption, <span class="at">dnn =</span> <span class="fu">c</span>(<span class="st">"Riesgo"</span>, <span class="st">"Consumo de alcohol"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>      Consumo de alcohol
+Riesgo   No   Si
+    No 2232 3392
+    Si 1290 1849</code></pre>
+</div>
+</div>
+<p>Notemos que hay muchos más individuos que consumen alcohol y no tienen riesgo de tener un ataque. Y de los que son de riesgo, hay casi el mismo número de personas con que consumen alcohol que los que no.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="fu">table</span>(datos<span class="sc">$</span>Heart.Attack.Risk, datos<span class="sc">$</span>Diet, <span class="at">dnn =</span> <span class="fu">c</span>(<span class="st">"Riesgo"</span>, <span class="st">"Dieta"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>      Dieta
+Riesgo Average Healthy Unhealthy
+    No    1886    1881      1857
+    Si    1026    1079      1034</code></pre>
+</div>
+</div>
+<p>Notemos que hay más individuos con mala dieta que no tienen riesgo de tener un ataque. Y de los que son de riesgo, hay prácticamente el mismo número de de individuos en cada tipo de dieta.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="fu">table</span>(datos<span class="sc">$</span>Heart.Attack.Risk, datos<span class="sc">$</span>Smoking, <span class="at">dnn =</span> <span class="fu">c</span>(<span class="st">"Riesgo"</span>, <span class="st">"Fumar"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>      Fumar
 Riesgo   No   Si
@@ -347,122 +367,50 @@ Riesgo   No   Si
 </div>
 <p>Notemos que hay aproximadamente el doble de individuos que fuman y no tienen riesgo de tener un ataque. Pero, de los que sí tienen riesgo, en este caso, hay muchos más individuos que fuman.</p>
 <p>Por tanto, intentemos establecer un perfil con las variables cualitativas.</p>
-<div class="cell" data-hash="Entrega3_AD_cache/html/unnamed-chunk-17_0191113a0eada62c0046b473563a7797">
-<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a>datos_qual</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code># A tibble: 8,763 × 14
-   Sex    Diabetes Family.History Smoking Obesity Alcohol.Consumption Diet     
-   &lt;fct&gt;  &lt;fct&gt;    &lt;fct&gt;          &lt;fct&gt;   &lt;fct&gt;   &lt;fct&gt;               &lt;fct&gt;    
- 1 Male   No       No             Si      No      No                  Average  
- 2 Male   Si       Si             Si      Si      Si                  Unhealthy
- 3 Female Si       No             No      No      No                  Healthy  
- 4 Male   Si       Si             Si      No      Si                  Average  
- 5 Male   Si       Si             Si      Si      No                  Unhealthy
- 6 Female Si       Si             Si      No      Si                  Unhealthy
- 7 Male   No       No             Si      No      Si                  Healthy  
- 8 Male   No       No             Si      Si      Si                  Average  
- 9 Male   Si       No             Si      Si      No                  Average  
-10 Female No       Si             Si      Si      Si                  Unhealthy
-# ℹ 8,753 more rows
-# ℹ 7 more variables: Previous.Heart.Problems &lt;fct&gt;, Medication.Use &lt;fct&gt;,
-#   Stress.Level &lt;fct&gt;, Country &lt;fct&gt;, Continent &lt;fct&gt;, Hemisphere &lt;fct&gt;,
-#   Heart.Attack.Risk &lt;fct&gt;</code></pre>
-</div>
-<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="co"># ggpairs(datos_qual[,-11])</span></span>
-<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb23-4"><a href="#cb23-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb23-5"><a href="#cb23-5" aria-hidden="true" tabindex="-1"></a>perfil_riesgo <span class="ot">=</span> datos <span class="sc">%&gt;%</span> </span>
-<span id="cb23-6"><a href="#cb23-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(Smoking <span class="sc">==</span> <span class="st">"Si"</span>) <span class="sc">%&gt;%</span> </span>
-<span id="cb23-7"><a href="#cb23-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(Obesity<span class="sc">==</span><span class="st">"Si"</span>) <span class="sc">%&gt;%</span> </span>
-<span id="cb23-8"><a href="#cb23-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(Diet <span class="sc">==</span> <span class="st">"Unhealthy"</span>) <span class="sc">%&gt;%</span> </span>
-<span id="cb23-9"><a href="#cb23-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(Stress.Level <span class="sc">==</span> <span class="fu">c</span>(<span class="st">"7"</span>,<span class="st">"8"</span>,<span class="st">"9"</span>,<span class="st">"10"</span>))</span>
-<span id="cb23-10"><a href="#cb23-10" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb23-11"><a href="#cb23-11" aria-hidden="true" tabindex="-1"></a>perfil_riesgo</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code># A tibble: 136 × 26
-   Patient.ID Sex    Diabetes Family.History Smoking Obesity Alcohol.Consumption
-        &lt;int&gt; &lt;fct&gt;  &lt;fct&gt;    &lt;fct&gt;          &lt;fct&gt;   &lt;fct&gt;   &lt;fct&gt;              
- 1        189 Male   Si       Si             Si      Si      No                 
- 2        267 Male   No       No             Si      Si      No                 
- 3        520 Male   No       Si             Si      Si      No                 
- 4        581 Male   Si       No             Si      Si      Si                 
- 5        624 Female Si       Si             Si      Si      Si                 
- 6        706 Male   Si       Si             Si      Si      Si                 
- 7        816 Female Si       Si             Si      Si      Si                 
- 8        929 Female Si       Si             Si      Si      No                 
- 9        931 Male   Si       Si             Si      Si      Si                 
-10        965 Male   Si       Si             Si      Si      Si                 
-# ℹ 126 more rows
-# ℹ 19 more variables: Diet &lt;fct&gt;, Previous.Heart.Problems &lt;fct&gt;,
-#   Medication.Use &lt;fct&gt;, Stress.Level &lt;fct&gt;, Country &lt;fct&gt;, Continent &lt;fct&gt;,
-#   Hemisphere &lt;fct&gt;, Heart.Attack.Risk &lt;fct&gt;, Age &lt;int&gt;, Cholesterol &lt;int&gt;,
-#   Heart.Rate &lt;int&gt;, Exercise.Hours.Per.Week &lt;dbl&gt;,
-#   Sedentary.Hours.Per.Day &lt;dbl&gt;, BMI &lt;dbl&gt;, Triglycerides &lt;int&gt;,
-#   Physical.Activity.Days.Per.Week &lt;int&gt;, Sleep.Hours.Per.Day &lt;int&gt;, …</code></pre>
-</div>
-<div class="sourceCode cell-code" id="cb25"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a>perfil_riesgo<span class="sc">$</span>Heart.Attack.Risk</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>  [1] Si Si No No Si No No Si No Si No No No Si No No Si Si Si No No No No No No
- [26] No Si Si No No No Si Si No Si No No Si No No No No No No No No No No No No
- [51] No No Si No Si No Si No Si Si No No Si No Si Si No No No Si No No Si No No
- [76] No No Si No No No No Si Si Si Si No Si No Si Si No No Si No No Si No No No
-[101] No No No No No No No Si No No Si Si No Si No No No No No Si No No No No Si
-[126] No No Si No No Si No Si No No Si
-Levels: No Si</code></pre>
-</div>
-<div class="sourceCode cell-code" id="cb27"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a><span class="fu">pie</span>(<span class="fu">table</span>(perfil_riesgo<span class="sc">$</span>Heart.Attack.Risk))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell" data-hash="Entrega3_AD_cache/html/unnamed-chunk-19_4045341057c2edcd165ce9bf6332aae7">
+<div class="sourceCode cell-code" id="cb25"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a>perfil_riesgo <span class="ot">=</span> datos <span class="sc">%&gt;%</span> </span>
+<span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(Smoking <span class="sc">==</span> <span class="st">"Si"</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb25-3"><a href="#cb25-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(Obesity<span class="sc">==</span><span class="st">"Si"</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb25-4"><a href="#cb25-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(Diet <span class="sc">==</span> <span class="st">"Unhealthy"</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb25-5"><a href="#cb25-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(Stress.Level <span class="sc">==</span> <span class="fu">c</span>(<span class="st">"7"</span>,<span class="st">"8"</span>,<span class="st">"9"</span>,<span class="st">"10"</span>))</span>
+<span id="cb25-6"><a href="#cb25-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-7"><a href="#cb25-7" aria-hidden="true" tabindex="-1"></a><span class="fu">pie</span>(<span class="fu">table</span>(perfil_riesgo<span class="sc">$</span>Heart.Attack.Risk))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<p><img src="Entrega3_AD_files/figure-html/unnamed-chunk-17-1.png" class="img-fluid" width="672"></p>
+<p><img src="Entrega3_AD_files/figure-html/unnamed-chunk-19-1.png" class="img-fluid" width="672"></p>
 </div>
 </div>
 <p>Notemos que hay poca proporción de individuos que cumplen una serie de caraterísticas que pensábamos que era un perfil de riesgo.</p>
-<div class="cell" data-hash="Entrega3_AD_cache/html/unnamed-chunk-18_2304a6fc0736a52c3e28d799bef68517">
-<div class="sourceCode cell-code" id="cb28"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a>perfil_riesgo_quant <span class="ot">=</span> perfil_riesgo <span class="sc">%&gt;%</span> </span>
-<span id="cb28-2"><a href="#cb28-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(<span class="fu">where</span>(is.numeric)) <span class="sc">%&gt;%</span> </span>
-<span id="cb28-3"><a href="#cb28-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(<span class="sc">-</span><span class="dv">1</span>)</span>
-<span id="cb28-4"><a href="#cb28-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb28-5"><a href="#cb28-5" aria-hidden="true" tabindex="-1"></a>new_names <span class="ot">=</span> <span class="fu">substr</span>(<span class="fu">names</span>(datos_quant),<span class="dv">1</span>,<span class="dv">9</span>)</span>
-<span id="cb28-6"><a href="#cb28-6" aria-hidden="true" tabindex="-1"></a><span class="fu">colnames</span>(perfil_riesgo_quant)<span class="ot">=</span>new_names</span>
-<span id="cb28-7"><a href="#cb28-7" aria-hidden="true" tabindex="-1"></a>perfil_riesgo_quant</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code># A tibble: 136 × 11
-     Age Cholester Heart.Rat Exercise. Sedentary   BMI Triglycer Physical.
-   &lt;int&gt;     &lt;int&gt;     &lt;int&gt;     &lt;dbl&gt;     &lt;dbl&gt; &lt;dbl&gt;     &lt;int&gt;     &lt;int&gt;
- 1    84       296        57    15.7       6.93   32.1       744         5
- 2    50       131        40     3.09      6.11   33.9       576         1
- 3    73       214        92     0.523     0.297  25.8       536         5
- 4    73       129        91    10.8       6.20   37.6       541         3
- 5    74       268        58     1.79      0.198  29.0       724         3
- 6    49       296        62     4.00     10.6    22.6       370         3
- 7    63       259        52     7.30      2.90   28.5       326         3
- 8    51       257        65    10.5       3.91   21.3       233         2
- 9    77       194        41    10.4       4.02   19.1       731         3
-10    81       241        60    18.7       4.28   19.5       752         3
-# ℹ 126 more rows
-# ℹ 3 more variables: Sleep.Hou &lt;int&gt;, High.Bloo &lt;dbl&gt;, Low.Blood &lt;dbl&gt;</code></pre>
-</div>
-<div class="sourceCode cell-code" id="cb30"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a><span class="fu">corPlot</span>(perfil_riesgo_quant, <span class="at">cex =</span> <span class="fl">0.8</span>,  <span class="at">main =</span> <span class="st">"Matriz de correlación de perfil de riesgo"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output-display">
-<p><img src="Entrega3_AD_files/figure-html/unnamed-chunk-18-1.png" class="img-fluid" width="672"></p>
-</div>
-</div>
-<div class="cell" data-hash="Entrega3_AD_cache/html/unnamed-chunk-19_6ff45f34e326c9bdc35e5bbac236d992">
-<div class="sourceCode cell-code" id="cb31"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a>a <span class="ot">=</span> datos <span class="sc">%&gt;%</span> </span>
-<span id="cb31-2"><a href="#cb31-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(<span class="dv">2</span>,<span class="dv">6</span>,<span class="dv">12</span>,<span class="dv">14</span>,<span class="dv">15</span>,<span class="dv">16</span>,<span class="dv">17</span>) <span class="sc">%&gt;%</span> </span>
-<span id="cb31-3"><a href="#cb31-3" aria-hidden="true" tabindex="-1"></a>  na.omit</span>
-<span id="cb31-4"><a href="#cb31-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb31-5"><a href="#cb31-5" aria-hidden="true" tabindex="-1"></a><span class="fu">pairs</span>(a, <span class="at">col =</span> <span class="fu">c</span>(<span class="st">"red"</span>, <span class="st">"blue"</span>, <span class="st">"green"</span>, <span class="st">"yellow"</span>, <span class="st">"purple"</span>, <span class="st">"orange"</span>)[<span class="fu">as.integer</span>(a<span class="sc">$</span>Continent)],<span class="at">pch=</span><span class="dv">18</span>)</span>
-<span id="cb31-6"><a href="#cb31-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb31-7"><a href="#cb31-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb31-8"><a href="#cb31-8" aria-hidden="true" tabindex="-1"></a><span class="fu">ggpairs</span>(a)</span>
-<span id="cb31-9"><a href="#cb31-9" aria-hidden="true" tabindex="-1"></a><span class="co"># ggpairs(datos_quant)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div>
-<section id="estimación-del-vector-de-medias-y-la-matriz-de-covarianza-y-correlación" class="level2">
-<h2 class="anchored" data-anchor-id="estimación-del-vector-de-medias-y-la-matriz-de-covarianza-y-correlación">Estimación del vector de medias y la matriz de covarianza y correlación</h2>
-<p>Calculemos el vector de medias. Para cada variable cuantitativa</p>
+<p>Veamos un gráfico de violin, para las edades:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb32"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a><span class="fu">apply</span>(datos_quant, <span class="at">FUN =</span> mean, <span class="at">MARGIN =</span> <span class="dv">2</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb26"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a>datos_riesgo <span class="ot">&lt;-</span> datos <span class="sc">%&gt;%</span> </span>
+<span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(Heart.Attack.Risk <span class="sc">==</span> <span class="st">"Si"</span>)</span>
+<span id="cb26-3"><a href="#cb26-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb26-4"><a href="#cb26-4" aria-hidden="true" tabindex="-1"></a><span class="co">#ggplot(datos_riesgo, aes(x=Age, colour="purple"))+</span></span>
+<span id="cb26-5"><a href="#cb26-5" aria-hidden="true" tabindex="-1"></a>  <span class="co">#geom_density()</span></span>
+<span id="cb26-6"><a href="#cb26-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb26-7"><a href="#cb26-7" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(datos, <span class="fu">aes</span>(<span class="at">x=</span>Heart.Attack.Risk, <span class="at">y=</span>Age, <span class="at">fill =</span> Heart.Attack.Risk))<span class="sc">+</span></span>
+<span id="cb26-8"><a href="#cb26-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_violin</span>(<span class="at">trim =</span> <span class="cn">FALSE</span>)<span class="sc">+</span></span>
+<span id="cb26-9"><a href="#cb26-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_boxplot</span>(<span class="at">width =</span> <span class="fl">0.07</span>)<span class="sc">+</span></span>
+<span id="cb26-10"><a href="#cb26-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_fill_brewer</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="Entrega3_AD_files/figure-html/unnamed-chunk-20-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+<p>Vemos que la edad no parece influir en el perfil de riesgo, ya que se disrtibuyen bastante igual.</p>
+<p>Por último hagamos un ggpais para las variables cuantitativas</p>
+<div class="cell" data-hash="Entrega3_AD_cache/html/unnamed-chunk-21_30197420405be1fc051d1af9b42c59ca">
+<div class="sourceCode cell-code" id="cb27"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggpairs</span>(datos_quant)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="Entrega3_AD_files/figure-html/unnamed-chunk-21-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+<p>A simple vista no hay ninguna variable dependiente de otra, ni ninguna tendencia.</p>
+</section>
+<section id="estimación-del-vector-de-medias-y-la-matriz-de-covarianza-y-correlación" class="level1">
+<h1>Estimación del vector de medias y la matriz de covarianza y correlación</h1>
+<p>Calculemos el vector de medias para cada variable cuantitativa</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb28"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a><span class="fu">apply</span>(datos_quant, <span class="at">FUN =</span> mean, <span class="at">MARGIN =</span> <span class="dv">2</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>                            Age                     Cholesterol 
                       53.707977                      259.877211 
@@ -480,13 +428,13 @@ Levels: No Si</code></pre>
 </div>
 <p>Veamos ahora la matriz de covariancia (a secas)</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb34"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a>new_names <span class="ot">=</span> <span class="fu">substr</span>(<span class="fu">names</span>(datos_quant),<span class="dv">1</span>,<span class="dv">5</span>)</span>
-<span id="cb34-2"><a href="#cb34-2" aria-hidden="true" tabindex="-1"></a><span class="fu">colnames</span>(datos_quant) <span class="ot">=</span> new_names</span>
-<span id="cb34-3"><a href="#cb34-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb34-4"><a href="#cb34-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb34-5"><a href="#cb34-5" aria-hidden="true" tabindex="-1"></a>n <span class="ot">=</span> <span class="fu">length</span>(datos<span class="sc">$</span>Patient.ID)</span>
-<span id="cb34-6"><a href="#cb34-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb34-7"><a href="#cb34-7" aria-hidden="true" tabindex="-1"></a><span class="fu">round</span>(<span class="fu">cov</span>(datos_quant)<span class="sc">*</span>(n<span class="dv">-1</span>)<span class="sc">/</span>n,<span class="dv">5</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb30"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a>new_names <span class="ot">=</span> <span class="fu">substr</span>(<span class="fu">names</span>(datos_quant),<span class="dv">1</span>,<span class="dv">5</span>)</span>
+<span id="cb30-2"><a href="#cb30-2" aria-hidden="true" tabindex="-1"></a><span class="fu">colnames</span>(datos_quant) <span class="ot">=</span> new_names</span>
+<span id="cb30-3"><a href="#cb30-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-4"><a href="#cb30-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-5"><a href="#cb30-5" aria-hidden="true" tabindex="-1"></a>n <span class="ot">=</span> <span class="fu">length</span>(datos<span class="sc">$</span>Patient.ID)</span>
+<span id="cb30-6"><a href="#cb30-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-7"><a href="#cb30-7" aria-hidden="true" tabindex="-1"></a><span class="fu">round</span>(<span class="fu">cov</span>(datos_quant)<span class="sc">*</span>(n<span class="dv">-1</span>)<span class="sc">/</span>n,<span class="dv">5</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>            Age      Chole     Heart    Exerc    Seden      BMI       Trigl
 Age   451.49010  -15.64684  -1.67848  0.14816  1.27268 -0.35068    16.23469
@@ -514,30 +462,51 @@ High. -0.45551  -0.24245 694.24202   5.15719
 Low.B  0.54583   0.31163   5.15719 215.37698</code></pre>
 </div>
 </div>
+<p>Matriz de correlación:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb36"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true" tabindex="-1"></a><span class="fu">corPlot</span>(datos_quant, <span class="at">cex =</span> <span class="fl">0.8</span>,  <span class="at">main =</span> <span class="st">"Matriz de correlación"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output-display">
-<p><img src="Entrega3_AD_files/figure-html/unnamed-chunk-22-1.png" class="img-fluid" width="672"></p>
-</div>
-</div>
-<p>Separemos las variables en función de diferentes edades, ya que no hemos observado ningua correlación, ni ninguna dependencia. Nosotros suponemos que la edad sí que es un factor clave a la hora de ser un individuo de riesgo.</p>
-<p>Notemos que no hay mucha diferencia entre la edad de los individuos.</p>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb37"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb37-1"><a href="#cb37-1" aria-hidden="true" tabindex="-1"></a>datos_riesgo <span class="ot">&lt;-</span> datos <span class="sc">%&gt;%</span> </span>
-<span id="cb37-2"><a href="#cb37-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(Heart.Attack.Risk <span class="sc">==</span> <span class="st">"Si"</span>)</span>
-<span id="cb37-3"><a href="#cb37-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb37-4"><a href="#cb37-4" aria-hidden="true" tabindex="-1"></a><span class="co">#ggplot(datos_riesgo, aes(x=Age, colour="purple"))+</span></span>
-<span id="cb37-5"><a href="#cb37-5" aria-hidden="true" tabindex="-1"></a>  <span class="co">#geom_density()</span></span>
-<span id="cb37-6"><a href="#cb37-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb37-7"><a href="#cb37-7" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(datos, <span class="fu">aes</span>(<span class="at">x=</span>Heart.Attack.Risk, <span class="at">y=</span>Age, <span class="at">fill =</span> Heart.Attack.Risk))<span class="sc">+</span></span>
-<span id="cb37-8"><a href="#cb37-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_violin</span>(<span class="at">trim =</span> <span class="cn">FALSE</span>)<span class="sc">+</span></span>
-<span id="cb37-9"><a href="#cb37-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_boxplot</span>(<span class="at">width =</span> <span class="fl">0.07</span>)<span class="sc">+</span></span>
-<span id="cb37-10"><a href="#cb37-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_fill_brewer</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb32"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a><span class="fu">corPlot</span>(datos_quant, <span class="at">cex =</span> <span class="fl">0.8</span>,  <span class="at">main =</span> <span class="st">"Matriz de correlación"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <p><img src="Entrega3_AD_files/figure-html/unnamed-chunk-24-1.png" class="img-fluid" width="672"></p>
 </div>
 </div>
+<p>Respecto al perfil de reisgo que hemos definido anteriormente, veamos si existe alguna dependencia entre las variables quantitativas</p>
+<div class="cell" data-hash="Entrega3_AD_cache/html/unnamed-chunk-26_5451f3a9d5dc1d2ba6148029285c415d">
+<div class="sourceCode cell-code" id="cb33"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a>perfil_riesgo_quant <span class="ot">=</span> perfil_riesgo <span class="sc">%&gt;%</span> </span>
+<span id="cb33-2"><a href="#cb33-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(<span class="fu">where</span>(is.numeric)) <span class="sc">%&gt;%</span> </span>
+<span id="cb33-3"><a href="#cb33-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(<span class="sc">-</span><span class="dv">1</span>)</span>
+<span id="cb33-4"><a href="#cb33-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-5"><a href="#cb33-5" aria-hidden="true" tabindex="-1"></a>new_names <span class="ot">=</span> <span class="fu">substr</span>(<span class="fu">names</span>(datos_quant),<span class="dv">1</span>,<span class="dv">9</span>)</span>
+<span id="cb33-6"><a href="#cb33-6" aria-hidden="true" tabindex="-1"></a><span class="fu">colnames</span>(perfil_riesgo_quant)<span class="ot">=</span>new_names</span>
+<span id="cb33-7"><a href="#cb33-7" aria-hidden="true" tabindex="-1"></a>perfil_riesgo_quant</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 136 × 11
+     Age Chole Heart  Exerc  Seden   BMI Trigl Physi Sleep High. Low.B
+   &lt;int&gt; &lt;int&gt; &lt;int&gt;  &lt;dbl&gt;  &lt;dbl&gt; &lt;dbl&gt; &lt;int&gt; &lt;int&gt; &lt;int&gt; &lt;dbl&gt; &lt;dbl&gt;
+ 1    84   296    57 15.7    6.93   32.1   744     5     9   121    65
+ 2    50   131    40  3.09   6.11   33.9   576     1     8   133   102
+ 3    73   214    92  0.523  0.297  25.8   536     5     7   153    61
+ 4    73   129    91 10.8    6.20   37.6   541     3    10   112    89
+ 5    74   268    58  1.79   0.198  29.0   724     3     6   115    63
+ 6    49   296    62  4.00  10.6    22.6   370     3    10    92    71
+ 7    63   259    52  7.30   2.90   28.5   326     3     8   154    62
+ 8    51   257    65 10.5    3.91   21.3   233     2     5   177   109
+ 9    77   194    41 10.4    4.02   19.1   731     3     9    91    62
+10    81   241    60 18.7    4.28   19.5   752     3     4   103   100
+# ℹ 126 more rows</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb35"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a><span class="fu">corPlot</span>(perfil_riesgo_quant, <span class="at">cex =</span> <span class="fl">0.8</span>,  <span class="at">main =</span> <span class="st">"Matriz de correlación de perfil de riesgo"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="Entrega3_AD_files/figure-html/unnamed-chunk-26-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+<p>No observamos una gran diferenciaentre estra matriz y la matriz con todos los individuos.</p>
 </section>
+<section id="conclusiones" class="level1">
+<h1>Conclusiones</h1>
+<ul>
+<li><p>Nuestros datos no son adecuados para realizar ningun estudio de clasificación, ya que no hay diferencias entre las personas de riesgo y las que no.</p></li>
+<li><p>No nay ninguna variable dependiente de otra.</p></li>
+</ul>
 </section>
 
 </main>

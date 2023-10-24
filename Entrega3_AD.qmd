@@ -263,8 +263,16 @@ table(datos$Heart.Attack.Risk, datos$Family.History, dnn = c("Riesgo", "Historia
 ```
 Notemos que hay muchos más individuos con casos de ataque en su familia que no tienen riesgo de tener un ataque. Y de los que son de riesgo, hay casi el mismo número de personas con antecedentes familiares que sin ellos.
 
+```{r}
+table(datos$Heart.Attack.Risk, datos$Alcohol.Consumption, dnn = c("Riesgo", "Consumo de alcohol"))
+```
+Notemos que hay muchos más individuos que consumen alcohol y no tienen riesgo de tener un ataque. Y de los que son de riesgo, hay casi el mismo número de personas con que consumen alcohol que los que no.
 
 
+```{r}
+table(datos$Heart.Attack.Risk, datos$Diet, dnn = c("Riesgo", "Dieta"))
+```
+Notemos que hay más individuos con mala dieta que no tienen riesgo de tener un ataque. Y de los que son de riesgo, hay prácticamente el mismo número de de individuos en cada tipo de dieta.
 
 ```{r}
 table(datos$Heart.Attack.Risk, datos$Smoking, dnn = c("Riesgo", "Fumar"))
@@ -273,35 +281,14 @@ table(datos$Heart.Attack.Risk, datos$Smoking, dnn = c("Riesgo", "Fumar"))
 Notemos que hay aproximadamente el doble de individuos que fuman y no tienen riesgo de tener un ataque. Pero, de los que sí tienen riesgo, en este caso, hay muchos más individuos que fuman.
 
 
-
-
-
-
-
-
-
-
-
-
 Por tanto, intentemos establecer un perfil con las variables cualitativas.
 
-
-
 ```{r,cache=TRUE}
-datos_qual
-# ggpairs(datos_qual[,-11])
-
-
-
 perfil_riesgo = datos %>% 
   filter(Smoking == "Si") %>% 
   filter(Obesity=="Si") %>% 
   filter(Diet == "Unhealthy") %>% 
   filter(Stress.Level == c("7","8","9","10"))
-
-perfil_riesgo
-
-perfil_riesgo$Heart.Attack.Risk
 
 pie(table(perfil_riesgo$Heart.Attack.Risk))
 ```
@@ -309,41 +296,36 @@ pie(table(perfil_riesgo$Heart.Attack.Risk))
 
 Notemos que hay poca proporción de individuos que cumplen una serie de caraterísticas que pensábamos que era un perfil de riesgo.
 
+Veamos un gráfico de violin, para las edades:
+```{r}
+datos_riesgo <- datos %>% 
+  filter(Heart.Attack.Risk == "Si")
 
-```{r,cache=TRUE}
-perfil_riesgo_quant = perfil_riesgo %>% 
-  select(where(is.numeric)) %>% 
-  select(-1)
+#ggplot(datos_riesgo, aes(x=Age, colour="purple"))+
+  #geom_density()
 
-new_names = substr(names(datos_quant),1,9)
-colnames(perfil_riesgo_quant)=new_names
-perfil_riesgo_quant
+ggplot(datos, aes(x=Heart.Attack.Risk, y=Age, fill = Heart.Attack.Risk))+
+  geom_violin(trim = FALSE)+
+  geom_boxplot(width = 0.07)+
+  scale_fill_brewer()
+```
+Vemos que la edad no parece influir en el perfil de riesgo, ya que se disrtibuyen bastante igual.
 
-corPlot(perfil_riesgo_quant, cex = 0.8,  main = "Matriz de correlación de perfil de riesgo")
 
+Por último hagamos un ggpais para las variables cuantitativas
+
+```{r, warning=FALSE, cache=TRUE}
+ggpairs(datos_quant)
 ```
 
+A simple vista no hay ninguna variable dependiente de otra, ni ninguna tendencia.
 
 
-```{r, eval = FALSE, warning=FALSE, cache=TRUE}
+# Estimación del vector de medias y la matriz de covarianza y correlación
 
-a = datos %>% 
-  select(2,6,12,14,15,16,17) %>% 
-  na.omit
-
-pairs(a, col = c("red", "blue", "green", "yellow", "purple", "orange")[as.integer(a$Continent)],pch=18)
-
-
-ggpairs(a)
-# ggpairs(datos_quant)
-```
-
-## Estimación del vector de medias y la matriz de covarianza y correlación
-
-Calculemos el vector de medias. Para cada variable cuantitativa
+Calculemos el vector de medias para cada variable cuantitativa
 
 ```{r}
-
 apply(datos_quant, FUN = mean, MARGIN = 2)
 ```
 
@@ -359,15 +341,13 @@ n = length(datos$Patient.ID)
 round(cov(datos_quant)*(n-1)/n,5)
 ```
 
+
+Matriz de correlación:
 ```{r}
 
 corPlot(datos_quant, cex = 0.8,  main = "Matriz de correlación")
 ```
 
-Separemos las variables en función de diferentes edades, ya que no hemos observado ningua correlación, ni ninguna dependencia. Nosotros suponemos que la edad sí que es un factor clave a la hora de ser un individuo de riesgo.
-
-
-Notemos que no hay mucha diferencia entre la edad de los individuos.
 
 ```{r, eval=FALSE, echo=FALSE}
 lims=c(18,30,50,70,Inf)
@@ -378,21 +358,25 @@ datos$Age = cut(datos$Age, breaks = lims, labels = Etiquetas, right = FALSE)
 ```
 
 
+Respecto al perfil de reisgo que hemos definido anteriormente, veamos si existe alguna dependencia entre las variables quantitativas
 
-```{r}
-datos_riesgo <- datos %>% 
-  filter(Heart.Attack.Risk == "Si")
+```{r,cache=TRUE}
+perfil_riesgo_quant = perfil_riesgo %>% 
+  select(where(is.numeric)) %>% 
+  select(-1)
 
-#ggplot(datos_riesgo, aes(x=Age, colour="purple"))+
-  #geom_density()
+new_names = substr(names(datos_quant),1,9)
+colnames(perfil_riesgo_quant)=new_names
+perfil_riesgo_quant
 
-ggplot(datos, aes(x=Heart.Attack.Risk, y=Age, fill = Heart.Attack.Risk))+
-  geom_violin(trim = FALSE)+
-  geom_boxplot(width = 0.07)+
-  scale_fill_brewer()
+corPlot(perfil_riesgo_quant, cex = 0.8,  main = "Matriz de correlación de perfil de riesgo")
+
 ```
 
+No observamos una gran diferenciaentre estra matriz y la matriz con todos los individuos.
 
+# Conclusiones
 
+- Nuestros datos no son adecuados para realizar ningun estudio de clasificación, ya que no hay diferencias entre las personas de riesgo y las que no.
 
-
+- No nay ninguna variable dependiente de otra.

@@ -5,16 +5,6 @@ editor: visual
 author: Irene LiFeng Julià Pérez y Xisco Ribera Ramis
 ---
 
-## Datos
+# Presentación del problema
 
-Cargamos las librerías
-
-```{r}
-library(tidyverse)
-library(dplyr)
-library(GGally)
-library(psych)
-library(skimr)
-```
-
-Prueba, a ver si ahora funciona
+Vamos a tratar una base de datos relacionados con la predicción de riesgo de ataque cardíaco. Este hecho es un problema que afecta a un gran porcentaje de la población mundial y es de interés poder predecir esta dolencia.
