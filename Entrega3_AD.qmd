@@ -9,7 +9,13 @@ author: Irene LiFeng Julià Pérez y Xisco Ribera Ramis
 
 Vamos a tratar una base de datos relacionados con la predicción de riesgo de ataque cardíaco. Este hecho es un problema que afecta a un gran porcentaje de la población mundial y es de interés poder predecir esta dolencia.
 
-Nuestro objetivo para este estudio sería: 1. Estudiar algunos perfiles con riesgo de padecer un ataque al corazón 2. Comprobar si hay diferencias entre diferentes continentes respecto al mismo perfil de riesgo. 3. Poder predecir si un individuo tiene riesgo de sufrir un ataque al corazón.
+Nuestro objetivo para este estudio sería: 
+
+1. Estudiar algunos perfiles con riesgo de padecer un ataque al corazón 
+
+2. Comprobar si hay diferencias entre diferentes continentes respecto al mismo perfil de riesgo.
+
+3. Poder predecir si un individuo tiene riesgo de sufrir un ataque al corazón.
 
 Los datos provienen de la página web Kaggle: [Kaggle - Heart Attack Prediction](https://www.kaggle.com/datasets/iamsouravbanerjee/heart-attack-prediction-dataset).
 
@@ -85,6 +91,9 @@ datos = datos %>%
 
 datos = datos %>% 
   mutate(Heart.Attack.Risk = if_else(Heart.Attack.Risk == 0, "No", "Si") %>% as.factor)
+
+datos = datos %>% 
+  mutate(Stress.Level = Stress.Level %>% as.factor)
 ```
 
 El siguiente paso va a ser separar la variable qualitativa Blood.Pressure en dos nuevas variables, ésta vez cuantitativas, ya que la presión arterial está representada como un símbolo que equivale a la presión alta y la baja separadas por una barra:
@@ -99,8 +108,6 @@ datos <- datos %>%
   ) %>%
   ungroup()
 ```
-
-La variable edad es conveniente tenerla estratificada en varios niveles ya que no vamos a poder sacar conclusiones si consideramos cada edad individualmente:
 
 Por último, vamos a eliminar las variables que consideramos que no van a ser concluyentes para el estudio, en este caso, eliminamos la variable Income (nivel de ingresos del paciente) y la variable que anteriormente separamos en dos:
 
@@ -130,43 +137,193 @@ str(datos)
 # Variables
 
 ```{r}
-skim(datos)
+
 ```
 
 Vamos a crear una tabla con la información de cada variable:
 
-```{r}
+```{r, echo=FALSE}
 # Separamos los datos en variables cuantitativas y cualitativas
-datos_quant <- datos[,c(15:26)]
-datos_qual <- datos[,c(2:14)]
+datos_quant <- datos %>% 
+  select(where(is.numeric)) %>% 
+  select(-1)
+
+
+datos_qual <- datos %>% 
+  select(where(is.factor))
 
 # Cuantitativas
 
-Media = colMeans(datos_quant)
+Unidad = c("Años", "mg/dl", "lpm", "h", "h", "kg/m^2", "mg/dl", "días", "h", "mm Hg", "mm Hg")
+
+Media = round(colMeans(datos_quant),3)
 
 rango <- function(x){
   return(max(x)-min(x))
 }
 Rango = round(apply(datos_quant, FUN = rango, MARGIN = 2), 3)
-
+Minimo = round(apply(datos_quant, FUN = min, 2),3)
+Maximo = round(apply(datos_quant, FUN = max, 2),3)
+Desv = round(apply(datos_quant, FUN = sd, 2), 3)
 # algo aixi, pero mes ben fet:
 
-tabla = data.frame(Media, Rango)
+tabla = data.frame(Unidad, Media, Desv, Minimo, Maximo, Rango)
 tabla
 ```
 
-::: center
-| qualitat                   |           Quantit           |
-|:---------------------------|:---------------------------:|
-|                            |                             |
-| `r names(datos[,c(2:14)])` | `r names(datos[,c(15:26)])` |
-:::
 
 ```{r}
-summary(datos)
+summary(datos_qual)
 ```
 
 # Análisis multivariante exploratorio
+
+
+Queremos encontrar un perfil de paciente que tiene riesgo de sufrir un ataque cardíaco. Para ello compararemos las variables entre los usuarios con riesgo y los que no.
+
+Empezamos por las variables cuantitativas:
+
+```{r, echo=FALSE}
+# 2 RADARS
+
+datos_quant_riesgo <- datos %>% 
+  filter(Heart.Attack.Risk == "Si") %>%
+  select(where(is.numeric)) %>% 
+  select(-1)
+
+datos_quant_no_riesgo <- datos %>% 
+  filter(Heart.Attack.Risk == "No") %>% 
+  select(where(is.numeric)) %>% 
+  select(-1)
+
+mitjanes1 = colMeans(datos_quant_riesgo)
+
+
+mitjanes2 = colMeans(datos_quant_no_riesgo)
+
+
+minims=rep(0,length(mitjanes1))
+maxims = pmax(mitjanes1,mitjanes2)
+
+
+radar1 = data.frame(rbind(round(maxims,2), minims, mitjanes1))
+
+radar2 = data.frame(rbind(round(maxims,2), minims, mitjanes2))
+
+par(mfrow=c(1,2))
+
+radarchart(radar1, axistype = 2,
+           pcol = rgb(0.09,0.45,0.8,0.75), 
+           pfcol = rgb(0.09,0.45,0.8,0.5), 
+           plwd= 4, 
+           cglcol = "grey", 
+           cglty = 1,
+           axislabcol = "grey", 
+           cglwd = 0.5, 
+           vlcex = 0.8, 
+           title = "Riesgo")
+
+radarchart(radar2, axistype = 2,
+           pcol = rgb(1, 0.5, 0,0.75), 
+           pfcol = rgb(1, 0.5, 0,0.5), 
+           plwd= 4, 
+           cglcol = "grey", 
+           cglty = 1, 
+           axislabcol = "grey", 
+           cglwd = 1, 
+           vlcex = 0.8, 
+           title = "NO Riesgo")
+
+```
+
+
+
+Notemos que con las variables cuantitativas, no podemos establecer un perfil de riesgo.
+
+
+Veamos si a simple vista, hay diferencias entre las variables cualitativas y el hecho de tener riesgo de padecer un ataque cardíaco.
+```{r}
+table(datos$Heart.Attack.Risk, datos$Stress.Level, dnn = c("Riesgo", "Estres"))
+```
+Notemos que parace ser que el nivel de estres no afecta.
+
+
+
+```{r}
+table(datos$Heart.Attack.Risk, datos$Obesity, dnn = c("Riesgo", "Obesidad"))
+```
+
+Notemos que hay prácticamente el doble de individuos con obesidad que no tienen riesgo de tener un ataque. Y de los que si se les consideran de riesgo, hay casi el mismo número de personas con obesidad que sin.
+
+
+
+
+```{r}
+table(datos$Heart.Attack.Risk, datos$Family.History, dnn = c("Riesgo", "Historial Familiar"))
+```
+Notemos que hay muchos más individuos con casos de ataque en su familia que no tienen riesgo de tener un ataque. Y de los que son de riesgo, hay casi el mismo número de personas con antecedentes familiares que sin ellos.
+
+
+
+
+```{r}
+table(datos$Heart.Attack.Risk, datos$Smoking, dnn = c("Riesgo", "Fumar"))
+```
+
+Notemos que hay aproximadamente el doble de individuos que fuman y no tienen riesgo de tener un ataque. Pero, de los que sí tienen riesgo, en este caso, hay muchos más individuos que fuman.
+
+
+
+
+
+
+
+
+
+
+
+
+Por tanto, intentemos establecer un perfil con las variables cualitativas.
+
+
+
+```{r,cache=TRUE}
+datos_qual
+# ggpairs(datos_qual[,-11])
+
+
+
+perfil_riesgo = datos %>% 
+  filter(Smoking == "Si") %>% 
+  filter(Obesity=="Si") %>% 
+  filter(Diet == "Unhealthy") %>% 
+  filter(Stress.Level == c("7","8","9","10"))
+
+perfil_riesgo
+
+perfil_riesgo$Heart.Attack.Risk
+
+pie(table(perfil_riesgo$Heart.Attack.Risk))
+```
+
+
+Notemos que hay poca proporción de individuos que cumplen una serie de caraterísticas que pensábamos que era un perfil de riesgo.
+
+
+```{r,cache=TRUE}
+perfil_riesgo_quant = perfil_riesgo %>% 
+  select(where(is.numeric)) %>% 
+  select(-1)
+
+new_names = substr(names(datos_quant),1,9)
+colnames(perfil_riesgo_quant)=new_names
+perfil_riesgo_quant
+
+corPlot(perfil_riesgo_quant, cex = 0.8,  main = "Matriz de correlación de perfil de riesgo")
+
+```
+
+
 
 ```{r, eval = FALSE, warning=FALSE, cache=TRUE}
 
@@ -187,13 +344,13 @@ Calculemos el vector de medias. Para cada variable cuantitativa
 
 ```{r}
 
-apply(datos[,15:26], FUN = mean, MARGIN = 2)
+apply(datos_quant, FUN = mean, MARGIN = 2)
 ```
 
 Veamos ahora la matriz de covariancia (a secas)
 
 ```{r}
-new_names = substr(names(datos[,c(15:26)]),1,5)
+new_names = substr(names(datos_quant),1,5)
 colnames(datos_quant) = new_names
 
 
@@ -324,56 +481,45 @@ ggplot(datos, aes(x=Heart.Attack.Risk, y=Age, fill = Heart.Attack.Risk))+
 
 
 
-```{r}
-# 2 RADARS
-
-datos_quant_riesgo <- datos %>% 
-  filter(Heart.Attack.Risk == "Si") %>%
-  select(where(is.numeric)) %>% 
-  select(-1)
-
-datos_quant_no_riesgo <- datos %>% 
-  filter(Heart.Attack.Risk == "No") %>% 
-  select(where(is.numeric)) %>% 
-  select(-1)
-
-mitjanes1 = colMeans(datos_quant_riesgo)
-mitjanes1
-
-mitjanes2 = colMeans(datos_quant_no_riesgo)
-mitjanes2
-
-minims=rep(0,length(mitjanes1))
-maxims = pmax(mitjanes1,mitjanes2)
 
 
-radar1 = data.frame(rbind(round(maxims,2), minims, mitjanes1))
-radar2 = data.frame(rbind(round(maxims,2), minims, mitjanes2))
 
 
-radarchart(radar1, axistype = 2,
-           pcol = rgb(0.09,0.45,0.8,0.75), 
-           pfcol = rgb(0.09,0.45,0.8,0.5), 
-           plwd= 4, 
-           cglcol = "grey", 
-           cglty = 1, 
-           axislabcol = "grey", 
-           cglwd = 0.5, 
-           vlcex = 0.4, 
-           title = "Riesgo")
 
-radarchart(radar2, axistype = 2,
-           pcol = rgb(0.55,0.54,0.54,0.75), 
-           pfcol = rgb(0.55,0.54,0.54,0.5), 
-           plwd= 4, 
-           cglcol = "grey", 
-           cglty = 0.9, 
-           axislabcol = "grey", 
-           cglwd = 1, 
-           vlcex = 0.8, 
-           title = "NO Riesgo")
 
-```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 ## Segregación por continentes
 
