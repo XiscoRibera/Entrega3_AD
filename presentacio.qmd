@@ -2,10 +2,18 @@
 title: "Predicción de Riesgo de Ataque Cardíaco"
 format: 
   revealjs:
-    smaller: TRUE
+    smaller: true
     scrollable: TRUE
 editor: visual
 author: Irene LiFeng Julià Pérez y Xisco Ribera Ramis
+include-in-header:
+  - text: |
+      <style>
+      #title-slide .title {
+        font-size: 4.5em;
+        color: #b22222;
+      }
+      </style>
 ---
 
 ```{r, warning=FALSE, message=FALSE}
@@ -15,6 +23,8 @@ library(GGally)
 library(psych)
 library(skimr)
 library(fmsb)
+library(knitr)
+library(kableExtra)
 ```
 
 
@@ -32,6 +42,23 @@ library(fmsb)
 
 ##
 
+
+### Objetivo del estudio
+
+1. Estudiar algunos perfiles con riesgo de padecer un ataque al corazón.
+
+2. Comprobar si hay diferencias entre diferentes continentes respecto al mismo perfil de riesgo.
+
+3. Poder predecir si un individuo tiene riesgo de sufrir un ataque al corazón.
+
+<div>
+<p style = 'text-align:center;'>
+<img src= "Foto2.jpg" width="500px">
+</p>
+</div>
+
+##
+
 ### Datos unTidy:
 
 ```{r, warning=FALSE}
@@ -43,13 +70,11 @@ str(datos)
 
 ##
 
-### Convertir datos en Tidy
+#### Convertir datos en Tidy
 
-Transformamos:
+- El ID del paciente por una enumeración básica.
 
-- El ID del paciente por una enumeración básica
-- Las variables qualitativas en factor
-- Las binarias (0: No, 1: Si)
+- Las variables qualitativas en factor y las binarias (0: No, 1: Si).
 
 ```{r, echo=TRUE}
 datos = datos %>% 
@@ -59,9 +84,6 @@ datos = datos %>%
   mutate(Sex = Sex %>% as.factor)
 
 datos = datos %>% 
-  mutate(Diet = Diet %>% as.factor)
-
-datos = datos %>% 
   mutate(Country = Country %>% as.factor)
 
 datos = datos %>% 
@@ -69,6 +91,12 @@ datos = datos %>%
 
 datos = datos %>% 
   mutate(Hemisphere = Hemisphere %>% as.factor)
+
+datos = datos %>% 
+  mutate(Diet = Diet %>% as.factor)
+
+datos = datos %>% 
+  mutate(Stress.Level = Stress.Level %>% as.factor)
 
 datos = datos %>% 
   mutate(Diabetes = if_else(Diabetes == 0, "No", "Si") %>% as.factor)
@@ -94,8 +122,6 @@ datos = datos %>%
 datos = datos %>% 
   mutate(Heart.Attack.Risk = if_else(Heart.Attack.Risk == 0, "No", "Si") %>% as.factor)
 
-datos = datos %>% 
-  mutate(Stress.Level = Stress.Level %>% as.factor)
 ```
 
 ##
@@ -113,14 +139,14 @@ datos <- datos %>%
   ungroup()
 ```
 
-- Por último, eliminamos la variable `Blood.Pressure`, y `Income`, ya que
+- Eliminamos la variable `Blood.Pressure`, y `Income`:
 
 
 ```{r, echo=TRUE}
 datos <- datos[,c(-5,-18)]
 ```
 
-- Reordenemos las columnas para finalizar la conversión a tidy data:
+- Por último, reordenemos las columnas para finalizar la conversión a tidy data:
 
 ```{r, echo=TRUE}
 datos <- datos %>%
@@ -128,12 +154,19 @@ datos <- datos %>%
   relocate(Patient.ID)
 ```
 
+##
+
+Finalmente los datos son:
+
+```{r}
+str(datos)
+```
 
 ##
 
 ### Variables
 
-Variables cuantitativas
+#### Variables cuantitativas
 
 ```{r, echo=FALSE}
 # Separamos los datos en variables cuantitativas y cualitativas
@@ -161,13 +194,15 @@ Desv = round(apply(datos_quant, FUN = sd, 2), 3)
 # algo aixi, pero mes ben fet:
 
 tabla = data.frame(Unidad, Media, Desv, Minimo, Maximo, Rango)
-tabla
+kable(tabla, format = "html", escape = FALSE) %>%
+  kable_styling("striped", full_width = TRUE) %>%
+  kable_styling(font_size = 25)  # Ajusta el tamaño de la fuente
 ```
 
 
 ##
 
-Variables cualitativas
+#### Variables cualitativas
 
 ```{r, echo=FALSE}
 summary(datos_qual)
@@ -178,7 +213,16 @@ summary(datos_qual)
 ##
 ### Análisis multivariante exploratorio
 
-Queremos encontrar un perfil de paciente con riesgo
+Objetivo: Queremos encontrar un perfil de paciente con riesgo de paceder un ataque al corazón.
+
+Características numéricas
+
+
+
+##
+### Análisis multivariante exploratorio
+
+Objetivo: Queremos encontrar un perfil de paciente con riesgo de paceder un ataque al corazón.
 
 Características numéricas
 
@@ -239,7 +283,7 @@ radarchart(radar2, axistype = 2,
 
 ##
 
-comparamos el riesgo del paciente a padecer un ataque cardíaco con varias variables cualitativas.
+Variables cualitativas.
 
 - Nivel de estrés
 
@@ -247,6 +291,159 @@ comparamos el riesgo del paciente a padecer un ataque cardíaco con varias varia
 table(datos$Heart.Attack.Risk, datos$Stress.Level, dnn = c("Riesgo", "Estres"))
 ```
 
+- Obesidad
+
+```{r, echo=FALSE}
+table(datos$Heart.Attack.Risk, datos$Obesity, dnn = c("Riesgo", "Obesidad"))
+```
+
+- Antecedentes familiares
 
 
+```{r, echo=FALSE}
+table(datos$Heart.Attack.Risk, datos$Family.History, dnn = c("Riesgo", "Historial Familiar"))
+```
 
+- Consumo de alcohol
+
+```{r, echo=FALSE}
+table(datos$Heart.Attack.Risk, datos$Alcohol.Consumption, dnn = c("Riesgo", "Consumo de alcohol"))
+```
+
+##
+
+- Dieta
+
+```{r, echo=FALSE}
+table(datos$Heart.Attack.Risk, datos$Diet, dnn = c("Riesgo", "Dieta"))
+```
+
+- Fumar
+
+```{r, echo=FALSE}
+table(datos$Heart.Attack.Risk, datos$Smoking, dnn = c("Riesgo", "Fumar"))
+```
+
+##
+
+A continuación, creamos nosotros un posible perfil de riesgo:
+
+
+```{r,echo=TRUE}
+perfil_riesgo = datos %>% 
+  filter(Smoking == "Si") %>% 
+  filter(Obesity=="Si") %>% 
+  filter(Diet == "Unhealthy") %>% 
+  filter(Stress.Level == c("7","8","9","10"))
+```
+
+Veamos la proporción de individuos de riesgo en comparacion con toda la muestra
+
+
+##
+
+A continuación, creamos nosotros un posible perfil de riesgo:
+
+
+```{r,echo=TRUE}
+perfil_riesgo = datos %>% 
+  filter(Smoking == "Si") %>% 
+  filter(Obesity=="Si") %>% 
+  filter(Diet == "Unhealthy") %>% 
+  filter(Stress.Level == c("7","8","9","10"))
+```
+
+Veamos la proporción de individuos de riesgo en comparacion con toda la muestra
+
+
+```{r,cache=TRUE, echo=FALSE}
+par(mfrow=c(1,2))
+pie(table(perfil_riesgo$Heart.Attack.Risk), main = "Perfil de riesgo", col = c("#99CFD1", "#2A5676"))
+
+pie(table(datos$Heart.Attack.Risk), main = "Todos los individuos", col = c("#99CFD1", "#2A5676"))
+```
+##
+
+Veamos un gráfico de violín, para las edades:
+```{r, echo=FALSE}
+datos_riesgo <- datos %>% 
+  filter(Heart.Attack.Risk == "Si")
+
+#ggplot(datos_riesgo, aes(x=Age, colour="purple"))+
+  #geom_density()
+
+ggplot(datos, aes(x=Heart.Attack.Risk, y=Age, fill = Heart.Attack.Risk))+
+  geom_violin(trim = FALSE)+
+  geom_boxplot(width = 0.07)+
+  scale_fill_brewer()+
+  theme_bw()
+```
+
+
+##
+
+`ggpairs` para las variables cuantitativas
+
+##
+
+`ggpairs` para las variables cuantitativas
+
+```{r, warning=FALSE, cache=TRUE}
+ggpairs(datos_quant)
+```
+
+##
+
+### Estimación del vector de medias y la matriz de covarianza y correlación
+
+#### Vector de medias
+
+```{r, echo=FALSE}
+apply(datos_quant, FUN = mean, MARGIN = 2)
+```
+
+#### Matriz de covarianzas
+
+```{r, echo=FALSE}
+new_names = substr(names(datos_quant),1,5)
+colnames(datos_quant) = new_names
+
+
+n = length(datos$Patient.ID)
+
+round(cov(datos_quant)*(n-1)/n,5)
+```
+
+##
+#### Matriz de correlación:
+
+```{r, echo=FALSE}
+corPlot(datos_quant, cex = 0.8,  main = "Matriz de correlación")
+```
+
+##
+
+#### Matriz de correlación del perfil de riesgo:
+
+```{r,cache=TRUE, echo=FALSE}
+perfil_riesgo_quant = perfil_riesgo %>% 
+  select(where(is.numeric)) %>% 
+  select(-1)
+
+new_names = substr(names(datos_quant),1,9)
+colnames(perfil_riesgo_quant)=new_names
+
+
+corPlot(perfil_riesgo_quant, cex = 0.8,  main = "Matriz de correlación de perfil de riesgo")
+
+```
+
+##
+
+### Conclusiones
+
+- Nuestros datos no son adecuados para realizar ningun estudio de clasificación, ya que no se observan diferencias entre los perfiles de riesgo y los que no.
+
+- No nay ninguna variable dependiente de otra.
+
+- Teniendo en cuenta que hay evidencia de ciertos perfiles de riesgo, es de extrañar la obtención de estos resultados. Este problema podría deberse a una toma de muestras desafortunada y es posible que repitiendo el muestreo se consiguiesen unos resultados más cercanos a lo que esperabamos.
