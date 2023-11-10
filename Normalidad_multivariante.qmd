@@ -30,6 +30,8 @@ library(GGally)
 library(psych)
 library(skimr)
 library(fmsb)
+library(mvnormtest)
+library(car)
 ```
 
 # Convertir los datos en tidy
@@ -117,4 +119,69 @@ El tibble resultante consta de 276 observaciones y 20 variables. Cada muestra re
 - `Platelets`: Plaquetas por cúbico [ml/1000]
 - `Prothrombin`: Tiempo de Protrombina [s]
 - `Stage`: Estado histórico de la enfermedad (1, 2, 3, or 4)
+
+
+
+## Análisis de normalidad multivariante
+
+Vamos a extraer los datos cuantitativos
+
+```{r}
+datos_quant = datos_na_omit %>% 
+  select(where(is.numeric)) %>% 
+  select(-1)  # id
+```
+
+Con estos datos vamos a realizar nuestro estudio de normalidad multivariante.
+
+Calculemos el vector de medias
+
+```{r}
+Medias = colMeans(datos_quant)
+Medias
+```
+
+la matriz de covarianza:
+
+```{r}
+S = cov(datos_quant)
+S
+```
+
+y la distancia de Mahalanobis:
+
+```{r}
+d_Mahalanobis = apply(datos_quant, MARGIN = 1, function(x)
+                    t(x - Medias)%*%solve(S)%*%(x - Medias))
+d_Mahalanobis
+```
+
+Una vez calculadas estas medidas, representemos los datos
+
+```{r}
+plot(qchisq((1:nrow(datos_quant) - 1/2) / nrow(datos_quant), df = 3), sort(d_Mahalanobis), xlab = expression(paste("Cuantiles de la ", chi[3]^2)),ylab="Distancias ordenadas")
+abline(a=0,b=1)
+```
+
+
+Vamos a realizar un test de normalidad. Utilizaremos Shapiro-Wilk:
+
+```{r}
+mvnormtest::mshapiro.test(t(datos_quant))
+```
+Obtenemos un p-valor muy pequeño, prácticamente 0, entonces, rechazamos la hipótesis nula y concluimos que no hay normalidad multivariante, es decir, almenos una variable individual no se distribuye normalmente.
+
+Veamos una por una si se distribuyen normalmente.
+
+
+```{r}
+qqPlot(datos_quant[,2], main = "N_days")
+# no va:(((
+```
+
+
+
+
+
+
 
