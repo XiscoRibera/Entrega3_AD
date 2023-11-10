@@ -5,6 +5,10 @@ editor: visual
 author: Irene LiFeng Julià Pérez y Xisco Ribera Ramis
 ---
 
+Repositorio de la entrega: [https://github.com/XiscoRibera/Entrega3_AD](https://github.com/XiscoRibera/Entrega3_AD)
+
+
+
 # Presentación del problema
 
 Vamos a tratar una base de datos relacionados con la cirrosis. La cirrosis es una etapa tardía de la cicatrización (fibrosis) del hígado causada por muchas formas de enfermedades y afecciones hepáticas, como la hepatitis y el alcoholismo crónico.
@@ -501,7 +505,7 @@ Conluimos que
 
 - no hay normalidad multivariante
 
-- no hay normalidad univariante en ninguna variable quantitativa excepto en `Age` y `Platelets` que tienen una ligera tendencia a parecerse a una normal, aunque no hay evidencias fuertes para afirmar con seguridad que presenten un comportamiento normal
+- no hay normalidad univariante en ninguna variable quantitativa excepto en `Age` y `Platelets` que tienen una ligera tendencia a parecerse a una normal, aunque no hay evidencias fuertes para afirmar con seguridad que presenten un comportamiento normal.
 
 
 
