@@ -110,7 +110,6 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <li>Comprobar si en nuestros datos hay normalidad multivariante.</li>
 </ul>
 <p>Los datos provienen de la página web Kaggle: <a href="https://www.kaggle.com/datasets/fedesoriano/cirrhosis-prediction-dataset/">Kaggle - Cirrhosis</a>.</p>
-<p>El dataset consta de 418 muestras, donde cada una representa una serie de características de un paciente. A cada paciente se le atribuyen 26 valores, uno de ellos es su ID, y el resto son variables relacionadas con la salud cardíaca, tanto geográficas como de hábitos personales.</p>
 <p>Antes de explicar cada variable, modifiquemos la tabla de datos para tenerla limpia en formato tidy.</p>
 <p>Cargamos la librerías que utilizaremos</p>
 <div class="cell">
@@ -274,62 +273,19 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>y la distancia de Mahalanobis:</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>d_Mahalanobis <span class="ot">=</span> <span class="fu">apply</span>(datos_quant, <span class="at">MARGIN =</span> <span class="dv">1</span>, <span class="cf">function</span>(x)</span>
-<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>                    <span class="fu">t</span>(x <span class="sc">-</span> Medias)<span class="sc">%*%</span><span class="fu">solve</span>(S)<span class="sc">%*%</span>(x <span class="sc">-</span> Medias))</span>
-<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>d_Mahalanobis</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>  [1] 11.718462 15.647364  9.747850 15.183510  5.072358  8.960233  8.772232
-  [8]  4.145256 13.765679  7.210558 15.589464  2.991863 18.426173  5.886979
- [15]  2.585319 42.565290  5.840747  7.378982  6.527884 26.898390 30.745499
- [22] 23.463103  6.646944 14.506722 31.508639 16.465003 12.998235 19.243242
- [29] 22.258913 13.245746 11.028889  5.764277 29.642003  5.672879 14.270163
- [36]  4.515420 26.377930 10.812091  7.995463 32.851781  5.119980 27.624049
- [43]  3.631690  4.420250  7.109662 11.474586 29.454388 49.488240 26.794818
- [50] 10.064439 14.551003 17.323207 18.163230 30.128045  6.429780  9.828907
- [57] 11.588981 24.203873  9.845456 16.565264  9.167816  8.557268  9.801214
- [64] 15.938393 62.890864  9.157143  6.605307  3.239670 10.174269 13.642506
- [71] 24.738868 17.351632 14.171342  6.392624  3.566705 43.742509 24.712613
- [78] 10.368774  2.219003  7.784229 17.860384 12.576723 12.584980  5.046221
- [85] 10.455438  7.355122  8.851012  8.562869  5.252602 10.129539  8.894670
- [92]  4.102221  5.211776 56.422462  4.047849  2.706426  4.613880 10.273413
- [99]  9.019210  3.056667 10.925719  4.199308 26.086996  8.245671  2.179204
-[106]  9.113117 27.709243 14.723106  4.540474  3.940107  1.758935  6.829521
-[113] 50.543750 13.430920  5.131718  7.062881  5.753893  8.624034  4.680699
-[120]  5.866327  7.285545  5.398240  7.515726  3.013303  2.860935  2.749663
-[127] 51.792476  4.268320  9.112389 16.203558 13.463033  8.706250 11.945352
-[134]  3.263784 21.565567  4.106643 35.362647 10.414131  4.316046  4.196678
-[141]  2.776266  4.541768  6.035805  5.559548  2.829745 57.968918  6.727446
-[148]  7.332535  5.767668  2.638952 14.250381  4.261564  3.826232  1.625473
-[155] 13.835275  6.472582  7.155574 20.042637  1.979061  8.969852 11.903706
-[162]  3.650101  1.829659 52.542164  3.613559 12.504660  7.924428 11.968691
-[169]  5.408861  2.851939 10.727599  6.231714  5.978860  3.812190 12.336955
-[176] 13.444837  4.333236 11.318757  5.492118  5.329964  1.638542  3.346765
-[183]  3.844268  9.933024 20.871767  8.319631  6.423129  6.181477  3.132789
-[190]  7.120091 13.407470  3.071385  2.585455  3.296180 10.134940  6.046290
-[197]  6.392273  9.954989 19.173175  3.628308 26.417709  8.070163 27.917038
-[204]  3.685407  6.288423  9.183474  3.882853 19.160820  8.889665  8.908688
-[211] 15.109586  6.286972  6.940399 42.979239  3.811287  4.132743  8.623771
-[218]  2.925949  6.173878 21.967841  4.938974  7.289850  5.233692  7.657745
-[225]  3.480926  5.275402  8.059528  7.417159  7.603438  4.791384  2.660594
-[232]  9.710925 12.777153  9.345158  5.657538  8.466416  2.899031 10.347661
-[239]  2.935390  4.951773  6.278459  6.095908  6.917207  5.098721  3.089117
-[246] 36.269275  6.329565 10.531152  4.545608  3.297354  4.827752  2.756816
-[253]  9.698204 13.397437  6.160833  6.906080  3.452027  7.379417 11.188089
-[260]  7.543890  6.499234  4.270344  1.967815  3.588997  2.581861  5.947847
-[267]  3.860676  7.903101 16.276425  3.780733  7.660485  4.133441  7.163881
-[274]  6.072264  6.423367  7.078246</code></pre>
-</div>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>                    <span class="fu">t</span>(x <span class="sc">-</span> Medias)<span class="sc">%*%</span><span class="fu">solve</span>(S)<span class="sc">%*%</span>(x <span class="sc">-</span> Medias))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>Una vez calculadas estas medidas, representemos los datos</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(<span class="fu">qchisq</span>((<span class="dv">1</span><span class="sc">:</span><span class="fu">nrow</span>(datos_quant) <span class="sc">-</span> <span class="dv">1</span><span class="sc">/</span><span class="dv">2</span>) <span class="sc">/</span> <span class="fu">nrow</span>(datos_quant), <span class="at">df =</span> <span class="dv">3</span>), <span class="fu">sort</span>(d_Mahalanobis), <span class="at">xlab =</span> <span class="fu">expression</span>(<span class="fu">paste</span>(<span class="st">"Cuantiles de la "</span>, chi[<span class="dv">20</span>]<span class="sc">^</span><span class="dv">2</span>)),<span class="at">ylab=</span><span class="st">"Distancias ordenadas"</span>)</span>
-<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a><span class="fu">abline</span>(<span class="at">a=</span><span class="dv">0</span>,<span class="at">b=</span><span class="dv">1</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(<span class="fu">qchisq</span>((<span class="dv">1</span><span class="sc">:</span><span class="fu">nrow</span>(datos_quant) <span class="sc">-</span> <span class="dv">1</span><span class="sc">/</span><span class="dv">2</span>) <span class="sc">/</span> <span class="fu">nrow</span>(datos_quant), <span class="at">df =</span> <span class="dv">3</span>), <span class="fu">sort</span>(d_Mahalanobis), <span class="at">xlab =</span> <span class="fu">expression</span>(<span class="fu">paste</span>(<span class="st">"Cuantiles de la "</span>, chi[<span class="dv">20</span>]<span class="sc">^</span><span class="dv">2</span>)),<span class="at">ylab=</span><span class="st">"Distancias ordenadas"</span>)</span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a><span class="fu">abline</span>(<span class="at">a=</span><span class="dv">0</span>,<span class="at">b=</span><span class="dv">1</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <p><img src="Normalidad_multivariante_files/figure-html/unnamed-chunk-12-1.png" class="img-fluid" width="672"></p>
 </div>
 </div>
 <p>Vamos a realizar un test de normalidad. Utilizaremos Shapiro-Wilk:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>mvnormtest<span class="sc">::</span><span class="fu">mshapiro.test</span>(<span class="fu">t</span>(datos_quant))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>mvnormtest<span class="sc">::</span><span class="fu">mshapiro.test</span>(<span class="fu">t</span>(datos_quant))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>
     Shapiro-Wilk normality test
@@ -345,7 +301,7 @@ W = 0.83366, p-value &lt; 2.2e-16</code></pre>
 </ul>
 <p>Observemos el qqplot:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="fu">qqPlot</span>(datos_quant<span class="sc">$</span>N_Days, <span class="at">main =</span> <span class="st">"N_days"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="fu">qqPlot</span>(datos_quant<span class="sc">$</span>N_Days, <span class="at">main =</span> <span class="st">"N_days"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <p><img src="Normalidad_multivariante_files/figure-html/unnamed-chunk-14-1.png" class="img-fluid" width="672"></p>
 </div>
@@ -356,11 +312,11 @@ W = 0.83366, p-value &lt; 2.2e-16</code></pre>
 <p>Observemos que en las colas encontramos muchas muestras que se salen de las bandas de confianza, por tanto es un indicador que de questa variable no siga una normal. Corroboremoslo con un test.</p>
 <p>Miremos primero si hay observaciones repetidas:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="fu">length</span>(datos_quant<span class="sc">$</span>N_Days)<span class="sc">-</span><span class="fu">length</span>(<span class="fu">unique</span>(datos_quant<span class="sc">$</span>N_Days))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="fu">length</span>(datos_quant<span class="sc">$</span>N_Days)<span class="sc">-</span><span class="fu">length</span>(<span class="fu">unique</span>(datos_quant<span class="sc">$</span>N_Days))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 9</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="fu">length</span>(datos_quant<span class="sc">$</span>N_Days)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="fu">length</span>(datos_quant<span class="sc">$</span>N_Days)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 276</code></pre>
 </div>
@@ -368,7 +324,7 @@ W = 0.83366, p-value &lt; 2.2e-16</code></pre>
 <p>Notemos que hay datos repetidos, por realicemos unos cuantos tests de normalidad.</p>
 <pre><code>- Shapiro:</code></pre>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="fu">shapiro.test</span>(datos_quant<span class="sc">$</span>N_Days)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="fu">shapiro.test</span>(datos_quant<span class="sc">$</span>N_Days)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>
     Shapiro-Wilk normality test
@@ -377,10 +333,10 @@ data:  datos_quant$N_Days
 W = 0.9707, p-value = 1.985e-05</code></pre>
 </div>
 </div>
-<p>Nos ha salido un p-value = 1.985e-05, bastante pequeño, con lo quepodemos rechazar la normalidad de esta variable.</p>
+<p>Nos ha salido un p-value = 1.985e-05, bastante pequeño, con lo que podemos rechazar la normalidad de esta variable.</p>
 <pre><code>- Anderson-Darling</code></pre>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb26"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ad.test</span>(datos_quant<span class="sc">$</span>N_Days)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb25"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ad.test</span>(datos_quant<span class="sc">$</span>N_Days)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>
     Anderson-Darling normality test
@@ -396,7 +352,7 @@ A = 1.9897, p-value = 4.437e-05</code></pre>
 </ul>
 <p>Observemos el qqplot:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb28"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a><span class="fu">qqPlot</span>(datos_quant<span class="sc">$</span>Age, <span class="at">main =</span> <span class="st">"Age"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb27"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a><span class="fu">qqPlot</span>(datos_quant<span class="sc">$</span>Age, <span class="at">main =</span> <span class="st">"Age"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <p><img src="Normalidad_multivariante_files/figure-html/unnamed-chunk-18-1.png" class="img-fluid" width="672"></p>
 </div>
@@ -407,14 +363,14 @@ A = 1.9897, p-value = 4.437e-05</code></pre>
 <p>Observemos que en las colas encontramos algunas muestras que se salen de las bandas de confianza, por tanto a simple vista no podemos asegurar nada.</p>
 <p>Miremos primero si hay observaciones repetidas:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb30"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a><span class="fu">length</span>(datos_quant<span class="sc">$</span>Age)<span class="sc">-</span><span class="fu">length</span>(<span class="fu">unique</span>(datos_quant<span class="sc">$</span>Age))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb29"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a><span class="fu">length</span>(datos_quant<span class="sc">$</span>Age)<span class="sc">-</span><span class="fu">length</span>(<span class="fu">unique</span>(datos_quant<span class="sc">$</span>Age))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 1</code></pre>
 </div>
 </div>
 <p>Hay 1 valor que se repite, por tanto, podemos aplicar el shapiro test.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb32"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a><span class="fu">shapiro.test</span>(datos_quant<span class="sc">$</span>Age)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb31"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a><span class="fu">shapiro.test</span>(datos_quant<span class="sc">$</span>Age)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>
     Shapiro-Wilk normality test
@@ -426,7 +382,7 @@ W = 0.9907, p-value = 0.07685</code></pre>
 <p>Nos ha salido un p-value = 0.07685, por tanto estamos en la zona de penumbra y no podemos concluir nada. Necesitaríamos más datos para poder asegurar o negar la normalidad.</p>
 <p>Realicemos otro test de normalidad.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb34"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ad.test</span>(datos_quant<span class="sc">$</span>Age)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb33"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ad.test</span>(datos_quant<span class="sc">$</span>Age)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>
     Anderson-Darling normality test
@@ -438,12 +394,12 @@ A = 0.47535, p-value = 0.238</code></pre>
 <p>Con el test de Anderson-Darling nos sale un p-value = 0.238 y con este test podríamosasegurar la normalidad, aunque nosotros cogeremos esta concluisión con pinzas.</p>
 <p>Veamos la densidad de esta variable:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb36"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true" tabindex="-1"></a>datos_quant <span class="sc">%&gt;%</span> </span>
-<span id="cb36-2"><a href="#cb36-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> Age)) <span class="sc">+</span></span>
-<span id="cb36-3"><a href="#cb36-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_density</span>(<span class="at">color =</span> <span class="dv">4</span>,</span>
-<span id="cb36-4"><a href="#cb36-4" aria-hidden="true" tabindex="-1"></a>               <span class="at">lwd =</span> <span class="dv">1</span>,</span>
-<span id="cb36-5"><a href="#cb36-5" aria-hidden="true" tabindex="-1"></a>               <span class="at">linetype =</span> <span class="dv">1</span>)<span class="sc">+</span></span>
-<span id="cb36-6"><a href="#cb36-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_bw</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb35"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a>datos_quant <span class="sc">%&gt;%</span> </span>
+<span id="cb35-2"><a href="#cb35-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> Age)) <span class="sc">+</span></span>
+<span id="cb35-3"><a href="#cb35-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_density</span>(<span class="at">color =</span> <span class="dv">4</span>,</span>
+<span id="cb35-4"><a href="#cb35-4" aria-hidden="true" tabindex="-1"></a>               <span class="at">lwd =</span> <span class="dv">1</span>,</span>
+<span id="cb35-5"><a href="#cb35-5" aria-hidden="true" tabindex="-1"></a>               <span class="at">linetype =</span> <span class="dv">1</span>)<span class="sc">+</span></span>
+<span id="cb35-6"><a href="#cb35-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_bw</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <p><img src="Normalidad_multivariante_files/figure-html/unnamed-chunk-22-1.png" class="img-fluid" width="672"></p>
 </div>
@@ -454,7 +410,7 @@ A = 0.47535, p-value = 0.238</code></pre>
 </ul>
 <p>Observemos el qqplot:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb37"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb37-1"><a href="#cb37-1" aria-hidden="true" tabindex="-1"></a><span class="fu">qqPlot</span>(datos_quant<span class="sc">$</span>Bilirubin, <span class="at">main =</span> <span class="st">"Bilirubin"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb36"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true" tabindex="-1"></a><span class="fu">qqPlot</span>(datos_quant<span class="sc">$</span>Bilirubin, <span class="at">main =</span> <span class="st">"Bilirubin"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <p><img src="Normalidad_multivariante_files/figure-html/unnamed-chunk-23-1.png" class="img-fluid" width="672"></p>
 </div>
@@ -465,14 +421,14 @@ A = 0.47535, p-value = 0.238</code></pre>
 <p>Observemos que claramente no seguirá una normal debido a que no hay casi ninguna observación dentro de las bandas de confianza. Respaldemos esta afermación con un test.</p>
 <p>Miremos primero si hay observaciones repetidas:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb39"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb39-1"><a href="#cb39-1" aria-hidden="true" tabindex="-1"></a><span class="fu">length</span>(datos_quant<span class="sc">$</span>Bilirubin)<span class="sc">-</span><span class="fu">length</span>(<span class="fu">unique</span>(datos_quant<span class="sc">$</span>Bilirubin))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb38"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb38-1"><a href="#cb38-1" aria-hidden="true" tabindex="-1"></a><span class="fu">length</span>(datos_quant<span class="sc">$</span>Bilirubin)<span class="sc">-</span><span class="fu">length</span>(<span class="fu">unique</span>(datos_quant<span class="sc">$</span>Bilirubin))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 194</code></pre>
 </div>
 </div>
 <p>Hay 194 valores que se repiten, por tanto, no podemos aplicar el shapiro test. En su lugar apliquemos un test D’Agostino-Pearson:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb41"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb41-1"><a href="#cb41-1" aria-hidden="true" tabindex="-1"></a><span class="fu">dagoTest</span>(datos_quant<span class="sc">$</span>Bilirubin)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb40"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb40-1"><a href="#cb40-1" aria-hidden="true" tabindex="-1"></a><span class="fu">dagoTest</span>(datos_quant<span class="sc">$</span>Bilirubin)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>
 Title:
@@ -495,7 +451,7 @@ Test Results:
 </ul>
 <p>Observemos el qqplot:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb43"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb43-1"><a href="#cb43-1" aria-hidden="true" tabindex="-1"></a><span class="fu">qqPlot</span>(datos_quant<span class="sc">$</span>Cholesterol, <span class="at">main =</span> <span class="st">"Cholesterol"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb42"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb42-1"><a href="#cb42-1" aria-hidden="true" tabindex="-1"></a><span class="fu">qqPlot</span>(datos_quant<span class="sc">$</span>Cholesterol, <span class="at">main =</span> <span class="st">"Cholesterol"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <p><img src="Normalidad_multivariante_files/figure-html/unnamed-chunk-26-1.png" class="img-fluid" width="672"></p>
 </div>
@@ -506,14 +462,14 @@ Test Results:
 <p>Observemos que en esta variable ocurre lo mismo que con la anterior (<code>Bilirubin</code>).</p>
 <p>Miremos primero si hay observaciones repetidas:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb45"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb45-1"><a href="#cb45-1" aria-hidden="true" tabindex="-1"></a><span class="fu">length</span>(datos_quant<span class="sc">$</span>Cholesterol)<span class="sc">-</span><span class="fu">length</span>(<span class="fu">unique</span>(datos_quant<span class="sc">$</span>Cholesterol))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb44"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb44-1"><a href="#cb44-1" aria-hidden="true" tabindex="-1"></a><span class="fu">length</span>(datos_quant<span class="sc">$</span>Cholesterol)<span class="sc">-</span><span class="fu">length</span>(<span class="fu">unique</span>(datos_quant<span class="sc">$</span>Cholesterol))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 78</code></pre>
 </div>
 </div>
 <p>Volvemos a tener muchos datos repetidos, por tanto aplicaremos otro test D’Agostino-Pearson:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb47"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb47-1"><a href="#cb47-1" aria-hidden="true" tabindex="-1"></a><span class="fu">dagoTest</span>(datos_quant<span class="sc">$</span>Cholesterol)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb46"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb46-1"><a href="#cb46-1" aria-hidden="true" tabindex="-1"></a><span class="fu">dagoTest</span>(datos_quant<span class="sc">$</span>Cholesterol)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>
 Title:
@@ -536,7 +492,7 @@ Test Results:
 </ul>
 <p>Observemos el qqplot:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb49"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb49-1"><a href="#cb49-1" aria-hidden="true" tabindex="-1"></a><span class="fu">qqPlot</span>(datos_quant<span class="sc">$</span>Albumin, <span class="at">main =</span> <span class="st">"Albumin"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb48"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb48-1"><a href="#cb48-1" aria-hidden="true" tabindex="-1"></a><span class="fu">qqPlot</span>(datos_quant<span class="sc">$</span>Albumin, <span class="at">main =</span> <span class="st">"Albumin"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <p><img src="Normalidad_multivariante_files/figure-html/unnamed-chunk-29-1.png" class="img-fluid" width="672"></p>
 </div>
@@ -547,14 +503,14 @@ Test Results:
 <p>Volvemos a observar que seguramente no seguirá una distribución normal debido a las observaciones que hay fuera de las bandas.</p>
 <p>Miremos primero si hay observaciones repetidas:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb51"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb51-1"><a href="#cb51-1" aria-hidden="true" tabindex="-1"></a><span class="fu">length</span>(datos_quant<span class="sc">$</span>Albumin)<span class="sc">-</span><span class="fu">length</span>(<span class="fu">unique</span>(datos_quant<span class="sc">$</span>Albumin))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb50"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb50-1"><a href="#cb50-1" aria-hidden="true" tabindex="-1"></a><span class="fu">length</span>(datos_quant<span class="sc">$</span>Albumin)<span class="sc">-</span><span class="fu">length</span>(<span class="fu">unique</span>(datos_quant<span class="sc">$</span>Albumin))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 151</code></pre>
 </div>
 </div>
 <p>Volvemos a tener muchos datos repetidos, por tanto aplicaremos otro test D’Agostino-Pearson:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb53"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb53-1"><a href="#cb53-1" aria-hidden="true" tabindex="-1"></a><span class="fu">dagoTest</span>(datos_quant<span class="sc">$</span>Albumin)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb52"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb52-1"><a href="#cb52-1" aria-hidden="true" tabindex="-1"></a><span class="fu">dagoTest</span>(datos_quant<span class="sc">$</span>Albumin)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>
 Title:
@@ -577,7 +533,7 @@ Test Results:
 </ul>
 <p>Observemos el qqplot:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb55"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb55-1"><a href="#cb55-1" aria-hidden="true" tabindex="-1"></a><span class="fu">qqPlot</span>(datos_quant<span class="sc">$</span>Copper, <span class="at">main =</span> <span class="st">"Copper"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb54"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb54-1"><a href="#cb54-1" aria-hidden="true" tabindex="-1"></a><span class="fu">qqPlot</span>(datos_quant<span class="sc">$</span>Copper, <span class="at">main =</span> <span class="st">"Copper"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <p><img src="Normalidad_multivariante_files/figure-html/unnamed-chunk-32-1.png" class="img-fluid" width="672"></p>
 </div>
@@ -588,14 +544,14 @@ Test Results:
 <p>Volvemos a observar que esta muestra no seguirá una distribución normal.</p>
 <p>Miremos primero si hay observaciones repetidas:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb57"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb57-1"><a href="#cb57-1" aria-hidden="true" tabindex="-1"></a><span class="fu">length</span>(datos_quant<span class="sc">$</span>Copper)<span class="sc">-</span><span class="fu">length</span>(<span class="fu">unique</span>(datos_quant<span class="sc">$</span>Copper))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb56"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb56-1"><a href="#cb56-1" aria-hidden="true" tabindex="-1"></a><span class="fu">length</span>(datos_quant<span class="sc">$</span>Copper)<span class="sc">-</span><span class="fu">length</span>(<span class="fu">unique</span>(datos_quant<span class="sc">$</span>Copper))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 124</code></pre>
 </div>
 </div>
 <p>Como volvemos a tener muchos datos repetidos, aplicaremos otro test D’Agostino-Pearson:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb59"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb59-1"><a href="#cb59-1" aria-hidden="true" tabindex="-1"></a><span class="fu">dagoTest</span>(datos_quant<span class="sc">$</span>Copper)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb58"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb58-1"><a href="#cb58-1" aria-hidden="true" tabindex="-1"></a><span class="fu">dagoTest</span>(datos_quant<span class="sc">$</span>Copper)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>
 Title:
@@ -618,7 +574,7 @@ Test Results:
 </ul>
 <p>Observemos el qqplot:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb61"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb61-1"><a href="#cb61-1" aria-hidden="true" tabindex="-1"></a><span class="fu">qqPlot</span>(datos_quant<span class="sc">$</span>Alk_Phos, <span class="at">main =</span> <span class="st">"Alk_Phos"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb60"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb60-1"><a href="#cb60-1" aria-hidden="true" tabindex="-1"></a><span class="fu">qqPlot</span>(datos_quant<span class="sc">$</span>Alk_Phos, <span class="at">main =</span> <span class="st">"Alk_Phos"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <p><img src="Normalidad_multivariante_files/figure-html/unnamed-chunk-35-1.png" class="img-fluid" width="672"></p>
 </div>
@@ -629,14 +585,14 @@ Test Results:
 <p>Tampoco seguirá una distribución normal.</p>
 <p>Miremos primero si hay observaciones repetidas:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb63"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb63-1"><a href="#cb63-1" aria-hidden="true" tabindex="-1"></a><span class="fu">length</span>(datos_quant<span class="sc">$</span>Alk_Phos)<span class="sc">-</span><span class="fu">length</span>(<span class="fu">unique</span>(datos_quant<span class="sc">$</span>Alk_Phos))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb62"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb62-1"><a href="#cb62-1" aria-hidden="true" tabindex="-1"></a><span class="fu">length</span>(datos_quant<span class="sc">$</span>Alk_Phos)<span class="sc">-</span><span class="fu">length</span>(<span class="fu">unique</span>(datos_quant<span class="sc">$</span>Alk_Phos))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 7</code></pre>
 </div>
 </div>
 <p>No hay muchos datos repetido. Probemos de hacer un shapiro test:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb65"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb65-1"><a href="#cb65-1" aria-hidden="true" tabindex="-1"></a><span class="fu">shapiro.test</span>(datos_quant<span class="sc">$</span>Alk_Phos)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb64"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb64-1"><a href="#cb64-1" aria-hidden="true" tabindex="-1"></a><span class="fu">shapiro.test</span>(datos_quant<span class="sc">$</span>Alk_Phos)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>
     Shapiro-Wilk normality test
@@ -647,7 +603,7 @@ W = 0.62114, p-value &lt; 2.2e-16</code></pre>
 </div>
 <p>Nos sale un p-value &lt; 2.2e-16 por tanto rechazaríamos la normalidad de esta variable. Reforcemos esta afirmación realizando un test D’Agostino-Pearson:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb67"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb67-1"><a href="#cb67-1" aria-hidden="true" tabindex="-1"></a><span class="fu">dagoTest</span>(datos_quant<span class="sc">$</span>Alk_Phos)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb66"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb66-1"><a href="#cb66-1" aria-hidden="true" tabindex="-1"></a><span class="fu">dagoTest</span>(datos_quant<span class="sc">$</span>Alk_Phos)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>
 Title:
@@ -670,7 +626,7 @@ Test Results:
 </ul>
 <p>Observemos el qqplot:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb69"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb69-1"><a href="#cb69-1" aria-hidden="true" tabindex="-1"></a><span class="fu">qqPlot</span>(datos_quant<span class="sc">$</span>SGOT, <span class="at">main =</span> <span class="st">"SGOT"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb68"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb68-1"><a href="#cb68-1" aria-hidden="true" tabindex="-1"></a><span class="fu">qqPlot</span>(datos_quant<span class="sc">$</span>SGOT, <span class="at">main =</span> <span class="st">"SGOT"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <p><img src="Normalidad_multivariante_files/figure-html/unnamed-chunk-39-1.png" class="img-fluid" width="672"></p>
 </div>
@@ -681,14 +637,14 @@ Test Results:
 <p>Observemos que encontramos algunas observaciones fuera de las bandas de confianza, lo que indica que tampoco será normal.</p>
 <p>Miremos primero si hay observaciones repetidas:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb71"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb71-1"><a href="#cb71-1" aria-hidden="true" tabindex="-1"></a><span class="fu">length</span>(datos_quant<span class="sc">$</span>SGOT)<span class="sc">-</span><span class="fu">length</span>(<span class="fu">unique</span>(datos_quant<span class="sc">$</span>SGOT))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb70"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb70-1"><a href="#cb70-1" aria-hidden="true" tabindex="-1"></a><span class="fu">length</span>(datos_quant<span class="sc">$</span>SGOT)<span class="sc">-</span><span class="fu">length</span>(<span class="fu">unique</span>(datos_quant<span class="sc">$</span>SGOT))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 110</code></pre>
 </div>
 </div>
 <p>Como volvemos a tener muchos datos repetidos, aplicaremos otro test D’Agostino-Pearson:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb73"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb73-1"><a href="#cb73-1" aria-hidden="true" tabindex="-1"></a><span class="fu">dagoTest</span>(datos_quant<span class="sc">$</span>SGOT)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb72"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb72-1"><a href="#cb72-1" aria-hidden="true" tabindex="-1"></a><span class="fu">dagoTest</span>(datos_quant<span class="sc">$</span>SGOT)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>
 Title:
@@ -711,7 +667,7 @@ Test Results:
 </ul>
 <p>Observemos el qqplot:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb75"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb75-1"><a href="#cb75-1" aria-hidden="true" tabindex="-1"></a><span class="fu">qqPlot</span>(datos_quant<span class="sc">$</span>Tryglicerides, <span class="at">main =</span> <span class="st">"Tryglicerides"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb74"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb74-1"><a href="#cb74-1" aria-hidden="true" tabindex="-1"></a><span class="fu">qqPlot</span>(datos_quant<span class="sc">$</span>Tryglicerides, <span class="at">main =</span> <span class="st">"Tryglicerides"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <p><img src="Normalidad_multivariante_files/figure-html/unnamed-chunk-42-1.png" class="img-fluid" width="672"></p>
 </div>
@@ -722,14 +678,14 @@ Test Results:
 <p>El resultado no es diferente a la de las otras variables. Confirmemos que no sigue una normal.</p>
 <p>Miremos primero si hay observaciones repetidas:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb77"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb77-1"><a href="#cb77-1" aria-hidden="true" tabindex="-1"></a><span class="fu">length</span>(datos_quant<span class="sc">$</span>Tryglicerides)<span class="sc">-</span><span class="fu">length</span>(<span class="fu">unique</span>(datos_quant<span class="sc">$</span>Tryglicerides))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb76"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb76-1"><a href="#cb76-1" aria-hidden="true" tabindex="-1"></a><span class="fu">length</span>(datos_quant<span class="sc">$</span>Tryglicerides)<span class="sc">-</span><span class="fu">length</span>(<span class="fu">unique</span>(datos_quant<span class="sc">$</span>Tryglicerides))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 133</code></pre>
 </div>
 </div>
 <p>Aplicaremos otro test D’Agostino-Pearson:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb79"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb79-1"><a href="#cb79-1" aria-hidden="true" tabindex="-1"></a><span class="fu">dagoTest</span>(datos_quant<span class="sc">$</span>Tryglicerides)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb78"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb78-1"><a href="#cb78-1" aria-hidden="true" tabindex="-1"></a><span class="fu">dagoTest</span>(datos_quant<span class="sc">$</span>Tryglicerides)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>
 Title:
@@ -752,7 +708,7 @@ Test Results:
 </ul>
 <p>Observemos el qqplot:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb81"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb81-1"><a href="#cb81-1" aria-hidden="true" tabindex="-1"></a><span class="fu">qqPlot</span>(datos_quant<span class="sc">$</span>Platelets, <span class="at">main =</span> <span class="st">"Platelets"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb80"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb80-1"><a href="#cb80-1" aria-hidden="true" tabindex="-1"></a><span class="fu">qqPlot</span>(datos_quant<span class="sc">$</span>Platelets, <span class="at">main =</span> <span class="st">"Platelets"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <p><img src="Normalidad_multivariante_files/figure-html/unnamed-chunk-45-1.png" class="img-fluid" width="672"></p>
 </div>
@@ -763,14 +719,14 @@ Test Results:
 <p>Observemos que en este caso no podríamos asegurar la normalidad a simple vista, ya que hay algunas observaciones que si sobresalen de las bandas, pero la diferencia no es exaegrada. Veamos que dicen los tests de normalidad.</p>
 <p>Miremos primero si hay observaciones repetidas:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb83"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb83-1"><a href="#cb83-1" aria-hidden="true" tabindex="-1"></a><span class="fu">length</span>(datos_quant<span class="sc">$</span>Platelets)<span class="sc">-</span><span class="fu">length</span>(<span class="fu">unique</span>(datos_quant<span class="sc">$</span>Platelets))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb82"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb82-1"><a href="#cb82-1" aria-hidden="true" tabindex="-1"></a><span class="fu">length</span>(datos_quant<span class="sc">$</span>Platelets)<span class="sc">-</span><span class="fu">length</span>(<span class="fu">unique</span>(datos_quant<span class="sc">$</span>Platelets))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 83</code></pre>
 </div>
 </div>
 <p>Como volvemos a tener muchos datos repetidos, aplicaremos otro test D’Agostino-Pearson:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb85"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb85-1"><a href="#cb85-1" aria-hidden="true" tabindex="-1"></a><span class="fu">dagoTest</span>(datos_quant<span class="sc">$</span>Platelets)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb84"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb84-1"><a href="#cb84-1" aria-hidden="true" tabindex="-1"></a><span class="fu">dagoTest</span>(datos_quant<span class="sc">$</span>Platelets)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>
 Title:
@@ -791,7 +747,7 @@ Test Results:
 <p>En cambio el p-value de Kurtosis, es bastante grande y sí podríamos aceptar la normalidad de esta variable.</p>
 <p>Veamos que conclusiones saca el test de Anderson-Darling:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb87"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb87-1"><a href="#cb87-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ad.test</span>(datos_quant<span class="sc">$</span>Platelets)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb86"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb86-1"><a href="#cb86-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ad.test</span>(datos_quant<span class="sc">$</span>Platelets)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>
     Anderson-Darling normality test
@@ -803,12 +759,12 @@ A = 0.6102, p-value = 0.1116</code></pre>
 <p>Nos sale un p-value = 0.1116. No es un p-value muy grande, por tanto la normalidad de esta variable se podría aceptar con cuidado.</p>
 <p>Veamos la densidad de la variable:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb89"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb89-1"><a href="#cb89-1" aria-hidden="true" tabindex="-1"></a>datos_quant <span class="sc">%&gt;%</span> </span>
-<span id="cb89-2"><a href="#cb89-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> Platelets)) <span class="sc">+</span></span>
-<span id="cb89-3"><a href="#cb89-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_density</span>(<span class="at">color =</span> <span class="dv">4</span>,</span>
-<span id="cb89-4"><a href="#cb89-4" aria-hidden="true" tabindex="-1"></a>               <span class="at">lwd =</span> <span class="dv">1</span>,</span>
-<span id="cb89-5"><a href="#cb89-5" aria-hidden="true" tabindex="-1"></a>               <span class="at">linetype =</span> <span class="dv">1</span>)<span class="sc">+</span></span>
-<span id="cb89-6"><a href="#cb89-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_bw</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb88"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb88-1"><a href="#cb88-1" aria-hidden="true" tabindex="-1"></a>datos_quant <span class="sc">%&gt;%</span> </span>
+<span id="cb88-2"><a href="#cb88-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> Platelets)) <span class="sc">+</span></span>
+<span id="cb88-3"><a href="#cb88-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_density</span>(<span class="at">color =</span> <span class="dv">4</span>,</span>
+<span id="cb88-4"><a href="#cb88-4" aria-hidden="true" tabindex="-1"></a>               <span class="at">lwd =</span> <span class="dv">1</span>,</span>
+<span id="cb88-5"><a href="#cb88-5" aria-hidden="true" tabindex="-1"></a>               <span class="at">linetype =</span> <span class="dv">1</span>)<span class="sc">+</span></span>
+<span id="cb88-6"><a href="#cb88-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_bw</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <p><img src="Normalidad_multivariante_files/figure-html/unnamed-chunk-49-1.png" class="img-fluid" width="672"></p>
 </div>
@@ -819,7 +775,7 @@ A = 0.6102, p-value = 0.1116</code></pre>
 </ul>
 <p>Observemos el qqplot:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb90"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb90-1"><a href="#cb90-1" aria-hidden="true" tabindex="-1"></a><span class="fu">qqPlot</span>(datos_quant<span class="sc">$</span>Prothrombin, <span class="at">main =</span> <span class="st">"Prothrombin"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb89"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb89-1"><a href="#cb89-1" aria-hidden="true" tabindex="-1"></a><span class="fu">qqPlot</span>(datos_quant<span class="sc">$</span>Prothrombin, <span class="at">main =</span> <span class="st">"Prothrombin"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <p><img src="Normalidad_multivariante_files/figure-html/unnamed-chunk-50-1.png" class="img-fluid" width="672"></p>
 </div>
@@ -830,14 +786,14 @@ A = 0.6102, p-value = 0.1116</code></pre>
 <p>Observamos que seguramente esta variable tampoco seguirá una normal.</p>
 <p>Miremos primero si hay observaciones repetidas:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb92"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb92-1"><a href="#cb92-1" aria-hidden="true" tabindex="-1"></a><span class="fu">length</span>(datos_quant<span class="sc">$</span>Prothrombin)<span class="sc">-</span><span class="fu">length</span>(<span class="fu">unique</span>(datos_quant<span class="sc">$</span>Prothrombin))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb91"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb91-1"><a href="#cb91-1" aria-hidden="true" tabindex="-1"></a><span class="fu">length</span>(datos_quant<span class="sc">$</span>Prothrombin)<span class="sc">-</span><span class="fu">length</span>(<span class="fu">unique</span>(datos_quant<span class="sc">$</span>Prothrombin))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 235</code></pre>
 </div>
 </div>
 <p>La mayoría de observaciones se repiten. Aplicaremos otro test D’Agostino-Pearson:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb94"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb94-1"><a href="#cb94-1" aria-hidden="true" tabindex="-1"></a><span class="fu">dagoTest</span>(datos_quant<span class="sc">$</span>Prothrombin)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb93"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb93-1"><a href="#cb93-1" aria-hidden="true" tabindex="-1"></a><span class="fu">dagoTest</span>(datos_quant<span class="sc">$</span>Prothrombin)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>
 Title:

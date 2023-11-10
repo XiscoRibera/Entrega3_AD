@@ -17,8 +17,6 @@ Nuestro objetivo para este estudio sería:
 
 Los datos provienen de la página web Kaggle: [Kaggle - Cirrhosis](https://www.kaggle.com/datasets/fedesoriano/cirrhosis-prediction-dataset/).
 
-El dataset consta de 418 muestras, donde cada una representa una serie de características de un paciente. A cada paciente se le atribuyen 26 valores, uno de ellos es su ID, y el resto son variables relacionadas con la salud cardíaca, tanto geográficas como de hábitos personales.
-
 Antes de explicar cada variable, modifiquemos la tabla de datos para tenerla limpia en formato tidy.
 
 Cargamos la librerías que utilizaremos
@@ -132,7 +130,9 @@ ggpairs(datos_quant)
 
 
 ```{r, echo=FALSE}
-corPlot(datos_quant, cex = 0.8,  main = "Matriz de correlación")
+corPlot(datos_quant, cex = 0.8,  main = "Matriz de correlación", xsrt = 50, 
+        labels = c("N_Days", "Age", "Bili", "Chol", "Album", "Copper",
+                   "Alk_Ph", "SGOT", "Tryg", "Plate", "Proth"))
 ```
 
 
@@ -166,7 +166,6 @@ y la distancia de Mahalanobis:
 ```{r}
 d_Mahalanobis = apply(datos_quant, MARGIN = 1, function(x)
                     t(x - Medias)%*%solve(S)%*%(x - Medias))
-d_Mahalanobis
 ```
 
 Una vez calculadas estas medidas, representemos los datos
@@ -208,7 +207,7 @@ Notemos que hay datos repetidos, por realicemos unos cuantos tests de normalidad
 ```{r}
 shapiro.test(datos_quant$N_Days)
 ```
-  Nos ha salido un p-value = 1.985e-05, bastante pequeño, con lo quepodemos rechazar la normalidad de esta variable.
+Nos ha salido un p-value = 1.985e-05, bastante pequeño, con lo que podemos rechazar la normalidad de esta variable.
 
     - Anderson-Darling
 
