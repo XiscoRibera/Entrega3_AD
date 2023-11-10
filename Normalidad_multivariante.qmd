@@ -160,7 +160,7 @@ d_Mahalanobis
 Una vez calculadas estas medidas, representemos los datos
 
 ```{r}
-plot(qchisq((1:nrow(datos_quant) - 1/2) / nrow(datos_quant), df = 3), sort(d_Mahalanobis), xlab = expression(paste("Cuantiles de la ", chi[3]^2)),ylab="Distancias ordenadas")
+plot(qchisq((1:nrow(datos_quant) - 1/2) / nrow(datos_quant), df = 3), sort(d_Mahalanobis), xlab = expression(paste("Cuantiles de la ", chi[20]^2)),ylab="Distancias ordenadas")
 abline(a=0,b=1)
 ```
 
