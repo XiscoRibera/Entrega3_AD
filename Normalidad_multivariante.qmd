@@ -1,0 +1,120 @@
+---
+title: "Normalidad Multivariante"
+format: html
+editor: visual
+author: Irene LiFeng Julià Pérez y Xisco Ribera Ramis
+---
+
+# Presentación del problema
+
+Vamos a tratar una base de datos relacionados con la cirrosis. La cirrosis es una etapa tardía de la cicatrización (fibrosis) del hígado causada por muchas formas de enfermedades y afecciones hepáticas, como la hepatitis y el alcoholismo crónico.
+
+En este dataset tenemos 418 observaciones (pacientes) con 20 varibales:
+
+Nuestro objetivo para este estudio sería: 
+
+- Comprobar si en nuestros datos hay normalidad multivariante.
+
+Los datos provienen de la página web Kaggle: [Kaggle - Cirrhosis](https://www.kaggle.com/datasets/fedesoriano/cirrhosis-prediction-dataset/).
+
+El dataset consta de 8763 muestras, donde cada una representa una serie de características de un paciente. A cada paciente se le atribuyen 26 valores, uno de ellos es su ID, y el resto son variables relacionadas con la salud cardíaca, tanto geográficas como de hábitos personales.
+
+Antes de explicar cada variable, modifiquemos la tabla de datos para tenerla limpia en formato tidy.
+
+Cargamos la librerías que utilizaremos
+
+```{r, warning=FALSE, message=FALSE}
+library(tidyverse)
+library(dplyr)
+library(GGally)
+library(psych)
+library(skimr)
+library(fmsb)
+```
+
+# Convertir los datos en tidy
+
+Cargamos la tabla de datos y la convertimos a tibble para facilitarnos la manipulación.
+
+```{r, warning=FALSE}
+datos = read.csv("cirrhosis.csv", header = T)
+datos = datos %>% as.tibble
+str(datos)
+```
+
+
+Vamos a modificar el data set para que sea más cómodo a la hora de trabajar con él.
+
+Transformamos las variables qualitativas en factor y, en las de Si o No (Y: Si, N: No) cambiamos los valores para que sea más ilustrativa y entendible. De la misma forma con el sexo cromosómico (F: Female, M: Male)
+
+```{r}
+datos = datos %>% 
+  mutate(Status = recode(Status, "C" = "Cens", "CL" = "Cens_Trat", "D" = "Muerto") %>%
+           as.factor)
+
+datos = datos %>% 
+  mutate(Drug = Drug %>% as.factor)
+
+datos = datos %>% 
+  mutate(Sex = if_else(Sex == "F", "Female", "Male") %>% as.factor)
+
+datos = datos %>% 
+  mutate(Ascites = if_else(Ascites == "Y", "Si", "No") %>% as.factor)
+
+datos = datos %>% 
+  mutate(Hepatomegaly = if_else(Hepatomegaly == "Y", "Si", "No") %>% as.factor)
+
+datos = datos %>% 
+  mutate(Spiders = if_else(Spiders == "Y", "Si", "No") %>% as.factor)
+
+datos = datos %>% 
+  mutate(Edema = recode(Edema, "Y" = "Si", "N" = "No", "S" = "Sin") %>% as.factor)
+
+datos = datos %>% 
+  mutate(Stage = Stage %>% as.factor)
+```
+
+
+Observemos que hay muestras que tienen valores desconocidos (NA). Veamos cuales son:
+
+```{r, echo = FALSE}
+count_NA = function(x){
+  idx = c()
+  for (i in 1:nrow(datos)){
+    if (sum(is.na(datos[i,]))!=0) idx[length(idx)+1] = i
+  }
+  return(idx)
+}
+datos[count_NA(datos),]
+```
+
+
+```{r}
+datos_na_omit = na.omit(datos)
+```
+
+
+
+El tibble resultante consta de 276 observaciones y 20 variables. Cada muestra representa un paciente al que se le ha extraido la siguiente información:
+
+- `ID`: Identificador único
+- `N_Days`: Número de días entre el registro y la fecha de defunción, transplante o estudio analítico enJulio de 1986.
+- `Status`: Estatus del paciente: C (Censurado), CL (censurado debido a tratamiento hepático), o D (Muerto)
+- `Drug`:  Tipo de fármaco: D-penicilamina o placebo
+- `Age`: Edad [días]
+- `Sex`: Sexo cromosómico: Male (hombre) o Female (Mujer)
+- `Ascites`: Presencia de Ascitis No o Si
+- `Hepatomegaly`: Presencia de Hepatomegalia No o Si
+- `Spiders`: Presencia de arañas vasculares No o Si
+- `Edema`: Presencia de Edema: No (no hay edema y sin tratamiento diurético para el edema), Sin (presencia de edema sin diuréticos, o edema curado con diuréticos), o Si (edema a pesar del tratamiento con diuréticos)
+- `Bilirubin`: Bilirrubina sérica [mg/dl]
+- `Cholesterol`: Colesterol sérico [mg/dl]
+- `Albumin`: Albúmina [gm/dl]
+- `Copper`: Cobre en orina [ug/day]
+- `Alk_Phos`: Fosfatasa alcalina [U/liter]
+- `SGOT`: SGOT [U/ml]
+- `Triglycerides`: Triglicéridos [mg/dl]
+- `Platelets`: Plaquetas por cúbico [ml/1000]
+- `Prothrombin`: Tiempo de Protrombina [s]
+- `Stage`: Estado histórico de la enfermedad (1, 2, 3, or 4)
+
