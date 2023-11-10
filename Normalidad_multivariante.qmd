@@ -217,7 +217,7 @@ ad.test(datos_quant$N_Days)
 
 Nos ha salido un p-value = 4.437e-05, bastante pequeño, con lo que también podemos rechazar la normalidad de esta variable.
 
-Por tanto podemos concluir que la variable `N_Days` no sigue una distribución normal
+Por tanto podemos concluir que la variable `N_Days` no sigue una distribución normal.
 
 
 
@@ -251,7 +251,7 @@ ad.test(datos_quant$Age)
 
 ```
 Con el test de Anderson-Darling nos sale un p-value = 0.238
-y con este test podríamosasegurar la normalidad, aunque nosotros cogeremos esta concluisión con pinzas.
+y con este test podríamos asegurar la normalidad, aunque nosotros cogeremos esta concluisión con pinzas.
 
 Veamos la densidad de esta variable:
 
