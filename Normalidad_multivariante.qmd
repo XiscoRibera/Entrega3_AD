@@ -51,8 +51,8 @@ Transformamos las variables qualitativas en factor y, en las de Si o No (Y: Si, 
 
 ```{r}
 datos = datos %>% 
-  mutate(Status = recode(Status, "C" = "Cens", "CL" = "Cens_Trat", "D" = "Muerto") %>%
-           as.factor)
+  mutate(Status = factor(Status, levels = c("C", "CL", "D"), labels = c("Cens", 
+                                                      "Cens_Trat", "Muerto")))
 
 datos = datos %>% 
   mutate(Drug = Drug %>% as.factor)
@@ -70,7 +70,8 @@ datos = datos %>%
   mutate(Spiders = if_else(Spiders == "Y", "Si", "No") %>% as.factor)
 
 datos = datos %>% 
-  mutate(Edema = recode(Edema, "Y" = "Si", "N" = "No", "S" = "Sin") %>% as.factor)
+  mutate(Edema = factor(Edema, levels = c("Y", "N", "S"), labels = c("Si", "No",
+                                                                     "Sin")))
 
 datos = datos %>% 
   mutate(Stage = Stage %>% as.factor)
@@ -175,7 +176,7 @@ Veamos una por una si se distribuyen normalmente.
 
 
 ```{r}
-qqPlot(datos_quant[,2], main = "N_days")
+#qqPlot(datos_quant[,2], main = "N_days")
 # no va:(((
 ```
 
