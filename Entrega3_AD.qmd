@@ -9,13 +9,13 @@ author: Irene LiFeng Julià Pérez y Xisco Ribera Ramis
 
 Vamos a tratar una base de datos relacionados con la predicción de riesgo de ataque cardíaco. Este hecho es un problema que afecta a un gran porcentaje de la población mundial y es de interés poder predecir esta dolencia.
 
-Nuestro objetivo para este estudio sería: 
+Nuestro objetivo para este estudio sería:
 
-1. Estudiar algunos perfiles con riesgo de padecer un ataque al corazón.
+1.  Estudiar algunos perfiles con riesgo de padecer un ataque al corazón.
 
-2. Comprobar si hay diferencias entre diferentes continentes respecto al mismo perfil de riesgo.
+2.  Comprobar si hay diferencias entre diferentes continentes respecto al mismo perfil de riesgo.
 
-3. Poder predecir si un individuo tiene riesgo de sufrir un ataque al corazón.
+3.  Poder predecir si un individuo tiene riesgo de sufrir un ataque al corazón.
 
 Los datos provienen de la página web Kaggle: [Kaggle - Heart Attack Prediction](https://www.kaggle.com/datasets/iamsouravbanerjee/heart-attack-prediction-dataset).
 
@@ -176,7 +176,6 @@ summary(datos_qual)
 
 # Análisis multivariante exploratorio
 
-
 Queremos encontrar un perfil de paciente que tiene riesgo de sufrir un ataque cardíaco. Para ello compararemos las variables entre los usuarios con riesgo y los que no.
 
 Empezamos por las variables cuantitativas:
@@ -234,10 +233,7 @@ radarchart(radar2, axistype = 2,
 
 ```
 
-
-
 Notemos que, con las variables cuantitativas, no podemos establecer un perfil de riesgo.
-
 
 Veamos si a simple vista, hay diferencias entre las variables cualitativas y el hecho de tener riesgo de padecer un ataque cardíaco.
 
@@ -246,9 +242,8 @@ Para ello, consideramos unas tablas de frecuencias:
 ```{r, echo=FALSE}
 table(datos$Heart.Attack.Risk, datos$Stress.Level, dnn = c("Riesgo", "Estres"))
 ```
+
 Notemos que parace ser que el nivel de estres no afecta.
-
-
 
 ```{r, echo=FALSE}
 table(datos$Heart.Attack.Risk, datos$Obesity, dnn = c("Riesgo", "Obesidad"))
@@ -256,23 +251,22 @@ table(datos$Heart.Attack.Risk, datos$Obesity, dnn = c("Riesgo", "Obesidad"))
 
 Notemos que hay prácticamente el doble de individuos con obesidad que no tienen riesgo de tener un ataque. Y de los que si se les consideran de riesgo, hay casi el mismo número de personas con obesidad que sin.
 
-
-
-
 ```{r, echo=FALSE}
 table(datos$Heart.Attack.Risk, datos$Family.History, dnn = c("Riesgo", "Historial Familiar"))
 ```
+
 Notemos que hay muchos más individuos con casos de ataque en su familia que no tienen riesgo de tener un ataque. Y de los que son de riesgo, hay casi el mismo número de personas con antecedentes familiares que sin ellos.
 
 ```{r, echo=FALSE}
 table(datos$Heart.Attack.Risk, datos$Alcohol.Consumption, dnn = c("Riesgo", "Consumo de alcohol"))
 ```
-Notemos que hay muchos más individuos que consumen alcohol y no tienen riesgo de tener un ataque. Y de los que son de riesgo, hay casi el mismo número de personas con que consumen alcohol que los que no.
 
+Notemos que hay muchos más individuos que consumen alcohol y no tienen riesgo de tener un ataque. Y de los que son de riesgo, hay casi el mismo número de personas con que consumen alcohol que los que no.
 
 ```{r, echo=FALSE}
 table(datos$Heart.Attack.Risk, datos$Diet, dnn = c("Riesgo", "Dieta"))
 ```
+
 Notemos que hay más individuos con mala dieta que no tienen riesgo de tener un ataque. Y de los que son de riesgo, hay prácticamente el mismo número de de individuos en cada tipo de dieta.
 
 ```{r, echo=FALSE}
@@ -280,7 +274,6 @@ table(datos$Heart.Attack.Risk, datos$Smoking, dnn = c("Riesgo", "Fumar"))
 ```
 
 Notemos que hay aproximadamente el doble de individuos que fuman y no tienen riesgo de tener un ataque. Pero, de los que sí tienen riesgo, en este caso, hay muchos más individuos que fuman.
-
 
 Después de estas observaciones, intentemos establecer un perfil con las variables cualitativas.
 
@@ -292,8 +285,6 @@ perfil_riesgo = datos %>%
   filter(Stress.Level == c("7","8","9","10"))
 ```
 
-
-
 ```{r,cache=TRUE, echo=FALSE}
 par(mfrow=c(1,2))
 pie(table(perfil_riesgo$Heart.Attack.Risk), main = "Perfil de riesgo", col = c("#99CFD1", "#2A5676"))
@@ -301,10 +292,10 @@ pie(table(perfil_riesgo$Heart.Attack.Risk), main = "Perfil de riesgo", col = c("
 pie(table(datos$Heart.Attack.Risk), main = "Todos los individuos", col = c("#99CFD1", "#2A5676"))
 ```
 
-
 Notemos que hay poca proporción de individuos que cumplen una serie de caraterísticas que pensábamos que era un perfil de riesgo.
 
 Veamos un gráfico de violin, para las edades:
+
 ```{r}
 datos_riesgo <- datos %>% 
   filter(Heart.Attack.Risk == "Si")
@@ -318,8 +309,8 @@ ggplot(datos, aes(x=Heart.Attack.Risk, y=Age, fill = Heart.Attack.Risk))+
   scale_fill_brewer()+
   theme_bw()
 ```
-Vemos que la edad no parece influir en el perfil de riesgo, ya que se disrtibuyen de forma similar.
 
+Vemos que la edad no parece influir en el perfil de riesgo, ya que se disrtibuyen de forma similar.
 
 Por último, hagamos un `ggpairs` para las variables cuantitativas
 
@@ -328,7 +319,6 @@ ggpairs(datos_quant)
 ```
 
 A simple vista no hay ninguna variable dependiente de otra, ni ninguna tendencia.
-
 
 # Estimación del vector de medias y la matriz de covarianza y correlación
 
@@ -350,12 +340,11 @@ n = length(datos$Patient.ID)
 round(cov(datos_quant)*(n-1)/n,5)
 ```
 
-
 Matriz de correlación:
+
 ```{r, echo=FALSE}
 corPlot(datos_quant, cex = 0.8,  main = "Matriz de correlación")
 ```
-
 
 ```{r, eval=FALSE, echo=FALSE}
 lims=c(18,30,50,70,Inf)
@@ -364,7 +353,6 @@ Etiquetas = c("Joven", "Adulto30-50","Adulto50-70","Mayor")
 
 datos$Age = cut(datos$Age, breaks = lims, labels = Etiquetas, right = FALSE)
 ```
-
 
 Respecto al perfil de reisgo que hemos definido anteriormente, veamos si existe alguna dependencia entre las variables quantitativas
 
@@ -381,17 +369,12 @@ corPlot(perfil_riesgo_quant, cex = 0.8,  main = "Matriz de correlación de perfi
 
 ```
 
-
 En este caso se aprecia una pequeña diferencia respecto de la anterior, sin embargo, no parece ser significativo ya que los índices de correlación son muy cercanos a 0.
 
 # Conclusiones
 
-- Nuestros datos no son adecuados para realizar ningun estudio de clasificación, ya que no se observan diferencias entre los perfiles de riesgo y los que no.
+-   Nuestros datos no son adecuados para realizar ningun estudio de clasificación, ya que no se observan diferencias entre los perfiles de riesgo y los que no.
 
-- No nay ninguna variable dependiente de otra.
+-   No nay ninguna variable dependiente de otra.
 
-- Teniendo en cuenta que hay evidencia de ciertos perfiles de riesgo, es de extrañar la obtención de estos resultados. Este problema podría deberse a una toma de muestras desafortunada y es posible que repitiendo el muestreo se consiguiesen unos resultados más cercanos a lo que esperabamos.
-
-
-
-
+-   Teniendo en cuenta que hay evidencia de ciertos perfiles de riesgo, es de extrañar la obtención de estos resultados. Este problema podría deberse a una toma de muestras desafortunada y es posible que repitiendo el muestreo se consiguiesen unos resultados más cercanos a lo que esperabamos.
