@@ -11,13 +11,13 @@ Vamos a tratar una base de datos relacionados con la cirrosis. La cirrosis es un
 
 En este dataset tenemos 418 observaciones (pacientes) con 20 varibales:
 
-Nuestro objetivo para este estudio sería: 
+Nuestro objetivo para este estudio sería:
 
-- Comprobar si en nuestros datos hay normalidad multivariante.
+-   Comprobar si en nuestros datos hay normalidad multivariante.
 
 Los datos provienen de la página web Kaggle: [Kaggle - Cirrhosis](https://www.kaggle.com/datasets/fedesoriano/cirrhosis-prediction-dataset/).
 
-El dataset consta de 8763 muestras, donde cada una representa una serie de características de un paciente. A cada paciente se le atribuyen 26 valores, uno de ellos es su ID, y el resto son variables relacionadas con la salud cardíaca, tanto geográficas como de hábitos personales.
+El dataset consta de 418 muestras, donde cada una representa una serie de características de un paciente. A cada paciente se le atribuyen 26 valores, uno de ellos es su ID, y el resto son variables relacionadas con la salud cardíaca, tanto geográficas como de hábitos personales.
 
 Antes de explicar cada variable, modifiquemos la tabla de datos para tenerla limpia en formato tidy.
 
@@ -32,6 +32,8 @@ library(skimr)
 library(fmsb)
 library(mvnormtest)
 library(car)
+library(nortest)
+library(fBasics)
 ```
 
 # Convertir los datos en tidy
@@ -43,7 +45,6 @@ datos = read.csv("cirrhosis.csv", header = T)
 datos = datos %>% as.tibble
 str(datos)
 ```
-
 
 Vamos a modificar el data set para que sea más cómodo a la hora de trabajar con él.
 
@@ -77,7 +78,6 @@ datos = datos %>%
   mutate(Stage = Stage %>% as.factor)
 ```
 
-
 Observemos que hay muestras que tienen valores desconocidos (NA). Veamos cuales son:
 
 ```{r, echo = FALSE}
@@ -91,39 +91,52 @@ count_NA = function(x){
 datos[count_NA(datos),]
 ```
 
-
 ```{r}
 datos_na_omit = na.omit(datos)
 ```
 
-
-
 El tibble resultante consta de 276 observaciones y 20 variables. Cada muestra representa un paciente al que se le ha extraido la siguiente información:
 
-- `ID`: Identificador único
-- `N_Days`: Número de días entre el registro y la fecha de defunción, transplante o estudio analítico enJulio de 1986.
-- `Status`: Estatus del paciente: C (Censurado), CL (censurado debido a tratamiento hepático), o D (Muerto)
-- `Drug`:  Tipo de fármaco: D-penicilamina o placebo
-- `Age`: Edad [días]
-- `Sex`: Sexo cromosómico: Male (hombre) o Female (Mujer)
-- `Ascites`: Presencia de Ascitis No o Si
-- `Hepatomegaly`: Presencia de Hepatomegalia No o Si
-- `Spiders`: Presencia de arañas vasculares No o Si
-- `Edema`: Presencia de Edema: No (no hay edema y sin tratamiento diurético para el edema), Sin (presencia de edema sin diuréticos, o edema curado con diuréticos), o Si (edema a pesar del tratamiento con diuréticos)
-- `Bilirubin`: Bilirrubina sérica [mg/dl]
-- `Cholesterol`: Colesterol sérico [mg/dl]
-- `Albumin`: Albúmina [gm/dl]
-- `Copper`: Cobre en orina [ug/day]
-- `Alk_Phos`: Fosfatasa alcalina [U/liter]
-- `SGOT`: SGOT [U/ml]
-- `Triglycerides`: Triglicéridos [mg/dl]
-- `Platelets`: Plaquetas por cúbico [ml/1000]
-- `Prothrombin`: Tiempo de Protrombina [s]
-- `Stage`: Estado histórico de la enfermedad (1, 2, 3, or 4)
+-   `ID`: Identificador único
+-   `N_Days`: Número de días entre el registro y la fecha de defunción, transplante o estudio analítico enJulio de 1986.
+-   `Status`: Estatus del paciente: C (Censurado), CL (censurado debido a tratamiento hepático), o D (Muerto)
+-   `Drug`: Tipo de fármaco: D-penicilamina o placebo
+-   `Age`: Edad \[días\]
+-   `Sex`: Sexo cromosómico: Male (hombre) o Female (Mujer)
+-   `Ascites`: Presencia de Ascitis No o Si
+-   `Hepatomegaly`: Presencia de Hepatomegalia No o Si
+-   `Spiders`: Presencia de arañas vasculares No o Si
+-   `Edema`: Presencia de Edema: No (no hay edema y sin tratamiento diurético para el edema), Sin (presencia de edema sin diuréticos, o edema curado con diuréticos), o Si (edema a pesar del tratamiento con diuréticos)
+-   `Bilirubin`: Bilirrubina sérica \[mg/dl\]
+-   `Cholesterol`: Colesterol sérico \[mg/dl\]
+-   `Albumin`: Albúmina \[gm/dl\]
+-   `Copper`: Cobre en orina \[ug/day\]
+-   `Alk_Phos`: Fosfatasa alcalina \[U/liter\]
+-   `SGOT`: SGOT \[U/ml\]
+-   `Triglycerides`: Triglicéridos \[mg/dl\]
+-   `Platelets`: Plaquetas por cúbico \[ml/1000\]
+-   `Prothrombin`: Tiempo de Protrombina \[s\]
+-   `Stage`: Estado histórico de la enfermedad (1, 2, 3, or 4)
+
+
+# Análisis multivariante
+
+```{r, cache = TRUE, warning=FALSE, message=FALSE}
+datos_quant <- datos %>% 
+  select(where(is.numeric)) %>% 
+  select(-1)
+
+ggpairs(datos_quant)
+```
+
+
+```{r, echo=FALSE}
+corPlot(datos_quant, cex = 0.8,  main = "Matriz de correlación")
+```
 
 
 
-## Análisis de normalidad multivariante
+# Análisis de normalidad multivariante
 
 Vamos a extraer los datos cuantitativos
 
@@ -139,14 +152,12 @@ Calculemos el vector de medias
 
 ```{r}
 Medias = colMeans(datos_quant)
-Medias
 ```
 
 la matriz de covarianza:
 
 ```{r}
 S = cov(datos_quant)
-S
 ```
 
 y la distancia de Mahalanobis:
@@ -164,23 +175,229 @@ plot(qchisq((1:nrow(datos_quant) - 1/2) / nrow(datos_quant), df = 3), sort(d_Mah
 abline(a=0,b=1)
 ```
 
-
 Vamos a realizar un test de normalidad. Utilizaremos Shapiro-Wilk:
 
 ```{r}
 mvnormtest::mshapiro.test(t(datos_quant))
 ```
+
 Obtenemos un p-valor muy pequeño, prácticamente 0, entonces, rechazamos la hipótesis nula y concluimos que no hay normalidad multivariante, es decir, almenos una variable individual no se distribuye normalmente.
 
-Veamos una por una si se distribuyen normalmente.
+Veamos una por una si se distribuyen normalmente. Aplicaremos a cada variable el el test de Shapiro Wilks, siempre y cuando haya pocos datos repetidos, ya que es sensible a este hecho.
 
+- `N-days`
+
+Observemos el qqplot: 
+```{r}
+qqPlot(datos_quant$N_Days, main = "N_days")
+```
+
+Observemos que en las colas encontramos muchas muestras que se salen de las bandas de confianza, por tanto es un indicador que de questa variable no siga una normal. Corroboremoslo con un test.
+
+Miremos primero si hay observaciones repetidas:
+```{r}
+length(datos_quant$N_Days)-length(unique(datos_quant$N_Days))
+length(datos_quant$N_Days)
+```
+
+Notemos que hay datos repetidos, por realicemos unos cuantos tests de normalidad.
+
+    - Shapiro:
+    
+```{r}
+shapiro.test(datos_quant$N_Days)
+```
+  Nos ha salido un p-value = 1.985e-05, bastante pequeño, con lo quepodemos rechazar la normalidad de esta variable.
+
+    - Anderson-Darling
 
 ```{r}
-#qqPlot(datos_quant[,2], main = "N_days")
-# no va:(((
+ad.test(datos_quant$N_Days)
+```
+
+Nos ha salido un p-value = 4.437e-05, bastante pequeño, con lo que también podemos rechazar la normalidad de esta variable.
+
+Por tanto podemos concluir que la variable `N_Days` no sigue una distribución normal
+
+
+
+- `Age`
+
+Observemos el qqplot: 
+
+```{r}
+qqPlot(datos_quant$Age, main = "Age")
+```
+
+Observemos que en las colas encontramos algunas muestras que se salen de las bandas de confianza, por tanto a simple vista no podemos asegurar nada.
+
+Miremos primero si hay observaciones repetidas:
+```{r}
+length(datos_quant$Age)-length(unique(datos_quant$Age))
+```
+
+Hay 1 valor que se repite, por tanto, podemos aplicar el shapiro test.
+
+```{r}
+shapiro.test(datos_quant$Age)
+```
+
+Nos ha salido un p-value = 0.07685, por tanto estamos en la zona de penumbra y no podemos concluir nada. Necesitaríamos más datos para poder asegurar o negar la normalidad.
+
+Realicemos otro test de normalidad.
+
+```{r}
+ad.test(datos_quant$Age)
+
+```
+Con el test de Anderson-Darling nos sale un p-value = 0.238
+y con este test podríamosasegurar la normalidad, aunque nosotros cogeremos esta concluisión con pinzas.
+
+- `Bilirubin`
+
+Observemos el qqplot: 
+
+```{r}
+qqPlot(datos_quant$Bilirubin, main = "Bilirubin")
+```
+
+Observemos que claramente no seguirá una normal debido a que no hay casi ninguna observación dentro de las bandas de confianza. Respaldemos esta afermación con un test.
+
+Miremos primero si hay observaciones repetidas:
+```{r}
+length(datos_quant$Bilirubin)-length(unique(datos_quant$Bilirubin))
+```
+
+Hay 194 valores que se repiten, por tanto, no podemos aplicar el shapiro test. En su lugar apliquemos un test D'Agostino-Pearson:
+
+```{r}
+dagoTest(datos_quant$Bilirubin)
+```
+
+Nos ha salido un p-value < 2.2e-16 en los tres tests, podemos rechazar la normalidad de esta variable, resultado que esperábamos con el qqplot.
+
+
+- `Cholesterol`
+
+Observemos el qqplot: 
+
+```{r}
+qqPlot(datos_quant$Cholesterol, main = "Cholesterol")
+```
+
+Observemos que en esta variable ocurre lo mismo que con la anterior (`Bilirubin`).
+
+Miremos primero si hay observaciones repetidas:
+```{r}
+length(datos_quant$Cholesterol)-length(unique(datos_quant$Cholesterol))
+```
+
+Volvemos a tener muchos datos repetidos, por tanto aplicaremos otro test D'Agostino-Pearson:
+
+```{r}
+dagoTest(datos_quant$Cholesterol)
+```
+
+Nos ha salido un p-value < 2.2e-16 en los tres tests, podemos rechazar la normalidad de esta variable, resultado que volvíamos a esperábamos con el qqplot.
+
+- `Albumin`
+
+Observemos el qqplot: 
+
+```{r}
+qqPlot(datos_quant$Albumin, main = "Albumin")
+```
+
+Volvemos a observar que seguramente no seguirá una distribución normal debido a las observaciones que hay fuera de las bandas.
+
+Miremos primero si hay observaciones repetidas:
+```{r}
+length(datos_quant$Albumin)-length(unique(datos_quant$Albumin))
+```
+Volvemos a tener muchos datos repetidos, por tanto aplicaremos otro test D'Agostino-Pearson:
+
+```{r}
+dagoTest(datos_quant$Albumin)
 ```
 
 
+En este caso, los tres p-values son menores que 0.05, por tanto rechazamos la normalidad de esta variable.
+
+- `Copper`
+
+Observemos el qqplot: 
+
+```{r}
+qqPlot(datos_quant$Copper, main = "Copper")
+```
+
+Volvemos a observar que esta muestra no seguirá una distribución normal.
+
+Miremos primero si hay observaciones repetidas:
+```{r}
+length(datos_quant$Copper)-length(unique(datos_quant$Copper))
+```
+Como volvemos a tener muchos datos repetidos, aplicaremos otro test D'Agostino-Pearson:
+
+```{r}
+dagoTest(datos_quant$Copper)
+```
+Nos vuelven a salir un p-value bastante pequeño, con lo que volvemos a rechazar la normalidad de esta variable.
+
+- `Alk_Phos`
+
+Observemos el qqplot: 
+
+```{r}
+qqPlot(datos_quant$Alk_Phos, main = "Alk_Phos")
+```
+Tampoco seguirá una distribución normal.
+
+Miremos primero si hay observaciones repetidas:
+```{r}
+length(datos_quant$Alk_Phos)-length(unique(datos_quant$Alk_Phos))
+```
+No hay muchos datos repetido. Probemos de hacer un shapiro test:
+
+```{r}
+shapiro.test(datos_quant$Alk_Phos)
+```
+Nos sale un p-value < 2.2e-16 por tanto rechazaríamos la normalidad de esta variable. Reforcemos esta afirmación realizando un test D'Agostino-Pearson:
+
+```{r}
+dagoTest(datos_quant$Alk_Phos)
+```
+Efectivamente la variable no sigue una distribución normal.
+
+- `SGOT`
+
+Observemos el qqplot: 
+
+```{r}
+qqPlot(datos_quant$SGOT, main = "SGOT")
+```
+Observemos que encontramos algunas observaciones fuera de las bandas de confianza, lo que indica que tampoco será normal.
+
+Miremos primero si hay observaciones repetidas:
+```{r}
+length(datos_quant$SGOT)-length(unique(datos_quant$SGOT))
+```
+Como volvemos a tener muchos datos repetidos, aplicaremos otro test D'Agostino-Pearson:
+
+```{r}
+dagoTest(datos_quant$SGOT)
+```
+Podemos concluir que esta variable tampoco sigue una distribución normal.
+
+- `Tryglicerides`
+
+Observemos el qqplot: 
+
+```{r}
+qqPlot(datos_quant$Tryglicerides, main = "Tryglicerides")
+```
+
+El resultado no es diferente a la de las otras variables. Confirmemos que no sigue una normal.
 
 
 
