@@ -34,6 +34,7 @@ library(mvnormtest)
 library(car)
 library(nortest)
 library(fBasics)
+library(ggplot2)
 ```
 
 # Convertir los datos en tidy
@@ -253,6 +254,19 @@ ad.test(datos_quant$Age)
 Con el test de Anderson-Darling nos sale un p-value = 0.238
 y con este test podríamosasegurar la normalidad, aunque nosotros cogeremos esta concluisión con pinzas.
 
+Veamos la densidad de esta variable:
+
+```{r}
+datos_quant %>% 
+  ggplot(aes(x = Age)) +
+  geom_density(color = 4,
+               lwd = 1,
+               linetype = 1)+
+  theme_bw()
+```
+
+Tiene una forma parecida a una densidad normal, pero no podríamos asegurar esta tendencia.
+
 - `Bilirubin`
 
 Observemos el qqplot: 
@@ -398,6 +412,104 @@ qqPlot(datos_quant$Tryglicerides, main = "Tryglicerides")
 ```
 
 El resultado no es diferente a la de las otras variables. Confirmemos que no sigue una normal.
+
+
+Miremos primero si hay observaciones repetidas:
+```{r}
+length(datos_quant$Tryglicerides)-length(unique(datos_quant$Tryglicerides))
+```
+
+Aplicaremos otro test D'Agostino-Pearson:
+
+```{r}
+dagoTest(datos_quant$Tryglicerides)
+```
+Esta variable tampoco sigue una normal.
+
+- `Platelets`
+
+Observemos el qqplot: 
+
+```{r}
+qqPlot(datos_quant$Platelets, main = "Platelets")
+```
+Observemos que en este caso no podríamos asegurar la normalidad a simple vista, ya que hay algunas observaciones que si sobresalen de las bandas, pero la diferencia no es exaegrada. Veamos que dicen los tests de normalidad.
+
+
+Miremos primero si hay observaciones repetidas:
+```{r}
+length(datos_quant$Platelets)-length(unique(datos_quant$Platelets))
+```
+
+Como volvemos a tener muchos datos repetidos, aplicaremos otro test D'Agostino-Pearson:
+
+```{r}
+dagoTest(datos_quant$Platelets)
+```
+
+Notemos que el p-value de Omnibus y Skewness se encuentran en la zona de penumbra. Por tanto, con estos dos p-values no podríamos afirmar nada.
+
+En cambio el p-value de Kurtosis, es bastante grande y sí podríamos aceptar la normalidad de esta variable.
+
+Veamos que conclusiones saca el test de Anderson-Darling:
+
+```{r}
+ad.test(datos_quant$Platelets)
+```
+Nos sale un p-value = 0.1116. No es un p-value muy grande, por tanto la normalidad de esta variable se podría aceptar con cuidado.
+
+Veamos la densidad de la variable:
+
+```{r}
+datos_quant %>% 
+  ggplot(aes(x = Platelets)) +
+  geom_density(color = 4,
+               lwd = 1,
+               linetype = 1)+
+  theme_bw()
+```
+
+Notemos que no podemos asegurar la normalidad ya que respecto a la cola derecha no se observa tendencia normal.
+
+
+
+- `Prothrombin`
+
+Observemos el qqplot: 
+
+```{r}
+qqPlot(datos_quant$Prothrombin, main = "Prothrombin")
+```
+
+Observamos que seguramente esta variable tampoco seguirá una normal.
+
+Miremos primero si hay observaciones repetidas:
+```{r}
+length(datos_quant$Prothrombin)-length(unique(datos_quant$Prothrombin))
+```
+
+La mayoría de observaciones se repiten. Aplicaremos otro test D'Agostino-Pearson:
+
+```{r}
+dagoTest(datos_quant$Prothrombin)
+```
+
+Notemos que los p-values son muy pequeños, por tanto no hay normalidad. No obstante, al tener casi todas las muestras repetidas entre sí, el test de normalidad podría estar sobreajustado, o simplemente que esta variable tiene poco rango.
+
+# Conclusiones
+
+Conluimos que
+
+- no hay normalidad multivariante
+
+- no hay normalidad univariante en ninguna variable quantitativa excepto en `Age` y `Platelets` que tienen una ligera tendencia a parecerse a una normal, aunque no hay evidencias fuertes para afirmar con seguridad que presenten un comportamiento normal
+
+
+
+
+
+
+
 
 
 
